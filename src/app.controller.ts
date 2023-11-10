@@ -6,7 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getLifespan(): string {
+    return `The app is active for ${this.appService.getCurrentLifespanSec()} seconds.`;
   }
 }
