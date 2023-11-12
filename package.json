@@ -24,6 +24,7 @@
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/serve-static": "^4.0.0",
     "@types/js-yaml": "^4.0.9",
     "js-yaml": "^4.1.0",
     "reflect-metadata": "^0.1.13",
@@ -68,10 +69,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "prettier": {
-    "proseWrap": "preserve",
-    "printWidth": 100,
-    "singleQuote": true
   }
 }

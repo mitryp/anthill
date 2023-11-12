@@ -1,4 +1,4 @@
 http:
   host: localhost
   port: 3000
-  staticPath: /static
+  staticPath: ~/absolute/path/to/static
