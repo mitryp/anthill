@@ -16,7 +16,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(appController.getLifespan()).toMatch(/The app is active for \d+\.\d{1,3} seconds\./);
     });
   });
 });
