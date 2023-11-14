@@ -1,9 +1,15 @@
 FROM anthill_front as front-env
 
-ARG PORT=5000
 FROM node:16.20.1
+ARG NODE_ENV="production"
+ARG PORT=5000
+ARG HOST="localhost"
 
-ENV NODE_ENV=docker
+ENV NODE_ENV=${NODE_ENV:-production}
+# double underscores will be replaced with dots at runtime
+ENV http__host=${HOST:-localhost}
+ENV http__port=${PORT:-5000}
+ENV http__staticPath=/anthill/frontend
 
 RUN mkdir /anthill
 RUN mkdir /anthill/backend
