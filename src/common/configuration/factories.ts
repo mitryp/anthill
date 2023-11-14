@@ -14,8 +14,13 @@ export const environmentConfigFactory = () => {
 export const commonConfigFactory = () => loadConfigYaml('common');
 
 // Returns the record with the yaml file with the specified configuration name.
+// If no such file exists, or the error occurred, returns an empty object.
 function loadConfigYaml(cfgName: string): Record<string, any> {
   const path = resolve(`config/${cfgName}.yaml`);
 
-  return load(readFileSync(path, { encoding: 'utf8' })) as Record<string, any>;
+  try {
+    return load(readFileSync(path, { encoding: 'utf8' })) as Record<string, any>;
+  } catch (_) {
+    return {}
+  }
 }
