@@ -8,7 +8,7 @@ export class ConfigurationHttpService {
   constructor(private readonly config: ConfigService) {}
 
   get port() {
-    return this.config.getOrThrow<string>(`${ConfigurationHttpService.section}.port`);
+    return this.config.getOrThrow<number>(`${ConfigurationHttpService.section}.port`);
   }
 
   get host() {

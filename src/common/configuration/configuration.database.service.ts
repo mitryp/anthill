@@ -8,7 +8,7 @@ export class ConfigurationDatabaseService {
   constructor(private readonly config: ConfigService) {}
 
   get port() {
-    return this.config.getOrThrow<string>(`${ConfigurationDatabaseService.section}.port`);
+    return this.config.getOrThrow<number>(`${ConfigurationDatabaseService.section}.port`);
   }
 
   get host() {
