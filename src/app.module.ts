@@ -16,11 +16,7 @@ import { ConfigService } from '@nestjs/config';
         ConfigurationModule,
         TypeOrmModule.forRootAsync({
           inject: [ConfigService],
-          useFactory: (configService: ConfigService) => {
-            console.log(configService.getOrThrow('database'));
-
-            return configService.getOrThrow('database');
-          },
+          useFactory: (configService: ConfigService) => configService.getOrThrow('database'),
         }),
       ],
       inject: [ConfigurationHttpService],
