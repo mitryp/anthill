@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DataSourceOptions } from 'typeorm';
 
 @Injectable()
 export class ConfigurationDatabaseService {

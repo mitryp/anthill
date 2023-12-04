@@ -3,12 +3,12 @@ import { load } from 'js-yaml';
 import { resolve } from 'path';
 import * as process from 'process';
 import { registerAs } from '@nestjs/config';
+import { dataSourceOptions } from './typeorm.config';
 
 export const environmentConfigFactory = () => {
   const envName = process.env.NODE_ENV || 'development';
 
   return {
-    ...loadConfigYaml(envName),
     env: envName,
   };
 };
@@ -23,13 +23,7 @@ export const envHttpConfigFactory = registerAs('http', () => ({
 
 // A function that registers environment variables for database block ensuring it has correct
 // structure.
-export const envDatabaseConfigFactory = registerAs('database', () => ({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB,
-}));
+export const envDatabaseConfigFactory = registerAs('database', () => dataSourceOptions);
 
 export const commonConfigFactory = () => loadConfigYaml('common');
 

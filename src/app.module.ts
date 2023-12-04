@@ -6,7 +6,7 @@ import { ConfigurationHttpService } from './common/configuration/configuration.h
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppLoggerMiddleware } from './utils/app_logger_middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigurationDatabaseService } from './common/configuration/configuration.database.service';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -15,18 +15,12 @@ import { ConfigurationDatabaseService } from './common/configuration/configurati
       imports: [
         ConfigurationModule,
         TypeOrmModule.forRootAsync({
-          imports: [ConfigurationModule],
-          inject: [ConfigurationDatabaseService],
-          useFactory: (dbConfig: ConfigurationDatabaseService) => ({
-            type: 'postgres',
-            database: dbConfig.database,
-            host: dbConfig.host,
-            port: dbConfig.port,
-            username: dbConfig.username,
-            password: dbConfig.password,
-            entities: [],
-            logging: true,
-          }),
+          inject: [ConfigService],
+          useFactory: (configService: ConfigService) => {
+            console.log(configService.getOrThrow('database'));
+
+            return configService.getOrThrow('database');
+          },
         }),
       ],
       inject: [ConfigurationHttpService],
