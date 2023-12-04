@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { ConfigurationHttpService } from './common/configuration/configuration.http.service';
 import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {
+  ConfigurationDatabaseService
+} from './common/configuration/configuration.database.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,8 +16,12 @@ async function bootstrap() {
   }
 
   const { port, host, staticPath } = app.get(ConfigurationHttpService);
-
   console.log(host, port, staticPath);
+
+  const dbConfig = app.get(ConfigurationDatabaseService);
+  const { username, password, database} = dbConfig;
+  const [dbPort, dbHost] = [dbConfig.port, dbConfig.host];
+  console.log(dbPort, dbHost, username, password, database);
 
   await app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));
 }

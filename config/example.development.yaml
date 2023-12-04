@@ -2,3 +2,10 @@ http:
   host: localhost
   port: 3000
   staticPath: ~/absolute/path/to/static
+
+database:
+  host: localhost
+  port: 5432
+  username: <db user>
+  password: <db user password>
+  database: anthill

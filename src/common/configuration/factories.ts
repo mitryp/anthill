@@ -13,12 +13,22 @@ export const environmentConfigFactory = () => {
   };
 };
 
-// A function that copies all variables containing `__` as they contained dots instead.
-// This is required to support both YAML and ENV configurations, as ENVs do not support dots.
-export const yamlEnvHttpConfigFactory = registerAs('http', () => ({
+// A function that registers environment variables for http block ensuring that it has correct
+// structure.
+export const envHttpConfigFactory = registerAs('http', () => ({
   host: process.env.HOST,
   port: process.env.PORT,
   staticPath: process.env.STATIC_PATH,
+}));
+
+// A function that registers environment variables for database block ensuring it has correct
+// structure.
+export const envDatabaseConfigFactory = registerAs('database', () => ({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB,
 }));
 
 export const commonConfigFactory = () => loadConfigYaml('common');
