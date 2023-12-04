@@ -7,7 +7,7 @@ async function bootstrap() {
 
   const { port, host, staticPath } = app.get(ConfigurationHttpService);
 
-  console.log(staticPath);
+  console.log(host, port, staticPath);
 
   await app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));
 }

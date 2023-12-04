@@ -6,10 +6,10 @@ ARG PORT=5000
 ARG HOST="localhost"
 
 ENV NODE_ENV=${NODE_ENV:-production}
-# double underscores will be replaced with dots at runtime
-ENV http__host=${HOST:-localhost}
-ENV http__port=${PORT:-5000}
-ENV http__staticPath=/anthill/frontend
+
+ENV HOST=${HOST:-localhost}
+ENV PORT=${PORT:-5000}
+ENV STATIC_PATH=/anthill/frontend
 
 RUN mkdir /anthill
 RUN mkdir /anthill/backend

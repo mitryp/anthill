@@ -18,15 +18,16 @@ The following environment variables are required:
 
 The variables can be set as environment variables or in the `config` directory, in the file
 named corresponding to the `NODE_ENV` value.
-In bash, dots can not be used in variable names, so instead two underscores are used: `__`.
-They will be replaced with dots at runtime.
+
+As env variables, the names should not include the yaml group, and the names should be transformed into screaming case.
 For example, docker configuration for the default env would be:
 
 ```dockerfile
 ENV NODE_ENV=production
-ENV http__host=localhost
-ENV http__port=5000
-ENV http__staticPath=/anthill/frontend
+
+ENV HOST=localhost
+ENV PORT=5000
+ENV STATIC_PATH=/anthill/frontend
 ```
 
 Or, in `config/development.yaml`:
