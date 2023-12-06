@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
+import { NumericToNumber } from '../../../../common/type_transformers/numericToNumber';
 
 @Entity('transactions')
 export class Transaction {
@@ -21,7 +22,7 @@ export class Transaction {
   deleteDate?: Date;
 
   @AutoMap()
-  @Column({ type: 'numeric', scale: 2, precision: 10 })
+  @Column({ type: 'numeric', scale: 2, precision: 10, transformer: new NumericToNumber() })
   amount: number;
 
   @AutoMap()
