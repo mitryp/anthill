@@ -1,17 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'src/shared/presentation/app.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Anthill',
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+void main() => runApp(const AnthillApp());
