@@ -37,3 +37,4 @@ lerna-debug.log*
 config/*
 !config/common.yaml
 !config/example.development.yaml
+.env
