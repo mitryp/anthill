@@ -5,27 +5,34 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AutoMap } from '@automapper/classes';
 
 @Entity('transactions')
 export class Transaction {
+  @AutoMap()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @AutoMap()
   @CreateDateColumn()
   createDate: Date;
 
   @DeleteDateColumn({ default: null })
   deleteDate?: Date;
 
-  @Column({ type: 'numeric', scale: 10, precision: 5 })
+  @AutoMap()
+  @Column({ type: 'numeric', scale: 2, precision: 10 })
   amount: number;
 
+  @AutoMap()
   @Column()
   isIncome: boolean;
 
+  @AutoMap()
   @Column()
   sourceOrPurpose: string;
 
-  @Column()
+  @AutoMap()
+  @Column({ default: '' })
   note: string;
 }

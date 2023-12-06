@@ -8,6 +8,7 @@ import {
 } from './factories';
 import { ConfigurationHttpService } from './configuration.http.service';
 import { ConfigurationDatabaseService } from './configuration.database.service';
+import { ConfigurationCoreService } from './configuration.core.service';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { ConfigurationDatabaseService } from './configuration.database.service';
       isGlobal: true,
     }),
   ],
-  providers: [ConfigurationHttpService, ConfigurationDatabaseService],
-  exports: [ConfigurationHttpService, ConfigurationDatabaseService],
+  providers: [ConfigurationHttpService, ConfigurationDatabaseService, ConfigurationCoreService],
+  exports: [ConfigurationHttpService, ConfigurationDatabaseService, ConfigurationCoreService],
 })
 export class ConfigurationModule {}

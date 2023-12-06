@@ -1,27 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigurationHttpService } from './common/configuration/configuration.http.service';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import {
-  ConfigurationDatabaseService
-} from './common/configuration/configuration.database.service';
+import { ConfigurationCoreService } from './common/configuration/configuration.core.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const env = process.env.NODE_ENV;
-  if (!env || env === 'development') {
+  const isDevelopment = app.get(ConfigurationCoreService).env === 'development';
+
+  if (isDevelopment) {
     setupSwaggerApi(app);
   }
 
-  const { port, host, staticPath } = app.get(ConfigurationHttpService);
-  console.log(host, port, staticPath);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      enableDebugMessages: isDevelopment,
+    }),
+  );
 
-  const dbConfig = app.get(ConfigurationDatabaseService);
-  const { username, password, database} = dbConfig;
-  const [dbPort, dbHost] = [dbConfig.port, dbConfig.host];
-  console.log(dbPort, dbHost, username, password, database);
+  const { port, host } = app.get(ConfigurationHttpService);
 
   await app.listen(port, host, () => console.log(`Listening on http://${host}:${port}`));
 }
