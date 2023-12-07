@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../application/providers/transactions_provider.dart';
+import '../application/providers/transaction_controller_provider.dart';
 import 'transaction_card.dart';
 
 class TransactionsView extends ConsumerWidget {
@@ -10,9 +10,9 @@ class TransactionsView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final size = MediaQuery.of(context).size;
-    final value = ref.watch(transactionsProvider);
+    final value = ref.watch(transactionControllerProvider);
 
-    final child = switch (value) {
+    return switch (value) {
       AsyncData(value: final transactions) => Wrap(
           runAlignment: WrapAlignment.spaceEvenly,
           children: transactions
@@ -27,7 +27,5 @@ class TransactionsView extends ConsumerWidget {
       AsyncError(:final error) => Text('$error'),
       _ => const CircularProgressIndicator(),
     };
-
-    return child;
   }
 }

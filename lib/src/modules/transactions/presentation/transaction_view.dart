@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../shared/presentation/dialogs/confirmation_dialog.dart';
+import '../../../shared/presentation/exception_interceptor.dart';
+import '../application/providers/transaction_controller_provider.dart';
 import '../domain/dtos/transaction_read_dto.dart';
 
 class TransactionView extends StatelessWidget {
@@ -41,11 +46,30 @@ class TransactionView extends StatelessWidget {
     final controls = OverflowBar(
       alignment: MainAxisAlignment.spaceAround,
       children: [
-        OutlinedButton.icon(
-          onPressed: () {},
-          icon: const Icon(Icons.delete),
-          label: const Text('Delete'),
-          style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Colors.red[400])),
+        Consumer(
+          builder: (context, ref, child) => OutlinedButton.icon(
+            onPressed: () async {
+              if (!await askUserConfirmation(
+                    context,
+                    const Text('Do you really want to delete this transaction?'),
+                  ) ||
+                  !context.mounted) {
+                return;
+              }
+
+              // ignore: use_build_context_synchronously
+              await ref
+                  .read(transactionControllerProvider.notifier)
+                  .deleteTransaction(_transaction.id, context);
+
+              if (context.mounted) {
+                context.pop();
+              }
+            },
+            icon: const Icon(Icons.delete),
+            label: const Text('Delete'),
+            style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Colors.red[400])),
+          ),
         ),
         ElevatedButton.icon(
           onPressed: () {},
