@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../shared/presentation/dialogs/confirmation_dialog.dart';
-import '../../../shared/presentation/exception_interceptor.dart';
 import '../application/providers/transaction_controller_provider.dart';
 import '../domain/dtos/transaction_read_dto.dart';
 
