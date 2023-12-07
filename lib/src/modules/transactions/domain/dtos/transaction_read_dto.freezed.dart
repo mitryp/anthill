@@ -107,8 +107,8 @@ class _$TransactionReadDtoCopyWithImpl<$Res, $Val extends TransactionReadDto>
 /// @nodoc
 abstract class _$$TransactionReadDtoImplCopyWith<$Res>
     implements $TransactionReadDtoCopyWith<$Res> {
-  factory _$$TransactionReadDtoImplCopyWith(_$TransactionReadDtoImpl value,
-          $Res Function(_$TransactionReadDtoImpl) then) =
+  factory _$$TransactionReadDtoImplCopyWith(
+          _$TransactionReadDtoImpl value, $Res Function(_$TransactionReadDtoImpl) then) =
       __$$TransactionReadDtoImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -126,8 +126,8 @@ abstract class _$$TransactionReadDtoImplCopyWith<$Res>
 class __$$TransactionReadDtoImplCopyWithImpl<$Res>
     extends _$TransactionReadDtoCopyWithImpl<$Res, _$TransactionReadDtoImpl>
     implements _$$TransactionReadDtoImplCopyWith<$Res> {
-  __$$TransactionReadDtoImplCopyWithImpl(_$TransactionReadDtoImpl _value,
-      $Res Function(_$TransactionReadDtoImpl) _then)
+  __$$TransactionReadDtoImplCopyWithImpl(
+      _$TransactionReadDtoImpl _value, $Res Function(_$TransactionReadDtoImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -215,13 +215,10 @@ class _$TransactionReadDtoImpl implements _TransactionReadDto {
         (other.runtimeType == runtimeType &&
             other is _$TransactionReadDtoImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.createDate, createDate) ||
-                other.createDate == createDate) &&
-            (identical(other.deleteDate, deleteDate) ||
-                other.deleteDate == deleteDate) &&
+            (identical(other.createDate, createDate) || other.createDate == createDate) &&
+            (identical(other.deleteDate, deleteDate) || other.deleteDate == deleteDate) &&
             (identical(other.amount, amount) || other.amount == amount) &&
-            (identical(other.isIncome, isIncome) ||
-                other.isIncome == isIncome) &&
+            (identical(other.isIncome, isIncome) || other.isIncome == isIncome) &&
             (identical(other.sourceOrPurpose, sourceOrPurpose) ||
                 other.sourceOrPurpose == sourceOrPurpose) &&
             (identical(other.note, note) || other.note == note));
@@ -229,15 +226,14 @@ class _$TransactionReadDtoImpl implements _TransactionReadDto {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, createDate, deleteDate,
-      amount, isIncome, sourceOrPurpose, note);
+  int get hashCode =>
+      Object.hash(runtimeType, id, createDate, deleteDate, amount, isIncome, sourceOrPurpose, note);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$TransactionReadDtoImplCopyWith<_$TransactionReadDtoImpl> get copyWith =>
-      __$$TransactionReadDtoImplCopyWithImpl<_$TransactionReadDtoImpl>(
-          this, _$identity);
+      __$$TransactionReadDtoImplCopyWithImpl<_$TransactionReadDtoImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {

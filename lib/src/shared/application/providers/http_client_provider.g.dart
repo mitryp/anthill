@@ -13,8 +13,7 @@ String _$httpClientHash() => r'20d129d11a301e332ae485f58cb20cd082ddff40';
 final httpClientProvider = AutoDisposeProvider<Dio>.internal(
   httpClient,
   name: r'httpClientProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$httpClientHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product') ? null : _$httpClientHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

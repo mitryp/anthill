@@ -10,8 +10,7 @@ String _$transactionsHash() => r'929d12f4afab0911cbde2773c91cf1f7e43ea96b';
 
 /// See also [transactions].
 @ProviderFor(transactions)
-final transactionsProvider =
-    AutoDisposeFutureProvider<List<TransactionReadDto>>.internal(
+final transactionsProvider = AutoDisposeFutureProvider<List<TransactionReadDto>>.internal(
   transactions,
   name: r'transactionsProvider',
   debugGetCreateSourceHash:
@@ -20,7 +19,6 @@ final transactionsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef TransactionsRef
-    = AutoDisposeFutureProviderRef<List<TransactionReadDto>>;
+typedef TransactionsRef = AutoDisposeFutureProviderRef<List<TransactionReadDto>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
