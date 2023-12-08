@@ -5,7 +5,7 @@ import { ConfigurationModule } from './common/configuration/configuration.module
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { ConfigurationHttpService } from './common/configuration/configuration.http.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { AppLoggerMiddleware } from './utils/app_logger_middleware';
+import { AppLoggerMiddleware } from './common/utils/app_logger_middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { AutomapperModule } from '@automapper/nestjs';

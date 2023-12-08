@@ -1,26 +1,10 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
-import { NumericToNumber } from '../../../../common/type_transformers/numericToNumber';
+import { NumericToNumber } from '../../../../common/utils/type_transformers/numericToNumber';
+import { EntityBase } from '../../../../common/domain/entity.base';
 
 @Entity('transactions')
-export class Transaction {
-  @AutoMap()
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @AutoMap()
-  @CreateDateColumn()
-  createDate: Date;
-
-  @DeleteDateColumn({ default: null })
-  deleteDate?: Date;
-
+export class Transaction extends EntityBase {
   @AutoMap()
   @Column({ type: 'numeric', scale: 2, precision: 10, transformer: new NumericToNumber() })
   amount: number;
