@@ -14,8 +14,9 @@ part 'transaction_controller_provider.g.dart';
 @riverpod
 class TransactionController extends _$TransactionController
     with
-        CollectionControllerMixin<TransactionReadDto, TransactionCreateDto, TransactionCreateDto,
-            TransactionService> {
+        CollectionControllerMixin<TransactionReadDto, TransactionService>,
+        ModifiableCollectionControllerMixin<TransactionReadDto, TransactionCreateDto,
+            TransactionCreateDto, TransactionService> {
   @override
   ProviderBase<TransactionService> get serviceProvider => transactionServiceProvider;
 

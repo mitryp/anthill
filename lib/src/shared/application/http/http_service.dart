@@ -43,5 +43,6 @@ mixin HttpWriteMixin<TRead, TCreate extends Model, TUpdate extends Model> on Htt
   Future<TRead> update(int id, TUpdate model) =>
       client.patch<JsonMap>('$apiPrefix/$id', data: model.toJson()).then(_decodeOneResponse);
 
-  Future<TRead> delete(int id) => client.delete<JsonMap>('$apiPrefix/$id').then(_decodeOneResponse);
+  Future<bool> delete(int id) =>
+      client.delete<String>('$apiPrefix/$id').then((value) => value.data == 'true');
 }

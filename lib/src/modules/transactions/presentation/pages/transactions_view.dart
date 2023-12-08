@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../application/providers/transaction_controller_provider.dart';
-import 'transaction_card.dart';
+import '../../application/providers/transaction_controller_provider.dart';
+import '../transaction_card.dart';
 
 class TransactionsView extends ConsumerWidget {
   const TransactionsView({super.key});
+
+  // todo filters and sorting!
+  factory TransactionsView.pageBuilder(BuildContext _, GoRouterState state) =>
+      const TransactionsView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

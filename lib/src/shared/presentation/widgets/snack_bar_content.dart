@@ -43,14 +43,14 @@ class SnackBarContent extends StatelessWidget {
   }
 }
 
-ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(
+ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
   BuildContext context, {
   required Widget title,
   Widget? subtitle,
   required Color backgroundColor,
   Color? textColor,
 }) =>
-    ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.maybeOf(context)?.showSnackBar(
       SnackBar(
         padding: EdgeInsets.zero,
         content: SnackBarContent(

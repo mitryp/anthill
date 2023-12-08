@@ -1,0 +1,156 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../shared/presentation/constraints/app_page.dart';
+import '../../../../shared/presentation/dialogs/confirmation_dialog.dart';
+import '../../../../shared/presentation/widgets/copy_link_button.dart';
+import '../../../../shared/presentation/widgets/error_notice.dart';
+import '../../application/providers/transaction_controller_provider.dart';
+import '../../application/providers/transaction_provider.dart';
+import '../../domain/dtos/transaction_read_dto.dart';
+
+class TransactionView extends ConsumerWidget {
+  static final String _copyLinkBase = AppPage.transactions.location;
+
+  final int _transactionId;
+  final TransactionReadDto? _transaction;
+
+  const TransactionView({required int transactionId, TransactionReadDto? transaction, super.key})
+      : _transactionId = transactionId,
+        _transaction = transaction;
+
+  factory TransactionView.cachedPageBuilder(BuildContext context, GoRouterState state) {
+    final extra = state.extra;
+    final passedTransaction = extra is TransactionReadDto ? extra : null;
+
+    if (passedTransaction == null) {
+      throw StateError('cached transaction view did not receive cache');
+    }
+
+    return TransactionView(
+      transactionId: passedTransaction.id,
+      transaction: passedTransaction,
+    );
+  }
+
+  factory TransactionView.pageBuilder(BuildContext context, GoRouterState state) {
+    final idStr = state.pathParameters['id'];
+    final id = idStr != null ? int.tryParse(idStr) : null;
+
+    if (id == null) {
+      throw StateError('transaction id was not correct');
+    }
+
+    return TransactionView(transactionId: id);
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final passedTransaction = _transaction;
+    final transactionId = _transactionId;
+
+    final value = passedTransaction != null
+        ? AsyncData(passedTransaction)
+        : ref.watch(transactionByIdProvider(transactionId));
+
+    switch (value) {
+      case AsyncError(:final error):
+        return ErrorNotice(error: error, withScaffold: true);
+      case AsyncLoading():
+        return Scaffold(
+          appBar: AppBar(title: const Text('Loading')),
+          body: const Center(child: CircularProgressIndicator()),
+        );
+    }
+
+    final transaction = value.requireValue;
+
+    final col = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Card(
+          child: ListTile(
+            title: Text('Transaction: ${transaction.sourceOrPurpose}'),
+            subtitle: transaction.note.isNotEmpty ? Text(transaction.note) : null,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4),
+          child: OverflowBar(
+            alignment: MainAxisAlignment.start,
+            spacing: 8,
+            overflowSpacing: 8,
+            children: [
+              Chip(
+                label: Text('${transaction.amount}'),
+                backgroundColor: transaction.isIncome ? Colors.green[300] : Colors.redAccent[100],
+              ),
+              Chip(label: Text('${transaction.createDate}')),
+              if (transaction.deleteDate != null) Chip(label: Text('${transaction.deleteDate}')),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    final controls = OverflowBar(
+      alignment: MainAxisAlignment.spaceAround,
+      children: [
+        Consumer(
+          builder: (context, ref, child) => OutlinedButton.icon(
+            onPressed: () async {
+              if (!await askUserConfirmation(
+                    context,
+                    const Text('Do you really want to delete this transaction?'),
+                  ) ||
+                  !context.mounted) {
+                return;
+              }
+
+              // ignore: use_build_context_synchronously
+              await ref
+                  .read(transactionControllerProvider.notifier)
+                  .deleteTransaction(transaction.id, context);
+
+              if (context.mounted) {
+                context.pop();
+              }
+            },
+            icon: const Icon(Icons.delete),
+            label: const Text('Delete'),
+            style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Colors.red[400])),
+          ),
+        ),
+        ElevatedButton.icon(
+          onPressed: () => context.push('/'),
+          icon: const Icon(Icons.edit),
+          label: const Text('Edit'),
+        ),
+      ],
+    );
+
+    final child = col;
+
+    return Scaffold(
+      appBar: AppBar(
+        actions: [CopyLinkButton(link: '$_copyLinkBase/$_transactionId')],
+      ),
+      body: Center(
+        child: LayoutBuilder(
+          builder: (context, constraints) => ConstrainedBox(
+            constraints: constraints.widthConstraints() / 2.5,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                child,
+                const SizedBox(height: 32),
+                controls,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
