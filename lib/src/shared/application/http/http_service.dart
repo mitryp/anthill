@@ -38,7 +38,8 @@ abstract class HttpService<TRead> {
 }
 
 mixin HttpWriteMixin<TRead, TCreate extends Model, TUpdate extends Model> on HttpService<TRead> {
-  Future<TRead> create(TCreate model) => client.post<JsonMap>(apiPrefix).then(_decodeOneResponse);
+  Future<TRead> create(TCreate model) =>
+      client.post<JsonMap>(apiPrefix, data: model.toJson()).then(_decodeOneResponse);
 
   Future<TRead> update(int id, TUpdate model) =>
       client.patch<JsonMap>('$apiPrefix/$id', data: model.toJson()).then(_decodeOneResponse);
