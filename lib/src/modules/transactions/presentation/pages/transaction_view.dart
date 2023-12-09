@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/presentation/constraints/app_page.dart';
 import '../../../../shared/presentation/dialogs/confirmation_dialog.dart';
+import '../../../../shared/presentation/utils/context_app_pages.dart';
 import '../../../../shared/presentation/widgets/copy_link_button.dart';
 import '../../../../shared/presentation/widgets/error_notice.dart';
 import '../../application/providers/transaction_controller_provider.dart';
@@ -11,8 +12,6 @@ import '../../application/providers/transaction_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 
 class TransactionView extends ConsumerWidget {
-  static final String _copyLinkBase = AppPage.transactions.location;
-
   final int _transactionId;
   final TransactionReadDto? _transaction;
 
@@ -20,29 +19,43 @@ class TransactionView extends ConsumerWidget {
       : _transactionId = transactionId,
         _transaction = transaction;
 
-  factory TransactionView.cachedPageBuilder(BuildContext context, GoRouterState state) {
-    final extra = state.extra;
-    final passedTransaction = extra is TransactionReadDto ? extra : null;
-
-    if (passedTransaction == null) {
-      throw StateError('cached transaction view did not receive cache');
-    }
-
-    return TransactionView(
-      transactionId: passedTransaction.id,
-      transaction: passedTransaction,
-    );
-  }
-
   factory TransactionView.pageBuilder(BuildContext context, GoRouterState state) {
     final idStr = state.pathParameters['id'];
-    final id = idStr != null ? int.tryParse(idStr) : null;
+    final extra = state.extra;
+    final passedTransaction = extra is TransactionReadDto ? extra : null;
+    final id = (idStr != null ? int.tryParse(idStr) : null) ?? passedTransaction?.id;
 
     if (id == null) {
       throw StateError('transaction id was not correct');
     }
 
-    return TransactionView(transactionId: id);
+    return TransactionView(
+      transactionId: id,
+      transaction: passedTransaction,
+    );
+  }
+
+  Future<void> _deleteTransaction(
+    BuildContext context,
+    WidgetRef ref,
+    TransactionReadDto transaction,
+  ) async {
+    if (!await askUserConfirmation(
+          context,
+          const Text('Do you really want to delete this transaction?'),
+        ) ||
+        !context.mounted) {
+      return;
+    }
+
+    // ignore: use_build_context_synchronously
+    await ref
+        .read(transactionControllerProvider.notifier)
+        .deleteTransaction(transaction.id, context);
+
+    if (context.mounted) {
+      context.pop();
+    }
   }
 
   @override
@@ -66,7 +79,7 @@ class TransactionView extends ConsumerWidget {
 
     final transaction = value.requireValue;
 
-    final col = Column(
+    final child = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Card(
@@ -99,42 +112,25 @@ class TransactionView extends ConsumerWidget {
       children: [
         Consumer(
           builder: (context, ref, child) => OutlinedButton.icon(
-            onPressed: () async {
-              if (!await askUserConfirmation(
-                    context,
-                    const Text('Do you really want to delete this transaction?'),
-                  ) ||
-                  !context.mounted) {
-                return;
-              }
-
-              // ignore: use_build_context_synchronously
-              await ref
-                  .read(transactionControllerProvider.notifier)
-                  .deleteTransaction(transaction.id, context);
-
-              if (context.mounted) {
-                context.pop();
-              }
-            },
+            onPressed: () => _deleteTransaction(context, ref, transaction),
             icon: const Icon(Icons.delete),
             label: const Text('Delete'),
             style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Colors.red[400])),
           ),
         ),
         ElevatedButton.icon(
-          onPressed: () => context.push('/'),
+          onPressed: () => context.goPage(AppPage.transactionEditor, extra: _transaction),
           icon: const Icon(Icons.edit),
           label: const Text('Edit'),
         ),
       ],
     );
 
-    final child = col;
+    final currentPath = GoRouterState.of(context).uri;
 
     return Scaffold(
       appBar: AppBar(
-        actions: [CopyLinkButton(link: '$_copyLinkBase/$_transactionId')],
+        actions: [CopyLinkButton(link: '$currentPath')],
       ),
       body: Center(
         child: LayoutBuilder(
