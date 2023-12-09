@@ -8,6 +8,8 @@ class AnthillApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final router = buildRouter(context);
+
     return ProviderScope(
       child: MaterialApp.router(
         routerConfig: router,
