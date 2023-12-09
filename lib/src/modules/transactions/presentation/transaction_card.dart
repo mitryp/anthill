@@ -17,7 +17,11 @@ class TransactionCard extends StatelessWidget {
         title: Text(_transaction.sourceOrPurpose),
         subtitle: _transaction.note.isNotEmpty ? Text(_transaction.note) : null,
         trailing: Text('${_transaction.amount}GBP'),
-        onTap: () => context.pushPage(AppPage.transaction, extra: _transaction),
+        onTap: () => context.pushPage(
+          AppPage.transaction,
+          resourceId: _transaction.id,
+          extra: _transaction,
+        ),
       ),
     );
   }

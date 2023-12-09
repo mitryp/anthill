@@ -8,7 +8,7 @@ import '../transaction_card.dart';
 class TransactionsView extends ConsumerWidget {
   const TransactionsView({super.key});
 
-  // todo filters and sorting!
+  // todo query filters and sorting!
   factory TransactionsView.pageBuilder(BuildContext _, GoRouterState state) =>
       const TransactionsView();
 
