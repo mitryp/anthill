@@ -10,6 +10,11 @@ Future<R> interceptDioError<R>(Object? error, StackTrace stackTrace, [BuildConte
     final data = error.response?.data;
 
     if (data != null && data is JsonMap) {
+      final messageField = data['message'];
+      if (messageField is List) {
+        data['message'] = messageField.join('\n');
+      }
+
       final errorDto = ServerErrorDto.fromJson(data);
 
       showSnackBar(
