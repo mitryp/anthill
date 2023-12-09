@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../modules/transactions/presentation/pages/transactions_view.dart';
+import '../constraints/app_page.dart';
+import '../utils/context_app_pages.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -15,6 +17,10 @@ class Dashboard extends StatelessWidget {
         title: const Text('Transactions'),
       ),
       body: const TransactionsView(),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => context.goPage(AppPage.transactionEditor),
+      ),
     );
   }
 }
