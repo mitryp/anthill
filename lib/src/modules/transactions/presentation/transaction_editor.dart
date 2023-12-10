@@ -78,8 +78,6 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
       await controller.updateResource(existingTransaction.id, _dto, context);
     }
 
-    ref.invalidate(transactionControllerProvider);
-
     if (!mounted) {
       return;
     }
