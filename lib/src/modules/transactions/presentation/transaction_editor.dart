@@ -73,9 +73,9 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
     final controller = ref.read(transactionControllerProvider.notifier);
 
     if (existingTransaction == null) {
-      await controller.createTransaction(_dto, context);
+      await controller.createResource(_dto, context);
     } else {
-      await controller.updateTransaction(existingTransaction.id, _dto, context);
+      await controller.updateResource(existingTransaction.id, _dto, context);
     }
 
     ref.invalidate(transactionControllerProvider);

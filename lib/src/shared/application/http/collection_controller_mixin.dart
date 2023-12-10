@@ -18,14 +18,14 @@ mixin CollectionControllerMixin<TRead, TService extends HttpService<TRead>>
 mixin ModifiableCollectionControllerMixin<TRead, TCreate extends Model, TUpdate extends Model,
         TService extends HttpWriteMixin<TRead, TCreate, TUpdate>>
     on CollectionControllerMixin<TRead, TService> {
-  Future<TRead> createTransaction(TCreate dto, [BuildContext? context]) =>
+  Future<TRead> createResource(TCreate dto, [BuildContext? context]) =>
       _readService().create(dto).then((created) {
         ref.invalidateSelf();
 
         return future.then((_) => created);
       }).onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
 
-  Future<TRead> updateTransaction(
+  Future<TRead> updateResource(
     int id,
     TUpdate dto, [
     BuildContext? context,
@@ -36,7 +36,7 @@ mixin ModifiableCollectionControllerMixin<TRead, TCreate extends Model, TUpdate 
         return future.then((_) => updated);
       }).onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
 
-  Future<bool> deleteTransaction(int id, [BuildContext? context]) =>
+  Future<bool> deleteResource(int id, [BuildContext? context]) =>
       _readService().delete(id).then((deleted) {
         ref.invalidateSelf();
 

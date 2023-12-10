@@ -51,7 +51,7 @@ class TransactionView extends ConsumerWidget {
     // ignore: use_build_context_synchronously
     await ref
         .read(transactionControllerProvider.notifier)
-        .deleteTransaction(transaction.id, context);
+        .deleteResource(transaction.id, context);
 
     if (context.mounted) {
       context.pop();
