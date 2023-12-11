@@ -8,13 +8,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { TransactionsService } from './transactions.service';
+import { transactionsPaginateConfig, TransactionsService } from './transactions.service';
 import { TransactionReadDto } from './data/dtos/transaction.read.dto';
 import { TransactionCreateDto } from './data/dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './data/dtos/transaction.update.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ReadManyDto } from '../../common/domain/read-many.dto';
-import { Paginate, PaginateQuery } from 'nestjs-paginate';
+import { Paginate, PaginatedSwaggerDocs, PaginateQuery } from 'nestjs-paginate';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -22,6 +22,7 @@ export class TransactionsController {
   constructor(private readonly transactionService: TransactionsService) {}
 
   @Get()
+  @PaginatedSwaggerDocs(TransactionReadDto, transactionsPaginateConfig)
   async readAll(@Paginate() query: PaginateQuery): Promise<ReadManyDto<TransactionReadDto>> {
     return this.transactionService.readAll(query);
   }
