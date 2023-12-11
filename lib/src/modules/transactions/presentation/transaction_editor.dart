@@ -69,13 +69,14 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
       return;
     }
     final existingTransaction = widget._readDto;
+    final isEditing = existingTransaction != null;
 
     final controller = ref.read(transactionControllerProvider.notifier);
 
-    if (existingTransaction == null) {
-      await controller.createResource(_dto, context);
-    } else {
+    if (isEditing) {
       await controller.updateResource(existingTransaction.id, _dto, context);
+    } else {
+      await controller.createResource(_dto, context);
     }
 
     if (!mounted) {
