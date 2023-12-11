@@ -12,7 +12,9 @@ import { TransactionsService } from './transactions.service';
 import { TransactionReadDto } from './data/dtos/transaction.read.dto';
 import { TransactionCreateDto } from './data/dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './data/dtos/transaction.update.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionService: TransactionsService) {}

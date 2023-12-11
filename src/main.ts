@@ -7,6 +7,7 @@ import { ConfigurationCoreService } from './common/configuration/configuration.c
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
 
   const isDevelopment = app.get(ConfigurationCoreService).env === 'development';
 
@@ -30,8 +31,9 @@ async function bootstrap() {
 function setupSwaggerApi(app: INestApplication) {
   const config = new DocumentBuilder()
     .setTitle('Anthill API')
-    .setDescription('The API for interacting with Anthill backend')
-    .setVersion('1.0')
+    .setDescription('The API for interacting with Anthill backend.')
+    .setVersion('v1')
+    .setBasePath('api')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
