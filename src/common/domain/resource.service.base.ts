@@ -2,6 +2,8 @@ import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { Mapper } from '@automapper/core';
 import { NotFoundException, Type } from '@nestjs/common';
 import { EntityBase } from './entity.base';
+import { paginate, Paginate, PaginateConfig, PaginateQuery } from 'nestjs-paginate';
+import { ReadManyDto } from './read-many.dto';
 
 export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> {
   protected constructor(
@@ -9,16 +11,20 @@ export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> 
     protected readonly mapper: Mapper,
     protected readonly entityType: Type<TEntity>,
     protected readonly readDtoType: Type<TReadDto>,
+    protected readonly paginateConfig: PaginateConfig<TEntity>,
   ) {}
 
   protected mapOne(entity: TEntity): TReadDto {
     return this.mapper.map(entity, this.entityType, this.readDtoType);
   }
 
-  async readAll(): Promise<TReadDto[]> {
-    const transactions = await this.repository.find();
+  async readAll(@Paginate() query: PaginateQuery): Promise<ReadManyDto<TReadDto>> {
+    const paginatedEntities = await paginate(query, this.repository, this.paginateConfig);
 
-    return transactions.map((value) => this.mapOne(value));
+    return {
+      meta: paginatedEntities.meta,
+      data: paginatedEntities.data.map((value) => this.mapOne(value)),
+    };
   }
 
   async readOne(id: number): Promise<TReadDto | undefined> {
@@ -43,8 +49,9 @@ export abstract class ModifiableResourceServiceBase<
     protected readonly readDtoType: Type<TReadDto>,
     protected readonly createDtoType: Type<TCreateDto>,
     protected readonly updateDtoType: Type<TUpdateDto>,
+    protected readonly paginateConfig: PaginateConfig<TEntity>,
   ) {
-    super(repository, mapper, entityType, readDtoType);
+    super(repository, mapper, entityType, readDtoType, paginateConfig);
   }
 
   async create(dto: TCreateDto): Promise<TReadDto> {
