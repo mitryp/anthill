@@ -1,6 +1,6 @@
-import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
+import { AutomapperProfile, InjectMapper } from 'automapper-nestjs';
 import { Injectable } from '@nestjs/common';
-import { createMap, forMember, mapFrom, Mapper, MappingProfile } from '@automapper/core';
+import { createMap, forMember, mapFrom, Mapper, MappingProfile } from 'automapper-core';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionReadDto } from './dtos/transaction.read.dto';
 import { TransactionCreateDto } from './dtos/transaction.create.dto';

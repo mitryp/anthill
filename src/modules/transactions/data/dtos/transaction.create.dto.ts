@@ -1,5 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
-import { AutoMap } from '@automapper/classes';
+import { AutoMap } from 'automapper-classes';
 
 export class TransactionCreateDto {
   @AutoMap()

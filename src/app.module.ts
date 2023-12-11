@@ -8,8 +8,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppLoggerMiddleware } from './common/utils/app_logger_middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { AutomapperModule } from '@automapper/nestjs';
-import { classes } from '@automapper/classes';
+import { AutomapperModule } from 'automapper-nestjs';
+import { classes } from 'automapper-classes';
 
 @Module({
   imports: [

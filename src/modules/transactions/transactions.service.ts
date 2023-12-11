@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { InjectMapper } from '@automapper/nestjs';
+import { InjectMapper } from 'automapper-nestjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Transaction } from './data/entities/transaction.entity';
 import { TransactionReadDto } from './data/dtos/transaction.read.dto';
 import { Repository } from 'typeorm';
-import { Mapper } from '@automapper/core';
+import { Mapper } from 'automapper-core';
 import { TransactionCreateDto } from './data/dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './data/dtos/transaction.update.dto';
 import { ModifiableResourceServiceBase } from '../../common/domain/resource.service.base';

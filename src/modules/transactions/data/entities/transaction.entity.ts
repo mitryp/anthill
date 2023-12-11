@@ -1,5 +1,5 @@
 import { Column, Entity } from 'typeorm';
-import { AutoMap } from '@automapper/classes';
+import { AutoMap } from 'automapper-classes';
 import { NumericToNumber } from '../../../../common/utils/type_transformers/numericToNumber';
 import { EntityBase } from '../../../../common/domain/entity.base';
 

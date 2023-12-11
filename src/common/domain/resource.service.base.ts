@@ -1,5 +1,5 @@
 import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
-import { Mapper } from '@automapper/core';
+import { Mapper } from 'automapper-core';
 import { NotFoundException, Type } from '@nestjs/common';
 import { EntityBase } from './entity.base';
 import { paginate, Paginate, PaginateConfig, PaginateQuery } from 'nestjs-paginate';
