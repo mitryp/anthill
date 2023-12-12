@@ -24,5 +24,10 @@ doc/api/
 .flutter-plugins
 .flutter-plugins-dependencies
 
+# JetBrains-specific files
 .idea/
 /*.iml
+
+# Generated code
+**/*.g.dart
+**/*.freezed.dart
