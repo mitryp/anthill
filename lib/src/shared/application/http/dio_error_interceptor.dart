@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/dto/server_error_dto.dart';
+import '../../domain/dtos/server_error_dto.dart';
 import '../../presentation/widgets/snack_bar_content.dart';
 import '../../typedefs.dart';
 

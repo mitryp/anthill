@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../domain/dto/paginated_dto.dart';
+import '../../domain/dtos/paginated_dto.dart';
 import '../../domain/exceptions/no_resource_error.dart';
 import '../../domain/interfaces/model.dart';
 import '../../typedefs.dart';
