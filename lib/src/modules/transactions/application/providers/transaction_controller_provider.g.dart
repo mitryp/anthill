@@ -6,12 +6,12 @@ part of 'transaction_controller_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$transactionControllerHash() => r'ffe2231c934a5672ef66df160f0f18efad2cb85f';
+String _$transactionControllerHash() => r'0fe1926fc8a95f599aef38cd3d0ed286b2c35d1e';
 
 /// See also [TransactionController].
 @ProviderFor(TransactionController)
-final transactionControllerProvider =
-    AutoDisposeAsyncNotifierProvider<TransactionController, List<TransactionReadDto>>.internal(
+final transactionControllerProvider = AutoDisposeAsyncNotifierProvider<TransactionController,
+    PaginatedDto<TransactionReadDto>>.internal(
   TransactionController.new,
   name: r'transactionControllerProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final transactionControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$TransactionController = AutoDisposeAsyncNotifier<List<TransactionReadDto>>;
+typedef _$TransactionController = AutoDisposeAsyncNotifier<PaginatedDto<TransactionReadDto>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

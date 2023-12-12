@@ -6,7 +6,8 @@ This repo contains a Flutter frontend for Anthill charity management system.
 
 #### Required
 
-- `API_BASE_URI` - the url to access the Anthill backend API. Must include http schema. **Required**.
+- `API_BASE_URI` - the url to access the Anthill backend API. Must include http schema.
+  Default: `api/`.
 
 #### Optional
 

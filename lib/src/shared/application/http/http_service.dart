@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../domain/dto/paginated_dto.dart';
 import '../../domain/exceptions/no_resource_error.dart';
 import '../../domain/interfaces/model.dart';
 import '../../typedefs.dart';
@@ -13,8 +14,16 @@ abstract class HttpService<TRead> {
 
   Future<TRead> getOne(int id) => client.get<JsonMap>('$apiPrefix/$id').then(_decodeOneResponse);
 
-  Future<List<TRead>> getMany([QueryParams? params]) =>
-      client.get<List>(apiPrefix).then(_decodeManyResponse);
+  Future<PaginatedDto<TRead>> getMany([QueryParams? params]) =>
+      client.get<JsonMap>(apiPrefix).then((res) {
+        final data = res.data;
+
+        if (data == null) {
+          throw NoResourceError('PaginatedDto<$TRead>');
+        }
+
+        return PaginatedDto.fromJson(data, decoder);
+      });
 
   TRead _decodeOneResponse(Response<JsonMap> res) {
     final data = res.data;
@@ -24,16 +33,6 @@ abstract class HttpService<TRead> {
     }
 
     return decoder.call(data);
-  }
-
-  List<TRead> _decodeManyResponse(Response<List<dynamic>> res) {
-    final list = res.data;
-
-    if (list == null) {
-      throw NoResourceError('$TRead');
-    }
-
-    return list.cast<JsonMap>().map(decoder.call).toList(growable: false);
   }
 }
 
