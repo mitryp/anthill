@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../shared/application/http/collection_controller_mixin.dart';
+import '../../../../shared/domain/dto/paginated_dto.dart';
 import '../../domain/dtos/transaction_create_dto.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 import '../services/transaction_service.dart';
@@ -26,5 +27,5 @@ class TransactionController extends _$TransactionController
       ref.invalidate(transactionByIdProvider(id));
 
   @override
-  Future<List<TransactionReadDto>> build() => super.build();
+  Future<PaginatedDto<TransactionReadDto>> build() => super.build();
 }

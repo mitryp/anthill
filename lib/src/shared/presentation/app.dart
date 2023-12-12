@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'router.dart';
+import 'widgets/loader.dart';
 
 class AnthillApp extends StatelessWidget {
   const AnthillApp({super.key});
@@ -11,10 +12,12 @@ class AnthillApp extends StatelessWidget {
     final router = buildRouter(context);
 
     return ProviderScope(
-      child: MaterialApp.router(
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
-        title: 'Anthill',
+      child: Loader(
+        child: MaterialApp.router(
+          routerConfig: router,
+          debugShowCheckedModeBanner: false,
+          title: 'Anthill',
+        ),
       ),
     );
   }

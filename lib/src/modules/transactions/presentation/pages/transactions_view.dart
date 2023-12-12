@@ -20,7 +20,7 @@ class TransactionsView extends ConsumerWidget {
     return switch (value) {
       AsyncData(value: final transactions) => Wrap(
           runAlignment: WrapAlignment.spaceEvenly,
-          children: transactions
+          children: transactions.data
               .map(
                 (t) => ConstrainedBox(
                   constraints: BoxConstraints.tightFor(width: size.width / 3 - 10),
