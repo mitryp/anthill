@@ -14,12 +14,17 @@ import { TransactionCreateDto } from './data/dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './data/dtos/transaction.update.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ReadManyDto } from '../../common/domain/read-many.dto';
-import { Paginate, PaginatedSwaggerDocs, PaginateQuery } from 'nestjs-paginate';
+import { Paginate, PaginateConfig, PaginatedSwaggerDocs, PaginateQuery } from 'nestjs-paginate';
 
 @ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {
   constructor(private readonly transactionService: TransactionsService) {}
+
+  @Get('/paginate_config')
+  readPaginateConfig(): PaginateConfig<TransactionReadDto> {
+    return transactionsPaginateConfig;
+  }
 
   @Get()
   @PaginatedSwaggerDocs(TransactionReadDto, transactionsPaginateConfig)
