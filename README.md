@@ -19,10 +19,9 @@ dart run build_runner build ; dart format . --line-length=100
 
 #### Required
 
-- `API_BASE_URI` - the url to access the Anthill backend API. Must include http schema.
-  Default: `api/`.
-
 #### Optional
 
+- `API_HOST` - the url to access the root endpoint of Anthill backend. Can be relative or absolute
+  (in this case, must include a HTTP schema). Default: `/` (the root of the same host).
 - `FLUTTER_ENV` - either `production` or `development`. Default: `production`.
 
