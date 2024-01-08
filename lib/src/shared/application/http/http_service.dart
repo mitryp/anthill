@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
-import '../../domain/dtos/paginated_dto.dart';
 import '../../domain/exceptions/no_resource_error.dart';
 import '../../domain/interfaces/model.dart';
 import '../../typedefs.dart';
@@ -14,7 +14,7 @@ abstract class HttpService<TRead> {
 
   Future<TRead> getOne(int id) => client.get<JsonMap>('$apiPrefix/$id').then(_decodeOneResponse);
 
-  Future<PaginatedDto<TRead>> getMany([QueryParams? params]) =>
+  Future<Paginated<TRead>> getMany([QueryParams? params]) =>
       client.get<JsonMap>(apiPrefix).then((res) {
         final data = res.data;
 
@@ -22,7 +22,7 @@ abstract class HttpService<TRead> {
           throw NoResourceError('PaginatedDto<$TRead>');
         }
 
-        return PaginatedDto.fromJson(data, decoder);
+        return Paginated.fromJson(data, decoder);
       });
 
   TRead _decodeOneResponse(Response<JsonMap> res) {

@@ -9,7 +9,7 @@ const defaultPage = AppPage.dashboard;
 
 enum AppPage {
   dashboard('/dashboard', Dashboard.pageBuilder),
-  transactions('/transactions', TransactionsView.pageBuilder),
+  transactions('/transactions', TransactionsPaginatedView.pageBuilder),
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
   transaction('/transactions/$idParamPlaceholder', TransactionView.pageBuilder);
 

@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/domain/dtos/paginated_dto.dart';
 import '../../../../shared/presentation/widgets/page_base.dart';
 import '../../application/providers/transaction_controller_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 import '../transaction_card.dart';
 
-class TransactionsView extends ConsumerWidget {
-  const TransactionsView({super.key});
+class TransactionsPaginatedView extends ConsumerStatefulWidget {
+
+  const TransactionsPaginatedView({super.key});
 
   // todo query filters and sorting!
-  factory TransactionsView.pageBuilder(BuildContext _, GoRouterState state) =>
-      const TransactionsView();
+  factory TransactionsPaginatedView.pageBuilder(BuildContext _, GoRouterState state) {
+    return TransactionsPaginatedView();
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TransactionsPaginatedView> createState() => _TransactionsPaginatedViewState();
+}
+
+class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginatedView> {
+  @override
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final AsyncValue<PaginatedDto<TransactionReadDto>> value =
+    final AsyncValue<Paginated<TransactionReadDto>> value =
         ref.watch(transactionControllerProvider);
 
     return PageBody(

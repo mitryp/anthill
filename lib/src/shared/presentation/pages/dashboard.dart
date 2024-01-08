@@ -16,7 +16,7 @@ class Dashboard extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Transactions'),
       ),
-      body: const TransactionsView(),
+      body: const TransactionsPaginatedView(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => context.goPage(AppPage.transactionEditor),

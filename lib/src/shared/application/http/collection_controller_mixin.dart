@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/dtos/paginated_dto.dart';
 import '../../domain/interfaces/model.dart';
 import 'dio_error_interceptor.dart';
 import 'http_service.dart';
 
 mixin CollectionControllerMixin<TRead, TService extends HttpService<TRead>>
-    on AutoDisposeAsyncNotifier<PaginatedDto<TRead>> {
+    on AutoDisposeAsyncNotifier<Paginated<TRead>> {
   ProviderBase<TService> get serviceProvider;
 
   void invalidateSingleResourceProviderWithId(int id) {}
@@ -15,7 +15,7 @@ mixin CollectionControllerMixin<TRead, TService extends HttpService<TRead>>
   TService _readService() => ref.read(serviceProvider);
 
   @override
-  Future<PaginatedDto<TRead>> build() => ref.watch(serviceProvider).getMany();
+  Future<Paginated<TRead>> build() => ref.watch(serviceProvider).getMany();
 }
 
 mixin ModifiableCollectionControllerMixin<TRead, TCreate extends Model, TUpdate extends Model,
