@@ -7,6 +7,8 @@ import '../../../../shared/presentation/dialogs/confirmation_dialog.dart';
 import '../../../../shared/presentation/utils/context_app_pages.dart';
 import '../../../../shared/presentation/widgets/copy_link_button.dart';
 import '../../../../shared/presentation/widgets/error_notice.dart';
+import '../../../../shared/presentation/widgets/page_base.dart';
+import '../../../../shared/utils/date_format.dart';
 import '../../application/providers/transaction_controller_provider.dart';
 import '../../application/providers/transaction_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
@@ -58,6 +60,9 @@ class TransactionView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const elementsSpacing = 8.0;
+    const controlsSeparation = elementsSpacing * 4;
+
     final passedTransaction = _transaction;
     final transactionId = _transactionId;
 
@@ -76,6 +81,7 @@ class TransactionView extends ConsumerWidget {
     }
 
     final transaction = value.requireValue;
+    final (:date, :time) = formatDate(transaction.createDate);
 
     final child = Column(
       mainAxisSize: MainAxisSize.min,
@@ -89,15 +95,20 @@ class TransactionView extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.all(4),
           child: OverflowBar(
-            alignment: MainAxisAlignment.start,
-            spacing: 8,
-            overflowSpacing: 8,
+            alignment: MainAxisAlignment.spaceEvenly,
+            overflowAlignment: OverflowBarAlignment.center,
+            overflowDirection: VerticalDirection.up,
+            spacing: elementsSpacing,
+            overflowSpacing: elementsSpacing,
             children: [
               Chip(
-                label: Text('${transaction.amount}'),
+                label: Text(
+                  '${transaction.amount}GBP',
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 backgroundColor: transaction.isIncome ? Colors.green[300] : Colors.redAccent[100],
               ),
-              Chip(label: Text('${transaction.createDate}')),
+              Chip(label: Text('$time $date')),
               if (transaction.deleteDate != null) Chip(label: Text('${transaction.deleteDate}')),
             ],
           ),
@@ -106,7 +117,9 @@ class TransactionView extends ConsumerWidget {
     );
 
     final controls = OverflowBar(
-      alignment: MainAxisAlignment.spaceAround,
+      alignment: MainAxisAlignment.center,
+      overflowAlignment: OverflowBarAlignment.center,
+      overflowSpacing: elementsSpacing,
       children: [
         Consumer(
           builder: (context, ref, child) => OutlinedButton.icon(
@@ -116,6 +129,7 @@ class TransactionView extends ConsumerWidget {
             style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Colors.red[400])),
           ),
         ),
+        const SizedBox(width: controlsSeparation),
         ElevatedButton.icon(
           onPressed: () => context.goPage(AppPage.transactionEditor, extra: _transaction),
           icon: const Icon(Icons.edit),
@@ -130,18 +144,16 @@ class TransactionView extends ConsumerWidget {
       appBar: AppBar(
         actions: [CopyLinkButton(link: '$currentPath')],
       ),
-      body: Center(
-        child: LayoutBuilder(
-          builder: (context, constraints) => ConstrainedBox(
-            constraints: constraints.widthConstraints() / 2.5,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                child,
-                const SizedBox(height: 32),
-                controls,
-              ],
-            ),
+      body: PageBody(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              child,
+              const SizedBox(height: 32),
+              controls,
+            ],
           ),
         ),
       ),
