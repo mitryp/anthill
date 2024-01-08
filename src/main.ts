@@ -33,7 +33,6 @@ function setupSwaggerApi(app: INestApplication) {
     .setTitle('Anthill API')
     .setDescription('The API for interacting with Anthill backend.')
     .setVersion('v1')
-    .setBasePath('api')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
