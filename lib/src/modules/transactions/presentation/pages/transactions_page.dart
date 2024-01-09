@@ -1,16 +1,13 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/application/providers/shareable_url_provider.dart';
-import '../../../../shared/utils/normalize_query_params.dart';
-import '../transactions_paginated_view.dart';
 import '../../../../shared/presentation/constraints/app_page.dart';
 import '../../../../shared/presentation/utils/context_app_pages.dart';
 import '../../../../shared/presentation/widgets/copy_link_button.dart';
+import '../../../../shared/utils/normalize_query_params.dart';
+import '../transactions_paginated_view.dart';
 
 class TransactionsPage extends StatelessWidget {
   final QueryParams _queryParams;
@@ -18,9 +15,11 @@ class TransactionsPage extends StatelessWidget {
   const TransactionsPage({QueryParams queryParams = const {}, super.key})
       : _queryParams = queryParams;
 
-  factory TransactionsPage.pageBuilder(BuildContext _, GoRouterState state) => TransactionsPage(
-        queryParams: state.uri.queryParametersAll.normalize(),
-      );
+  factory TransactionsPage.pageBuilder(BuildContext _, GoRouterState state) {
+    final params = state.uri.queryParametersAll.normalize();
+
+    return TransactionsPage(queryParams: params);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class TransactionsPage extends StatelessWidget {
         actions: [
           Consumer(
             builder: (context, ref, child) =>
-                CopyLinkButton(link: '${ref.watch(shareableUrlProvider)}'),
+                CopyLinkButton(link: '${GoRouterState.of(context).uri}'),
           ),
         ],
       ),

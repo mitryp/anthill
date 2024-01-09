@@ -58,3 +58,34 @@ FilterOperator _parseFilter(String filterStr) {
 }
 
 Object _parseFilterValue(String value) => num.tryParse(value) ?? value;
+
+extension ApplyParams on PaginationController {
+  void apply(QueryParams params, {bool notifyAfter = true}) {
+    final restoredController = restoreController(params, paginateConfig: paginateConfig);
+
+    silently(
+      notifyAfter: notifyAfter,
+      (controller) {
+        controller
+          ..page = restoredController.page
+          ..limit = restoredController.limit
+          ..search = restoredController.search
+          ..clearSorts()
+          ..clearFilters();
+
+        for (final sortEntry in restoredController.sorts.entries) {
+          final MapEntry(key: field, value: order) = sortEntry;
+          controller.addSort(field, order);
+        }
+
+        for (final filterEntry in restoredController.filters.entries) {
+          final MapEntry(key: field, value: filterSet) = filterEntry;
+
+          for (final operator in filterSet) {
+            controller.addFilter(field, operator);
+          }
+        }
+      },
+    );
+  }
+}

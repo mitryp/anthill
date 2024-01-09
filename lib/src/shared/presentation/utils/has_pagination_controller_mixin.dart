@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meta/meta.dart';
+import 'package:universal_html/html.dart';
 
 import '../../application/http/http_service.dart';
 import '../../application/providers/paginate_config_provider.dart';
-import '../../application/providers/shareable_url_provider.dart';
 import '../../utils/clean_uri.dart';
 import '../../utils/restore_pagination_controller.dart';
 
@@ -35,6 +34,7 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   /// Will be used only once during the initialization.
   @visibleForOverriding
   QueryParams get queryParams => const {};
+  late QueryParams _lastParams = queryParams;
 
   @override
   void didChangeDependencies() {
@@ -43,17 +43,32 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
     if (!isControllerInitialized) _loadConfig();
   }
 
+  @override
+  void didUpdateWidget(W oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (!isControllerInitialized) return;
+
+    final newParams = queryParams;
+    if (_lastParams != newParams) {
+      controller.apply(newParams);
+      _lastParams = newParams;
+    }
+  }
+
   Future<void> _loadConfig() async {
     final config = await ref.watch(paginateConfigProvider(httpServiceProvider).future);
+
     _initController(config, queryParams);
+    _lastParams = controller.toMap();
   }
 
   void _initController(PaginateConfig config, [QueryParams params = const {}]) {
     if (!mounted || isControllerInitialized) return;
 
     controller = restoreController(params, paginateConfig: config);
-    controller.addListener(_updateMemento);
-    _updateMemento();
+    controller.addListener(_updateUri);
+    _updateUri();
 
     setState(() => isControllerInitialized = true);
   }
@@ -63,20 +78,18 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
     super.dispose();
 
     if (isControllerInitialized) {
-      controller.removeListener(_updateMemento);
+      controller.removeListener(_updateUri);
     }
 
     controller.dispose();
   }
 
-  /// Updates a [ShareableUrl] instance in the current scope with query params of the [controller].
-  void _updateMemento() {
+  /// Updates a browser URI with query params of the [controller].
+  void _updateUri() {
     if (!mounted) return;
 
-    final uri = GoRouterState.of(context).uri.cleanWithParams(
-          controller.toMap().cast<String, Object>(),
-        );
-
-    ProviderScope.containerOf(context).read(shareableUrlProvider.notifier).set('$uri');
+    final state = GoRouterState.of(context);
+    final uri = state.uri.cleanWithParams(controller.toMap().cast<String, Object>());
+    window.history.replaceState(null, '', '#$uri');
   }
 }
