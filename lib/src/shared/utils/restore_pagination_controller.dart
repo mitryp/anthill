@@ -8,13 +8,18 @@ PaginationController restoreController(
 }) {
   final filterEntries = params.entries.where((entry) => entry.key.startsWith('filter.')).map((e) {
     final MapEntry(:key, :value) = e;
-    final filterStrings = (value is List<String> ? value : [value]).cast<String>();
+    final filterStrings = (value is List ? value.cast<String>() : [value]).cast<String>();
 
     return MapEntry(key.replaceFirst('filter.', ''), filterStrings.map(_parseFilter).toSet());
   });
-  final sorts = (params['sortBy'] as Map<String, String>?)?.map(
-    (key, value) => MapEntry(key, SortOrder.fromName(value)),
-  );
+
+  final maybeSort = params['sortBy'] as String?;
+  final sorts = maybeSort != null
+      ? (() {
+          final [key, orderStr] = maybeSort.split(':');
+          return {key: SortOrder.fromName(orderStr)};
+        })()
+      : null;
 
   return PaginationController(
     paginateConfig: paginateConfig,

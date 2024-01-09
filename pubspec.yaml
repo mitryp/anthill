@@ -41,6 +41,7 @@ dependencies:
   go_router: ^12.1.1
   form_validator: ^2.1.1
   flutter_nestjs_paginate: ^1.0.1
+  meta: ^1.9.1
 
 dev_dependencies:
   flutter_test:

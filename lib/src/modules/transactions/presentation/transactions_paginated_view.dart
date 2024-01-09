@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../shared/presentation/utils/has_pagination_controller_mixin.dart';
 import '../../../shared/presentation/widgets/error_notice.dart';
 import '../../../shared/presentation/widgets/page_base.dart';
+import '../../../shared/presentation/widgets/pagination_controls.dart';
 import '../../../shared/presentation/widgets/riverpod_paginated_view.dart';
-import '../../../shared/utils/restore_pagination_controller.dart';
 import '../application/providers/transaction_service_provider.dart';
 import '../application/providers/transactions_provider.dart';
 import 'transaction_card.dart';
@@ -22,55 +23,61 @@ class TransactionsPaginatedView extends ConsumerStatefulWidget {
   ConsumerState<TransactionsPaginatedView> createState() => _TransactionsPaginatedViewState();
 }
 
-class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginatedView> {
+class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginatedView>
+    with HasPaginationController {
   static late final PaginateConfig _transactionsConfig;
   static bool _isConfigLoaded = false;
 
-  late final PaginationController _controller;
-  bool _isInitialized = false;
+  PaginatedMetadata? _meta;
+  bool _areControlsLocked = true;
 
   @override
   void initState() {
     super.initState();
 
     if (_isConfigLoaded) {
-      _initController();
+      initController(_transactionsConfig, widget._queryParams);
     } else {
       ref.read(transactionServiceProvider).getPaginateConfig().then((config) {
         if (!_isConfigLoaded) {
           _transactionsConfig = config;
           _isConfigLoaded = true;
         }
-        _initController();
+
+        initController(_transactionsConfig, widget._queryParams);
       });
     }
-  }
-
-  Future<void> _initController() async {
-    if (!mounted) return;
-
-    _controller = restoreController(
-      widget._queryParams,
-      paginateConfig: _transactionsConfig,
-    );
-
-    setState(() => _isInitialized = true);
   }
 
   @override
   Widget build(BuildContext context) {
     const loadingIndicator = CircularProgressIndicator();
 
-    if (!_isInitialized) {
+    if (!isControllerInitialized) {
       return loadingIndicator;
     }
+
+    final meta = _meta;
 
     return PageBody(
       child: Column(
         children: [
           RiverpodPaginatedView(
-            controller: _controller,
+            controller: controller,
             collectionProvider: transactionsProvider,
+            onDataLoaded: (value) {
+              if (!mounted || value.meta == _meta) return;
+
+              setState(() {
+                _meta = value.meta;
+                _areControlsLocked = false;
+              });
+            },
+            onUpdateRequest: () {
+              if (!_areControlsLocked) {
+                setState(() => _areControlsLocked = true);
+              }
+            },
             viewBuilder: (context, transactions) {
               return ListView.builder(
                 shrinkWrap: true,
@@ -85,6 +92,13 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
             errorBuilder: (context, error) => ErrorNotice(error: error),
             loadingIndicator: (context) => loadingIndicator,
           ),
+          if (meta != null)
+            PaginationControls.fromMetadata(
+              meta,
+              onNext: () => controller.page++,
+              onPrevious: () => controller.page--,
+              isLocked: _areControlsLocked,
+            ),
         ],
       ),
     );

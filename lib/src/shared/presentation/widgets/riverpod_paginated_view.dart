@@ -12,6 +12,8 @@ class RiverpodPaginatedView<TModel extends Model> extends ConsumerStatefulWidget
   final AutoDisposeFutureProvider<Paginated<TModel>> Function([
     QueryParams params,
   ]) collectionProvider;
+  final VoidCallback? onUpdateRequest;
+  final ValueChanged<Paginated<TModel>>? onDataLoaded;
 
   const RiverpodPaginatedView({
     required this.controller,
@@ -19,6 +21,8 @@ class RiverpodPaginatedView<TModel extends Model> extends ConsumerStatefulWidget
     required this.loadingIndicator,
     required this.viewBuilder,
     required this.collectionProvider,
+    this.onUpdateRequest,
+    this.onDataLoaded,
     super.key,
   });
 
@@ -63,14 +67,23 @@ class _RiverpodPaginatedViewState<TModel extends Model>
     setState(() => _params = widget.controller.toMap());
   }
 
+  void _deferCallback(void Function() fn) =>
+      WidgetsBinding.instance.addPostFrameCallback((_) => fn());
+
   @override
   Widget build(BuildContext context) {
     final value = ref.watch(widget.collectionProvider(_params));
 
     return value.when(
-      data: (data) => widget.viewBuilder(context, data),
+      data: (data) {
+        _deferCallback(() => widget.onDataLoaded?.call(data));
+        return widget.viewBuilder(context, data);
+      },
       error: (error, _) => widget.errorBuilder(context, error),
-      loading: () => widget.loadingIndicator(context),
+      loading: () {
+        _deferCallback(() => widget.onUpdateRequest?.call());
+        return widget.loadingIndicator(context);
+      },
     );
   }
 }
