@@ -41,7 +41,10 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
 
   @override
   Widget build(BuildContext context) {
-    const loadingIndicator = CircularProgressIndicator();
+    const loadingIndicator = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [CircularProgressIndicator()],
+    );
 
     if (!isControllerInitialized) {
       return loadingIndicator;
@@ -87,12 +90,7 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
             loadingIndicator: (context) => loadingIndicator,
           ),
           if (meta != null)
-            PaginationControls.fromMetadata(
-              meta,
-              onNext: () => controller.page++,
-              onPrevious: () => controller.page--,
-              isLocked: _areControlsLocked,
-            ),
+            PaginationControls.fromMetadata(meta, isLocked: _areControlsLocked).bind(controller),
         ],
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
+void _defaultCallback() {}
+
 class PaginationControls extends StatelessWidget {
   final int currentPage;
   final int totalPages;
@@ -19,8 +21,8 @@ class PaginationControls extends StatelessWidget {
 
   factory PaginationControls.fromMetadata(
     PaginatedMetadata meta, {
-    required VoidCallback onNext,
-    required VoidCallback onPrevious,
+    VoidCallback onNext = _defaultCallback,
+    VoidCallback onPrevious = _defaultCallback,
     bool isLocked = false,
   }) =>
       PaginationControls(
@@ -29,6 +31,14 @@ class PaginationControls extends StatelessWidget {
         onNext: onNext,
         onPrevious: onPrevious,
         isLocked: isLocked,
+      );
+
+  PaginationControls bind(PaginationController controller) => PaginationControls(
+        currentPage: currentPage,
+        totalPages: totalPages,
+        isLocked: isLocked,
+        onNext: () => controller.page++,
+        onPrevious: () => controller.page--,
       );
 
   @override

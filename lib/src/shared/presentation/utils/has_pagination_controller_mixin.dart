@@ -71,6 +71,8 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
 
   /// Updates a [ShareableUrl] instance in the current scope with query params of the [controller].
   void _updateMemento() {
+    if (!mounted) return;
+
     final uri = GoRouterState.of(context).uri.cleanWithParams(
           controller.toMap().cast<String, Object>(),
         );
