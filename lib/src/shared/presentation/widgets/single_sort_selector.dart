@@ -3,17 +3,23 @@ import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
 import '../../utils/controller_flip_sort.dart';
 
-typedef FieldLocalizer = String Function(BuildContext context, String string);
+typedef FieldLocalizer = String? Function(BuildContext context, String colName);
 
-String _debugLocalizer(BuildContext _, String s) => s;
+/// Allows the [localizer] to return null while still being functional for each possible colName.
+String Function(String) _definedLocalizerDecorator(String? Function(String) localizer) =>
+    (colName) => localizer(colName) ?? colName;
+
+String? _debugLocalizer(BuildContext _, String __) => null;
 
 class SingleSortSelector extends StatelessWidget {
   final PaginationController controller;
   final FieldLocalizer localizer;
+  final bool isLocked;
 
   const SingleSortSelector({
     required this.controller,
     this.localizer = _debugLocalizer,
+    this.isLocked = false,
     super.key,
   });
 
@@ -40,6 +46,8 @@ class SingleSortSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizer = _definedLocalizerDecorator((colName) => this.localizer(context, colName));
+
     return ListenableBuilder(
       listenable: controller,
       builder: (context, _) {
@@ -52,7 +60,7 @@ class SingleSortSelector extends StatelessWidget {
             .map(
               (colName) => DropdownMenuItem(
                 value: colName,
-                child: Text(localizer(context, colName)),
+                child: Text(localizer(colName)),
               ),
             )
             .toList(growable: false);
@@ -63,11 +71,11 @@ class SingleSortSelector extends StatelessWidget {
               child: DropdownButton<String>(
                 value: currentSort?.key ?? defaultSort?.key,
                 items: items,
-                onChanged: _changeSortFieldTo,
+                onChanged: !isLocked ? _changeSortFieldTo : null,
               ),
             ),
             IconButton(
-              onPressed: _flipSortOrder,
+              onPressed: !isLocked ? _flipSortOrder : null,
               icon: Icon(
                 currentSort?.value == SortOrder.desc ? Icons.arrow_drop_down : Icons.arrow_drop_up,
               ),

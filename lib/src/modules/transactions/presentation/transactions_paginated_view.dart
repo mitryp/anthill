@@ -63,12 +63,15 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
     return PageBody(
       child: Column(
         children: [
-          SingleSortSelector(controller: controller),
+          SingleSortSelector(
+            controller: controller,
+            isLocked: _areControlsLocked,
+          ),
           RiverpodPaginatedView(
             controller: controller,
             collectionProvider: transactionsProvider,
             onDataLoaded: (value) {
-              if (!mounted || value.meta == _meta) return;
+              if (!mounted) return;
 
               setState(() {
                 _meta = value.meta;
