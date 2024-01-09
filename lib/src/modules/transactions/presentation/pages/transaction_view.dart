@@ -10,7 +10,7 @@ import '../../../../shared/presentation/widgets/error_notice.dart';
 import '../../../../shared/presentation/widgets/page_base.dart';
 import '../../../../shared/utils/date_format.dart';
 import '../../application/providers/transaction_controller_provider.dart';
-import '../../application/providers/transaction_provider.dart';
+import '../../application/providers/transaction_by_id_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 
 class TransactionView extends ConsumerWidget {

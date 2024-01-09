@@ -5,7 +5,7 @@ import '../../../../shared/application/http/dio_error_interceptor.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 import 'transaction_service_provider.dart';
 
-part 'transaction_provider.g.dart';
+part 'transaction_by_id_provider.g.dart';
 
 @riverpod
 Future<TransactionReadDto> transactionById(

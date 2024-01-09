@@ -1,15 +1,13 @@
+import '../../../modules/transactions/presentation/pages/transactions_page.dart';
 import '../../../modules/transactions/presentation/pages/transaction_view.dart';
-import '../../../modules/transactions/presentation/pages/transactions_view.dart';
 import '../../../modules/transactions/presentation/transaction_editor.dart';
 import '../../typedefs.dart';
-import '../pages/dashboard.dart';
 
 const idParamPlaceholder = ':id';
-const defaultPage = AppPage.dashboard;
+const defaultPage = AppPage.transactions;
 
 enum AppPage {
-  dashboard('/dashboard', Dashboard.pageBuilder),
-  transactions('/transactions', TransactionsPaginatedView.pageBuilder),
+  transactions('/transactions', TransactionsPage.pageBuilder),
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
   transaction('/transactions/$idParamPlaceholder', TransactionView.pageBuilder);
 
