@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../shared/application/http/http_service.dart';
 import '../../../shared/presentation/utils/has_pagination_controller_mixin.dart';
 import '../../../shared/presentation/widgets/error_notice.dart';
 import '../../../shared/presentation/widgets/page_base.dart';
@@ -26,29 +27,17 @@ class TransactionsPaginatedView extends ConsumerStatefulWidget {
 
 class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginatedView>
     with HasPaginationController {
-  static late final PaginateConfig _transactionsConfig;
-  static bool _isConfigLoaded = false;
-
+  /// A metadata cache for pagination controls.
   PaginatedMetadata? _meta;
+
+  /// A flag to lock the pagination controls during the requests.
   bool _areControlsLocked = true;
 
   @override
-  void initState() {
-    super.initState();
+  ProviderBase<HttpService> get httpServiceProvider => transactionServiceProvider;
 
-    if (_isConfigLoaded) {
-      initController(_transactionsConfig, widget._queryParams);
-    } else {
-      ref.read(transactionServiceProvider).getPaginateConfig().then((config) {
-        if (!_isConfigLoaded) {
-          _transactionsConfig = config;
-          _isConfigLoaded = true;
-        }
-
-        initController(_transactionsConfig, widget._queryParams);
-      });
-    }
-  }
+  @override
+  QueryParams get queryParams => widget._queryParams;
 
   @override
   Widget build(BuildContext context) {
