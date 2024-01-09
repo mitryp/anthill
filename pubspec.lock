@@ -274,10 +274,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_nestjs_paginate
-      sha256: "6b48d4eae8560e489c3b970550d4bf71b4fddd2e694057152e10c9a60730e533"
+      sha256: a2ecec97b55a78771b744ae3f839b55e04d30be7b9ccadf4db407035f0c321fc
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   flutter_riverpod:
     dependency: "direct main"
     description:
