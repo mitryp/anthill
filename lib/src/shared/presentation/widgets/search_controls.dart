@@ -17,7 +17,9 @@ class SearchControls extends StatefulWidget {
 
 class _SearchControlsState extends State<SearchControls> {
   late final TextEditingController _controller = TextEditingController(
-      text: widget.paginationController.search != null ? '${widget.paginationController.search}' : '');
+      text: widget.paginationController.search != null
+          ? '${widget.paginationController.search}'
+          : '');
 
   void _updateSearchQuery() =>
       widget.paginationController.search = _controller.text.isNotEmpty ? _controller.text : null;
