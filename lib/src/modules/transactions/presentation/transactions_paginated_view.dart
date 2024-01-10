@@ -56,43 +56,66 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
     return PageBody(
       child: Column(
         children: [
-          SingleSortSelector(
-            controller: controller,
-            isLocked: _areControlsLocked,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+            child: Theme(
+              data: ThemeData(
+                inputDecorationTheme: const InputDecorationTheme(
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: SearchControls(
+                      paginationController: controller,
+                      isLocked: _areControlsLocked,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: SingleSortSelector(
+                      controller: controller,
+                      isLocked: _areControlsLocked,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-          SearchControls(
-            paginationController: controller,
-            isLocked: _areControlsLocked,
-          ),
-          RiverpodPaginatedView(
-            controller: controller,
-            collectionProvider: transactionsProvider,
-            onDataLoaded: (value) {
-              if (!mounted) return;
+          Expanded(
+            child: RiverpodPaginatedView(
+              controller: controller,
+              collectionProvider: transactionsProvider,
+              onDataLoaded: (value) {
+                if (!mounted) return;
 
-              setState(() {
-                _meta = value.meta;
-                _areControlsLocked = false;
-              });
-            },
-            onUpdateRequest: () {
-              if (!_areControlsLocked) {
-                setState(() => _areControlsLocked = true);
-              }
-            },
-            viewBuilder: (context, transactions) {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: transactions.data.length,
-                itemBuilder: (context, index) {
-                  final item = transactions.data[index];
+                setState(() {
+                  _meta = value.meta;
+                  _areControlsLocked = false;
+                });
+              },
+              onUpdateRequest: () {
+                if (!_areControlsLocked) {
+                  setState(() => _areControlsLocked = true);
+                }
+              },
+              viewBuilder: (context, transactions) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: transactions.data.length,
+                  itemBuilder: (context, index) {
+                    final item = transactions.data[index];
 
-                  return TransactionCard(transaction: item);
-                },
-              );
-            },
-            errorBuilder: (context, error) => ErrorNotice(error: error),
-            loadingIndicator: (context) => loadingIndicator,
+                    return TransactionCard(transaction: item);
+                  },
+                );
+              },
+              errorBuilder: (context, error) => ErrorNotice(error: error),
+              loadingIndicator: (context) => loadingIndicator,
+            ),
           ),
           if (meta != null)
             PaginationControls.fromMetadata(meta, isLocked: _areControlsLocked).bind(controller),

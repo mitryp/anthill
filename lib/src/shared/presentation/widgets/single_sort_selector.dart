@@ -15,11 +15,13 @@ class SingleSortSelector extends StatelessWidget {
   final PaginationController controller;
   final FieldLocalizer localizer;
   final bool isLocked;
+  final EdgeInsetsGeometry contentPadding;
 
   const SingleSortSelector({
     required this.controller,
     this.localizer = _debugLocalizer,
     this.isLocked = false,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     super.key,
   });
 
@@ -46,6 +48,7 @@ class SingleSortSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const iconSize = 24.0;
     final localizer = _definedLocalizerDecorator((colName) => this.localizer(context, colName));
 
     return ListenableBuilder(
@@ -68,16 +71,26 @@ class SingleSortSelector extends StatelessWidget {
         return Row(
           children: [
             Expanded(
-              child: DropdownButton<String>(
+              child: DropdownButtonFormField<String>(
+                isExpanded: true,
+                icon: const SizedBox(),
+                decoration: InputDecoration(
+                  contentPadding: contentPadding,
+                  labelText: 'Sort',
+                  suffixIcon: IconButton(
+                    onPressed: !isLocked ? _flipSortOrder : null,
+                    splashRadius: iconSize,
+                    icon: Icon(
+                      currentSort?.value == SortOrder.desc
+                          ? Icons.arrow_downward
+                          : Icons.arrow_upward,
+                      size: iconSize,
+                    ),
+                  ),
+                ),
                 value: currentSort?.key ?? defaultSort?.key,
                 items: items,
                 onChanged: !isLocked ? _changeSortFieldTo : null,
-              ),
-            ),
-            IconButton(
-              onPressed: !isLocked ? _flipSortOrder : null,
-              icon: Icon(
-                currentSort?.value == SortOrder.desc ? Icons.arrow_drop_down : Icons.arrow_drop_up,
               ),
             ),
           ],

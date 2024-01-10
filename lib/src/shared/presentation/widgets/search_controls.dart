@@ -4,10 +4,12 @@ import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 class SearchControls extends StatefulWidget {
   final PaginationController paginationController;
   final bool isLocked;
+  final EdgeInsetsGeometry contentPadding;
 
   const SearchControls({
     required this.paginationController,
     this.isLocked = false,
+    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     super.key,
   });
 
@@ -17,9 +19,8 @@ class SearchControls extends StatefulWidget {
 
 class _SearchControlsState extends State<SearchControls> {
   late final TextEditingController _controller = TextEditingController(
-      text: widget.paginationController.search != null
-          ? '${widget.paginationController.search}'
-          : '');
+    text: widget.paginationController.search != null ? '${widget.paginationController.search}' : '',
+  );
 
   void _updateSearchQuery() =>
       widget.paginationController.search = _controller.text.isNotEmpty ? _controller.text : null;
@@ -38,35 +39,36 @@ class _SearchControlsState extends State<SearchControls> {
 
   @override
   Widget build(BuildContext context) {
+    const iconSize = 16.0;
+
     return ListenableBuilder(
       listenable: widget.paginationController,
-      builder: (context, _) => Row(
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: _controller,
-              decoration: InputDecoration(
-                // todo localize
-                labelText: 'Search',
-                suffix: Row(
+      builder: (context, _) => TextFormField(
+        controller: _controller,
+        decoration: InputDecoration(
+          // todo localize
+          labelText: 'Search',
+          contentPadding: widget.contentPadding,
+          suffixIcon: _controller.text.isNotEmpty
+              ? Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
+                      splashRadius: iconSize,
                       onPressed: _resetSearch,
-                      icon: const Icon(Icons.clear),
+                      icon: const Icon(Icons.clear, size: iconSize),
                     ),
                     IconButton(
+                      splashRadius: iconSize,
                       onPressed: _updateSearchQuery,
-                      icon: const Icon(Icons.check),
+                      icon: const Icon(Icons.check, size: iconSize),
                     ),
                   ],
-                ),
-              ),
-              enabled: !widget.isLocked,
-              onEditingComplete: _updateSearchQuery,
-            ),
-          ),
-        ],
+                )
+              : null,
+        ),
+        enabled: !widget.isLocked,
+        onEditingComplete: _updateSearchQuery,
       ),
     );
   }
