@@ -7,7 +7,7 @@ import '../../domain/interfaces/model.dart';
 class RiverpodPaginatedView<TModel extends Model> extends ConsumerStatefulWidget {
   final PaginationController controller;
   final ErrorBuilder errorBuilder;
-  final PaginatedViewBuilder viewBuilder;
+  final PaginatedViewBuilder<TModel> viewBuilder;
   final WidgetBuilder loadingIndicator;
   final AutoDisposeFutureProvider<Paginated<TModel>> Function([
     QueryParams params,

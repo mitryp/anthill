@@ -7,7 +7,11 @@ import '../../../../shared/presentation/constraints/app_page.dart';
 import '../../../../shared/presentation/utils/context_app_pages.dart';
 import '../../../../shared/presentation/widgets/copy_link_button.dart';
 import '../../../../shared/utils/normalize_query_params.dart';
-import '../transactions_paginated_view.dart';
+import '../../../../shared/utils/paginated_collection_view.dart';
+import '../../application/providers/transaction_service_provider.dart';
+import '../../application/providers/transactions_provider.dart';
+import '../../domain/dtos/transaction_read_dto.dart';
+import '../transaction_card.dart';
 
 class TransactionsPage extends StatelessWidget {
   final QueryParams _queryParams;
@@ -33,7 +37,22 @@ class TransactionsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: TransactionsPaginatedView(queryParams: _queryParams),
+      body: PaginatedCollectionView<TransactionReadDto>(
+        queryParams: _queryParams,
+        httpServiceProvider: transactionServiceProvider,
+        collectionProvider: transactionsProvider,
+        viewBuilder: (context, transactions) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: transactions.data.length,
+            itemBuilder: (context, index) {
+              final item = transactions.data[index];
+
+              return TransactionCard(transaction: item);
+            },
+          );
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => context.goPage(AppPage.transactionEditor),
