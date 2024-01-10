@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
-import '../../domain/dtos/paginated_dto.dart';
 import '../../domain/exceptions/no_resource_error.dart';
 import '../../domain/interfaces/model.dart';
 import '../../typedefs.dart';
+
+const _paginateConfigEndpoint = 'paginate_config';
 
 abstract class HttpService<TRead> {
   final Dio client;
@@ -14,16 +16,29 @@ abstract class HttpService<TRead> {
 
   Future<TRead> getOne(int id) => client.get<JsonMap>('$apiPrefix/$id').then(_decodeOneResponse);
 
-  Future<PaginatedDto<TRead>> getMany([QueryParams? params]) =>
-      client.get<JsonMap>(apiPrefix).then((res) {
+  Future<Paginated<TRead>> getMany([QueryParams? params]) =>
+      client.get<JsonMap>(apiPrefix, queryParameters: params).then((res) {
         final data = res.data;
 
         if (data == null) {
-          throw NoResourceError('PaginatedDto<$TRead>');
+          throw NoResourceError('Paginated<$TRead>');
         }
 
-        return PaginatedDto.fromJson(data, decoder);
+        return Paginated.fromJson(data, decoder);
       });
+
+  Future<PaginateConfig> getPaginateConfig() =>
+      client.get<JsonMap>('$apiPrefix/$_paginateConfigEndpoint').then(_decodeConfigResponse);
+
+  PaginateConfig _decodeConfigResponse(Response<JsonMap> res) {
+    final data = res.data;
+
+    if (data == null) {
+      throw NoResourceError('PaginateConfig($TRead)');
+    }
+
+    return PaginateConfig.fromJson(data);
+  }
 
   TRead _decodeOneResponse(Response<JsonMap> res) {
     final data = res.data;

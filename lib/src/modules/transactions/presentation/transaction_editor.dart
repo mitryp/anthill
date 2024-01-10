@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../shared/presentation/constraints/app_page.dart';
 import '../../../shared/presentation/utils/context_app_pages.dart';
+import '../../../shared/presentation/widgets/page_base.dart';
 import '../../../shared/utils/validators.dart';
 import '../application/providers/transaction_controller_provider.dart';
 import '../domain/dtos/transaction_create_dto.dart';
@@ -105,62 +104,55 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
         icon: const Icon(Icons.save),
         label: const Text('Save'),
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minWidth: min(minFromWidth, size.width),
-            maxWidth: size.width * maxFormWidthFraction,
-          ).normalize(),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: horizontalFormPadding,
-                  vertical: verticalFormPadding,
-                ),
-                child: SizedBox(
-                  height: size.height * formHeightFraction,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        autofocus: amount == 0,
-                        validator: isAmount(context),
-                        initialValue: amount != 0 ? '$amount' : null,
-                        onChanged: _onAmountChanged,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r'[-\d.]')),
-                        ],
-                        decoration: InputDecoration(
-                          labelText: amount == 0
-                              ? 'Amount'
-                              : 'Amount (${isIncome ? 'income' : 'expense'})',
-                          suffixText: 'GBP',
-                          hintText: '${_dto.amount}',
-                        ),
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                          signed: true,
-                        ),
+      body: PageBody(
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: horizontalFormPadding,
+                vertical: verticalFormPadding,
+              ),
+              child: SizedBox(
+                height: size.height * formHeightFraction,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      autofocus: amount == 0,
+                      validator: isAmount(context),
+                      initialValue: amount != 0 ? '$amount' : null,
+                      onChanged: _onAmountChanged,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r'[-\d.]')),
+                      ],
+                      decoration: InputDecoration(
+                        labelText:
+                            amount == 0 ? 'Amount' : 'Amount (${isIncome ? 'income' : 'expense'})',
+                        suffixText: 'GBP',
+                        hintText: '${_dto.amount}',
                       ),
-                      TextFormField(
-                        initialValue: sourceOrPurpose,
-                        validator: isRequired(context),
-                        onChanged: _onSourceOrPurposeChanged,
-                        decoration: InputDecoration(
-                          labelText: isIncome ? 'Source' : 'Purpose',
-                        ),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                        signed: true,
                       ),
-                      TextFormField(
-                        initialValue: note,
-                        onChanged: _onNoteChanged,
-                        decoration: const InputDecoration(
-                          labelText: 'Note',
-                        ),
+                    ),
+                    TextFormField(
+                      initialValue: sourceOrPurpose,
+                      validator: isRequired(context),
+                      onChanged: _onSourceOrPurposeChanged,
+                      decoration: InputDecoration(
+                        labelText: isIncome ? 'Source' : 'Purpose',
                       ),
-                    ],
-                  ),
+                    ),
+                    TextFormField(
+                      initialValue: note,
+                      onChanged: _onNoteChanged,
+                      decoration: const InputDecoration(
+                        labelText: 'Note',
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -1,53 +1,47 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../domain/dtos/paginated_dto.dart';
+import '../../../modules/transactions/application/providers/transaction_by_id_provider.dart';
 import '../../domain/interfaces/model.dart';
 import 'dio_error_interceptor.dart';
 import 'http_service.dart';
 
-mixin CollectionControllerMixin<TRead, TService extends HttpService<TRead>>
-    on AutoDisposeAsyncNotifier<PaginatedDto<TRead>> {
+mixin CollectionControllerMixin<TRead, TCreate extends Model, TUpdate extends Model,
+    TService extends HttpWriteMixin<TRead, TCreate, TUpdate>> {
   ProviderBase<TService> get serviceProvider;
 
-  void invalidateSingleResourceProviderWithId(int id) {}
+  ProviderOrFamily get collectionProvider;
+
+  ProviderOrFamily Function(int id) get resourceByIdProvider;
+
+  AutoDisposeAsyncNotifierProviderRef get ref;
 
   TService _readService() => ref.read(serviceProvider);
 
-  @override
-  Future<PaginatedDto<TRead>> build() => ref.watch(serviceProvider).getMany();
-}
+  void invalidateCollectionProvider() => ref.invalidate(collectionProvider);
 
-mixin ModifiableCollectionControllerMixin<TRead, TCreate extends Model, TUpdate extends Model,
-        TService extends HttpWriteMixin<TRead, TCreate, TUpdate>>
-    on CollectionControllerMixin<TRead, TService> {
-  Future<TRead> createResource(TCreate dto, [BuildContext? context]) =>
-      _readService().create(dto).then((created) {
-        ref.invalidateSelf();
+  void invalidateSingleResourceProviderWithId(int id) =>
+      ref.invalidate(transactionByIdProvider(id));
 
-        return future.then((_) => created);
-      }).onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
+  Future<TRead> createResource(TCreate dto, [BuildContext? context]) => _readService()
+      .create(dto)
+      .whenComplete(invalidateCollectionProvider)
+      .onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
 
   Future<TRead> updateResource(
     int id,
     TUpdate dto, [
     BuildContext? context,
   ]) =>
-      _readService().update(id, dto).then((updated) {
-        ref.invalidateSelf();
+      _readService().update(id, dto).whenComplete(() {
         invalidateSingleResourceProviderWithId(id);
-
-        return future.then((_) => updated);
+        invalidateCollectionProvider();
       }).onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
 
-  Future<bool> deleteResource(int id, [BuildContext? context]) =>
-      _readService().delete(id).then((deleted) async {
-        if (!deleted) {
-          return deleted;
-        }
-
-        ref.invalidateSelf();
-
-        return future.then((_) => deleted);
-      }).onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
+  Future<bool> deleteResource(int id, [BuildContext? context]) => _readService()
+      .delete(id)
+      .whenComplete(invalidateCollectionProvider)
+      .onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
 }

@@ -10,18 +10,19 @@ import '../../../../shared/presentation/widgets/error_notice.dart';
 import '../../../../shared/presentation/widgets/page_base.dart';
 import '../../../../shared/utils/date_format.dart';
 import '../../application/providers/transaction_controller_provider.dart';
-import '../../application/providers/transaction_provider.dart';
+import '../../application/providers/transaction_by_id_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 
-class TransactionView extends ConsumerWidget {
+class SingleTransactionView extends ConsumerWidget {
   final int _transactionId;
   final TransactionReadDto? _transaction;
 
-  const TransactionView({required int transactionId, TransactionReadDto? transaction, super.key})
+  const SingleTransactionView(
+      {required int transactionId, TransactionReadDto? transaction, super.key})
       : _transactionId = transactionId,
         _transaction = transaction;
 
-  factory TransactionView.pageBuilder(BuildContext context, GoRouterState state) {
+  factory SingleTransactionView.pageBuilder(BuildContext context, GoRouterState state) {
     final idStr = state.pathParameters['id'];
     final extra = state.extra;
     final passedTransaction = extra is TransactionReadDto ? extra : null;
@@ -31,7 +32,7 @@ class TransactionView extends ConsumerWidget {
       throw StateError('transaction id was not correct');
     }
 
-    return TransactionView(
+    return SingleTransactionView(
       transactionId: id,
       transaction: passedTransaction,
     );
