@@ -17,9 +17,11 @@ class SingleTransactionView extends ConsumerWidget {
   final int _transactionId;
   final TransactionReadDto? _transaction;
 
-  const SingleTransactionView(
-      {required int transactionId, TransactionReadDto? transaction, super.key})
-      : _transactionId = transactionId,
+  const SingleTransactionView({
+    required int transactionId,
+    TransactionReadDto? transaction,
+    super.key,
+  })  : _transactionId = transactionId,
         _transaction = transaction;
 
   factory SingleTransactionView.pageBuilder(BuildContext context, GoRouterState state) {

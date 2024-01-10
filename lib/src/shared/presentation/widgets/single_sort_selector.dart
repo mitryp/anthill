@@ -15,13 +15,11 @@ class SingleSortSelector extends StatelessWidget {
   final PaginationController controller;
   final FieldLocalizer localizer;
   final bool isLocked;
-  final EdgeInsetsGeometry contentPadding;
 
   const SingleSortSelector({
     required this.controller,
     this.localizer = _debugLocalizer,
     this.isLocked = false,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     super.key,
   });
 
@@ -34,6 +32,7 @@ class SingleSortSelector extends StatelessWidget {
     controller.silently(
       notifyAfter: true,
       (controller) => controller
+        ..page = 1
         ..clearSorts()
         ..addSort(field, currentSort?.value ?? SortOrder.asc),
     );
@@ -43,7 +42,12 @@ class SingleSortSelector extends StatelessWidget {
     final currentSortField = _currentSort?.key;
     if (currentSortField == null) return;
 
-    controller.flipSortBy(currentSortField);
+    controller.silently(
+      notifyAfter: true,
+      (controller) => controller
+        ..flipSortBy(currentSortField)
+        ..page = 1,
+    );
   }
 
   @override
@@ -75,7 +79,6 @@ class SingleSortSelector extends StatelessWidget {
                 isExpanded: true,
                 icon: const SizedBox(),
                 decoration: InputDecoration(
-                  contentPadding: contentPadding,
                   labelText: 'Sort',
                   suffixIcon: IconButton(
                     onPressed: !isLocked ? _flipSortOrder : null,

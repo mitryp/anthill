@@ -4,12 +4,10 @@ import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 class SearchControls extends StatefulWidget {
   final PaginationController paginationController;
   final bool isLocked;
-  final EdgeInsetsGeometry contentPadding;
 
   const SearchControls({
     required this.paginationController,
     this.isLocked = false,
-    this.contentPadding = const EdgeInsets.symmetric(horizontal: 12),
     super.key,
   });
 
@@ -22,8 +20,14 @@ class _SearchControlsState extends State<SearchControls> {
     text: widget.paginationController.search != null ? '${widget.paginationController.search}' : '',
   );
 
-  void _updateSearchQuery() =>
-      widget.paginationController.search = _controller.text.isNotEmpty ? _controller.text : null;
+  void _updateSearchQuery() {
+    widget.paginationController.silently(
+      notifyAfter: true,
+      (controller) => controller
+        ..search = _controller.text.isNotEmpty ? _controller.text : null
+        ..page = 1,
+    );
+  }
 
   void _resetSearch() {
     widget.paginationController.search = null;
@@ -48,7 +52,6 @@ class _SearchControlsState extends State<SearchControls> {
         decoration: InputDecoration(
           // todo localize
           labelText: 'Search',
-          contentPadding: widget.contentPadding,
           suffixIcon: _controller.text.isNotEmpty
               ? Row(
                   mainAxisSize: MainAxisSize.min,

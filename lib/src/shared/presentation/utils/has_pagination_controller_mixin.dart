@@ -89,7 +89,9 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
     if (!mounted) return;
 
     final state = GoRouterState.of(context);
-    final uri = state.uri.cleanWithParams(controller.toMap().cast<String, Object>());
+    final uri = state.uri.cleanWithParams(
+      controller.toMap().cast<String, Object>()..remove('limit'),
+    );
     window.history.replaceState(null, '', '#$uri');
   }
 }

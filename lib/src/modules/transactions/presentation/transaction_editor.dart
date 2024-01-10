@@ -90,8 +90,6 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
     final size = MediaQuery.of(context).size;
 
     const formHeightFraction = 0.85;
-    const maxFormWidthFraction = 0.5;
-    const minFromWidth = 300.0;
     const verticalFormPadding = 6.0;
     const horizontalFormPadding = 8.0;
 

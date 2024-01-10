@@ -62,6 +62,7 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
               data: ThemeData(
                 inputDecorationTheme: const InputDecorationTheme(
                   border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 12),
                 ),
               ),
               child: Row(
