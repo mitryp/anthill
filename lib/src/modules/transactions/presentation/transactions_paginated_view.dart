@@ -8,8 +8,7 @@ import '../../../shared/presentation/widgets/error_notice.dart';
 import '../../../shared/presentation/widgets/page_base.dart';
 import '../../../shared/presentation/widgets/pagination_controls.dart';
 import '../../../shared/presentation/widgets/riverpod_paginated_view.dart';
-import '../../../shared/presentation/widgets/search_controls.dart';
-import '../../../shared/presentation/widgets/single_sort_selector.dart';
+import '../../../shared/utils/pagination_control_row.dart';
 import '../application/providers/transaction_service_provider.dart';
 import '../application/providers/transactions_provider.dart';
 import 'transaction_card.dart';
@@ -58,32 +57,9 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
-            child: Theme(
-              data: ThemeData(
-                inputDecorationTheme: const InputDecorationTheme(
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: SearchControls(
-                      paginationController: controller,
-                      isLocked: _areControlsLocked,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: SingleSortSelector(
-                      controller: controller,
-                      isLocked: _areControlsLocked,
-                    ),
-                  ),
-                ],
-              ),
+            child: PaginationControlRow(
+              controller: controller,
+              isLocked: _areControlsLocked,
             ),
           ),
           Expanded(
