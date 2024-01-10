@@ -8,6 +8,7 @@ import '../../../shared/presentation/widgets/error_notice.dart';
 import '../../../shared/presentation/widgets/page_base.dart';
 import '../../../shared/presentation/widgets/pagination_controls.dart';
 import '../../../shared/presentation/widgets/riverpod_paginated_view.dart';
+import '../../../shared/presentation/widgets/search_controls.dart';
 import '../../../shared/presentation/widgets/single_sort_selector.dart';
 import '../application/providers/transaction_service_provider.dart';
 import '../application/providers/transactions_provider.dart';
@@ -57,6 +58,10 @@ class _TransactionsPaginatedViewState extends ConsumerState<TransactionsPaginate
         children: [
           SingleSortSelector(
             controller: controller,
+            isLocked: _areControlsLocked,
+          ),
+          SearchControls(
+            paginationController: controller,
             isLocked: _areControlsLocked,
           ),
           RiverpodPaginatedView(
