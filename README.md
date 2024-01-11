@@ -24,7 +24,8 @@ The following environment variables are required:
 ```
 
 The variables must be set as environment variables or in a .env file.
-For example, docker configuration for the default env would be:
+The example .env file is available at `.env.example`.
+Also, docker configuration for the default environment would be:
 
 ```dockerfile
 ENV NODE_ENV=production
@@ -33,11 +34,11 @@ ENV HOST=localhost
 ENV PORT=5000
 ENV STATIC_PATH=/anthill/frontend
 
+ENV DB=db_name
 ENV DB_HOST=localhost
 ENV DB_PORT=5432
-ENV DB_USER=anthill
-ENV DB_PASSWORD=password
-ENV DB=anthill
+ENV DB_USER=db_user
+ENV DB_PASSWORD=db_user_password
 ```
 
 ### Config
