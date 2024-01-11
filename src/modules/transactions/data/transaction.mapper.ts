@@ -22,20 +22,20 @@ export class TransactionMapper extends AutomapperProfile {
         Transaction,
         forMember(
           (dest) => dest.amount,
-          mapFrom((source) => source.amount),
+          mapFrom((source) => source.amount)
         ),
         forMember(
           (dest) => dest.note,
-          mapFrom((source) => source.note),
+          mapFrom((source) => source.note)
         ),
         forMember(
           (dest) => dest.sourceOrPurpose,
-          mapFrom((source) => source.sourceOrPurpose),
+          mapFrom((source) => source.sourceOrPurpose)
         ),
         forMember(
           (dest) => dest.isIncome,
-          mapFrom((source) => source.isIncome),
-        ),
+          mapFrom((source) => source.isIncome)
+        )
       );
     };
   }

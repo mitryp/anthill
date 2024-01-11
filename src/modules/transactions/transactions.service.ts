@@ -36,10 +36,6 @@ export class TransactionsService extends ModifiableResourceServiceBase<
 export const transactionsPaginateConfig: PaginateConfig<Transaction> = {
   sortableColumns: ['createDate', 'amount', 'sourceOrPurpose'],
   defaultSortBy: [['createDate', 'DESC']],
-  filterableColumns: {
-    createDate: [FilterOperator.BTW],
-    id: [FilterOperator.EQ],
-    sourceOrPurpose: [FilterOperator.ILIKE],
-    note: [FilterOperator.ILIKE],
-  },
+  searchableColumns: ['sourceOrPurpose', 'note'],
+  // todo filters
 };
