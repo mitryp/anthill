@@ -1,36 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DataSourceOptions } from 'typeorm';
+import { ConfigurationBaseService } from './configuration.base.service';
 
 @Injectable()
-export class ConfigurationDatabaseService {
-  private static readonly section = 'database';
+export class ConfigurationDatabaseService extends ConfigurationBaseService {
+  constructor(config: ConfigService) {
+    super(config);
+  }
 
-  constructor(private readonly config: ConfigService) {}
+  get configSection(): string {
+    return 'database';
+  }
 
   get port() {
-    return this.config.getOrThrow<number>(`${ConfigurationDatabaseService.section}.port`);
+    return this.getOrThrow<number>('port');
   }
 
   get host() {
-    return this.config.getOrThrow<string>(`${ConfigurationDatabaseService.section}.host`);
+    return this.getOrThrow<string>('host');
   }
 
   get username() {
-    const path = `${ConfigurationDatabaseService.section}.username`;
-
-    return this.config.getOrThrow<string>(path);
+    return this.getOrThrow<string>('username');
   }
 
   get password() {
-    const path = `${ConfigurationDatabaseService.section}.password`;
-
-    return this.config.getOrThrow<string>(path);
+    return this.getOrThrow<string>('password');
   }
 
   get database() {
-    const path = `${ConfigurationDatabaseService.section}.database`;
-
-    return this.config.getOrThrow<string>(path);
+    return this.getOrThrow<string>('database');
   }
 }

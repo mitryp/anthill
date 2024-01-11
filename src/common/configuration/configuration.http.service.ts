@@ -1,23 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ConfigurationBaseService } from './configuration.base.service';
 
 @Injectable()
-export class ConfigurationHttpService {
-  private static readonly section = 'http';
+export class ConfigurationHttpService extends ConfigurationBaseService {
+  constructor(config: ConfigService) {
+    super(config);
+  }
 
-  constructor(private readonly config: ConfigService) {}
+  get configSection(): string {
+    return 'http';
+  }
 
   get port() {
-    return this.config.getOrThrow<number>(`${ConfigurationHttpService.section}.port`);
+    return this.getOrThrow<number>('port');
   }
 
   get host() {
-    return this.config.getOrThrow<string>(`${ConfigurationHttpService.section}.host`);
+    return this.getOrThrow<string>('host');
   }
 
   get staticPath() {
-    const path = `${ConfigurationHttpService.section}.staticPath`;
-
-    return this.config.getOrThrow<string>(path);
+    return this.getOrThrow<string>('staticPath');
   }
 }
