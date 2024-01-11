@@ -10,6 +10,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { AutomapperModule } from 'automapper-nestjs';
 import { classes } from 'automapper-classes';
+import { APP_FILTER } from '@nestjs/core';
+import { QueryFailFilter } from './common/filters/query-fail.filter';
 
 @Module({
   imports: [
@@ -35,7 +37,14 @@ import { classes } from 'automapper-classes';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, ConfigurationHttpService],
+  providers: [
+    ConfigurationHttpService,
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: QueryFailFilter
+    }
+  ]
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
