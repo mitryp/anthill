@@ -7,7 +7,6 @@ import { ConfigurationModule } from '../../common/configuration/configuration.mo
 @Module({
   imports: [TypeOrmModule.forFeature([User]), ConfigurationModule],
   providers: [AuthenticationService],
-  exports: [AuthenticationService]
+  exports: [AuthenticationService],
 })
-export class AuthModule {
-}
+export class AuthModule {}

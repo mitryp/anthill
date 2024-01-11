@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { transactionsPaginateConfig, TransactionsService } from './transactions.service';
 import { TransactionReadDto } from './data/dtos/transaction.read.dto';
 import { TransactionCreateDto } from './data/dtos/transaction.create.dto';
@@ -11,8 +20,7 @@ import { Transaction } from './data/entities/transaction.entity';
 @ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {
-  constructor(protected readonly transactionService: TransactionsService) {
-  }
+  constructor(protected readonly transactionService: TransactionsService) {}
 
   @Get('/paginate_config')
   readPaginateConfig(): PaginateConfig<Transaction> {
@@ -44,7 +52,7 @@ export class TransactionsController {
   @Patch(':id')
   async update(
     @Param('id') id: number,
-    @Body() transaction: TransactionUpdateDto
+    @Body() transaction: TransactionUpdateDto,
   ): Promise<TransactionReadDto> {
     return this.transactionService.update(id, transaction);
   }

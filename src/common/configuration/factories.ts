@@ -27,7 +27,6 @@ export const envDatabaseConfigFactory = registerAs('database', () => dataSourceO
 
 export const envAuthConfigFactory = registerAs('auth', () => ({
   saltRounds: process.env.SALT_ROUNDS,
-
 }));
 
 export const commonConfigFactory = () => loadConfigYaml('common');

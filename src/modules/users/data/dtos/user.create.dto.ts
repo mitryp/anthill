@@ -14,7 +14,13 @@ export class UserCreateDto {
   @AutoMap()
   role: UserRole;
 
-  @IsStrongPassword({ minLength: 8, minNumbers: 1, minLowercase: 1, minUppercase: 1, minSymbols: 0 })
+  @IsStrongPassword({
+    minLength: 8,
+    minNumbers: 1,
+    minLowercase: 1,
+    minUppercase: 1,
+    minSymbols: 0,
+  })
   password: string;
 }
 

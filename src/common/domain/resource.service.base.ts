@@ -11,9 +11,8 @@ export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> 
     protected readonly mapper: Mapper,
     protected readonly entityType: Type<TEntity>,
     protected readonly readDtoType: Type<TReadDto>,
-    protected readonly paginateConfig: PaginateConfig<TEntity>
-  ) {
-  }
+    protected readonly paginateConfig: PaginateConfig<TEntity>,
+  ) {}
 
   protected mapOne(entity: TEntity): TReadDto {
     return this.mapper.map(entity, this.entityType, this.readDtoType);
@@ -24,13 +23,13 @@ export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> 
 
     return {
       meta: paginatedEntities.meta,
-      data: paginatedEntities.data.map((value) => this.mapOne(value))
+      data: paginatedEntities.data.map((value) => this.mapOne(value)),
     };
   }
 
   async readOne(id: number): Promise<TReadDto | undefined> {
     const entity = await this.repository.findOne({
-      where: { id } as FindOptionsWhere<TEntity>
+      where: { id } as FindOptionsWhere<TEntity>,
     });
 
     return this.mapOne(entity);
@@ -50,7 +49,7 @@ export abstract class ModifiableResourceServiceBase<
     protected readonly readDtoType: Type<TReadDto>,
     protected readonly createDtoType: Type<TCreateDto>,
     protected readonly updateDtoType: Type<TUpdateDto>,
-    protected readonly paginateConfig: PaginateConfig<TEntity>
+    protected readonly paginateConfig: PaginateConfig<TEntity>,
   ) {
     super(repository, mapper, entityType, readDtoType, paginateConfig);
   }
@@ -67,7 +66,7 @@ export abstract class ModifiableResourceServiceBase<
     const entity = await this.repository.findOne({
       where: { id } as FindOptionsWhere<TEntity>,
       withDeleted: false,
-      relations: this.paginateConfig.relations
+      relations: this.paginateConfig.relations,
     });
 
     if (entity === null) {

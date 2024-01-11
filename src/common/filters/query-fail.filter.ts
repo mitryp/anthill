@@ -3,7 +3,7 @@ import { ArgumentsHost, BadRequestException, Catch } from '@nestjs/common';
 import { QueryFailedError } from 'typeorm';
 
 const errorCodeToMessage = {
-  '23505': 'Unique constraint violation'
+  '23505': 'Unique constraint violation',
 };
 
 @Catch(QueryFailedError)

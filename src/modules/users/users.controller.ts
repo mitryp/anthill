@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { usersPaginateConfig, UsersService } from './users.service';
 import { transactionsPaginateConfig } from '../transactions/transactions.service';
@@ -13,8 +22,7 @@ import { AuthenticationService } from '../auth/authentication.service';
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(protected readonly usersService: UsersService) {
-  }
+  constructor(protected readonly usersService: UsersService) {}
 
   @Get('/paginate_config')
   readPaginateConfig(): PaginateConfig<User> {
@@ -44,10 +52,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() user: UserUpdateDto
-  ): Promise<UserReadDto> {
+  async update(@Param('id') id: number, @Body() user: UserUpdateDto): Promise<UserReadDto> {
     return this.usersService.update(id, user);
   }
 

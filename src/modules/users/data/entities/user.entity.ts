@@ -24,7 +24,7 @@ export class User extends EntityBase {
   name: string;
 
   @AutoMap()
-  @Column({unique: true})
+  @Column({ unique: true })
   email: string;
 
   @AutoMap()

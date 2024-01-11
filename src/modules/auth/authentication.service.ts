@@ -9,9 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class AuthenticationService {
   constructor(
     private readonly authConfig: ConfigurationAuthService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>
-  ) {
-  }
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {}
 
   async hashPassword(password: string): Promise<string> {
     const saltRounds = this.authConfig.saltRounds;

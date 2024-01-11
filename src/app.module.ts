@@ -26,19 +26,19 @@ import { QueryFailFilter } from './common/filters/query-fail.filter';
         ConfigurationModule,
         TypeOrmModule.forRootAsync({
           inject: [ConfigService],
-          useFactory: (configService: ConfigService) => configService.getOrThrow('database')
+          useFactory: (configService: ConfigService) => configService.getOrThrow('database'),
         }),
         AutomapperModule.forRoot({
-          strategyInitializer: classes()
-        })
+          strategyInitializer: classes(),
+        }),
       ],
       inject: [ConfigurationHttpService],
       useFactory: (httpConfig: ConfigurationHttpService) => [
         {
-          rootPath: httpConfig.staticPath
-        }
-      ]
-    })
+          rootPath: httpConfig.staticPath,
+        },
+      ],
+    }),
   ],
   controllers: [AppController],
   providers: [
@@ -46,9 +46,9 @@ import { QueryFailFilter } from './common/filters/query-fail.filter';
     AppService,
     {
       provide: APP_FILTER,
-      useClass: QueryFailFilter
-    }
-  ]
+      useClass: QueryFailFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {

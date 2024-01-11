@@ -8,7 +8,6 @@ import { TransactionsService } from './transactions.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Transaction])],
   controllers: [TransactionsController],
-  providers: [TransactionMapper, TransactionsService]
+  providers: [TransactionMapper, TransactionsService],
 })
-export class TransactionsModule {
-}
+export class TransactionsModule {}

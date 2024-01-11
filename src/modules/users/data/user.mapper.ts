@@ -13,37 +13,37 @@ export class UserMapper extends AutomapperProfile {
   }
 
   override get profile(): MappingProfile {
-    return mapper => {
+    return (mapper) => {
       createMap(mapper, User, UserReadDto);
       createMap(
         mapper,
         UserCreateDto,
         User,
         forMember(
-          user => user.passwordHash,
-          mapFrom(source => (source as HashedPasswordUserDto).passwordHash)
-        )
+          (user) => user.passwordHash,
+          mapFrom((source) => (source as HashedPasswordUserDto).passwordHash),
+        ),
       );
       createMap(
         mapper,
         UserUpdateDto,
         User,
         forMember(
-          user => user.name,
-          mapFrom(source => source.name)
+          (user) => user.name,
+          mapFrom((source) => source.name),
         ),
         forMember(
-          user => user.email,
-          mapFrom(source => source.email)
+          (user) => user.email,
+          mapFrom((source) => source.email),
         ),
         forMember(
-          user => user.role,
-          mapFrom(source => source.role)
+          (user) => user.role,
+          mapFrom((source) => source.role),
         ),
         forMember(
-          user => user.passwordHash,
-          mapFrom(source => (source as Partial<HashedPasswordUserDto>).passwordHash)
-        )
+          (user) => user.passwordHash,
+          mapFrom((source) => (source as Partial<HashedPasswordUserDto>).passwordHash),
+        ),
       );
     };
   }

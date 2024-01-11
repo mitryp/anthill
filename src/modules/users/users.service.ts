@@ -21,17 +21,9 @@ export class UsersService extends ModifiableResourceServiceBase<
   constructor(
     @InjectRepository(User) repository: Repository<User>,
     @InjectMapper() mapper: Mapper,
-    private readonly authService: AuthenticationService
+    private readonly authService: AuthenticationService,
   ) {
-    super(
-      repository,
-      mapper,
-      User,
-      UserReadDto,
-      UserCreateDto,
-      UserUpdateDto,
-      usersPaginateConfig
-    );
+    super(repository, mapper, User, UserReadDto, UserCreateDto, UserUpdateDto, usersPaginateConfig);
   }
 
   async create(dto: UserCreateDto): Promise<UserReadDto> {
@@ -59,6 +51,6 @@ export class UsersService extends ModifiableResourceServiceBase<
 export const usersPaginateConfig: PaginateConfig<User> = {
   sortableColumns: ['createDate', 'name'],
   defaultSortBy: [['name', 'ASC']],
-  searchableColumns: ['name']
+  searchableColumns: ['name'],
   // todo filters
 };

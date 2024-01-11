@@ -1,8 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 
 export abstract class ConfigurationBaseService {
-  protected constructor(protected readonly config: ConfigService) {
-  }
+  protected constructor(protected readonly config: ConfigService) {}
 
   abstract get configSection(): string;
 
