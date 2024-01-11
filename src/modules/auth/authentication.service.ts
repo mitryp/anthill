@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigurationAuthService } from '../../common/configuration/configuration.auth.service';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { Repository } from 'typeorm';
 import { User } from '../users/data/entities/user.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { LoginSuccessDto } from './data/dtos/login-success.dto';
+import { JwtService } from '@nestjs/jwt';
+import { Mapper } from 'automapper-core';
+import { UserReadDto } from '../users/data/dtos/user.read.dto';
+import { UsersService } from '../users/users.service';
+import { InjectMapper } from 'automapper-nestjs';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private readonly authConfig: ConfigurationAuthService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+    @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
-  async hashPassword(password: string): Promise<string> {
-    const saltRounds = this.authConfig.saltRounds;
+  async login(user: User | null): Promise<LoginSuccessDto> {
+    if (user === null) {
+      throw new UnauthorizedException();
+    }
 
-    return bcrypt.hash(password, saltRounds);
+    const userReadDto = this.mapper.map(user, User, UserReadDto);
+
+    const payload = {
+      id: userReadDto.id,
+      email: userReadDto.email,
+      role: userReadDto.role,
+    };
+
+    return {
+      user: userReadDto,
+      accessToken: this.jwtService.sign(payload),
+    };
   }
 
-  async validatePassword(email: string, password: string): Promise<boolean> {
-    const user = await this.userRepository.findOne({ where: { email } });
+  async validateUser(email: string, password: string): Promise<User | null> {
+    const user = await this.usersService.readByEmail(email);
 
-    return bcrypt.compare(password, user.passwordHash);
+    if ((await bcrypt.compare(password, user.passwordHash)) === true) {
+      return user;
+    }
+
+    return null;
   }
 }
