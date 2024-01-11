@@ -12,8 +12,9 @@ import { AutomapperModule } from 'automapper-nestjs';
 import { classes } from 'automapper-classes';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { QueryFailFilter } from './common/filters/query-fail.filter';
+import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -47,6 +48,10 @@ import { QueryFailFilter } from './common/filters/query-fail.filter';
     {
       provide: APP_FILTER,
       useClass: QueryFailFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })

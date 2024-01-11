@@ -25,8 +25,12 @@ export const envHttpConfigFactory = registerAs('http', () => ({
 // structure.
 export const envDatabaseConfigFactory = registerAs('database', () => dataSourceOptions);
 
+// A function that registers environment variables for auth block ensuring it has correct
+// structure.
 export const envAuthConfigFactory = registerAs('auth', () => ({
   saltRounds: process.env.SALT_ROUNDS,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtTtl: process.env.JWT_TTL,
 }));
 
 export const commonConfigFactory = () => loadConfigYaml('common');

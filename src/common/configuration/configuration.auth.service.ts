@@ -15,4 +15,12 @@ export class ConfigurationAuthService extends ConfigurationBaseService {
   get saltRounds() {
     return Number(this.get<number>('saltRounds') || 10);
   }
+
+  get jwtSecret() {
+    return this.getOrThrow<string>('jwtSecret');
+  }
+
+  get jwtTtl() {
+    return this.getOrThrow<string>('jwtTtl');
+  }
 }
