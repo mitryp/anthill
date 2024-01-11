@@ -10,6 +10,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
 import { AutomapperModule } from 'automapper-nestjs';
 import { classes } from 'automapper-classes';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { APP_FILTER } from '@nestjs/core';
 import { QueryFailFilter } from './common/filters/query-fail.filter';
 
@@ -17,24 +19,26 @@ import { QueryFailFilter } from './common/filters/query-fail.filter';
   imports: [
     ConfigurationModule,
     TransactionsModule,
+    UsersModule,
+    AuthModule,
     ServeStaticModule.forRootAsync({
       imports: [
         ConfigurationModule,
         TypeOrmModule.forRootAsync({
           inject: [ConfigService],
-          useFactory: (configService: ConfigService) => configService.getOrThrow('database'),
+          useFactory: (configService: ConfigService) => configService.getOrThrow('database')
         }),
         AutomapperModule.forRoot({
-          strategyInitializer: classes(),
-        }),
+          strategyInitializer: classes()
+        })
       ],
       inject: [ConfigurationHttpService],
       useFactory: (httpConfig: ConfigurationHttpService) => [
         {
-          rootPath: httpConfig.staticPath,
-        },
-      ],
-    }),
+          rootPath: httpConfig.staticPath
+        }
+      ]
+    })
   ],
   controllers: [AppController],
   providers: [
