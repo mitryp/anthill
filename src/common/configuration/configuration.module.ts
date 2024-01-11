@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import {
-  commonConfigFactory,
+  commonConfigFactory, envAuthConfigFactory,
   envDatabaseConfigFactory,
   envHttpConfigFactory,
-  environmentConfigFactory,
+  environmentConfigFactory
 } from './factories';
 import { ConfigurationHttpService } from './configuration.http.service';
 import { ConfigurationDatabaseService } from './configuration.database.service';
 import { ConfigurationCoreService } from './configuration.core.service';
+import { ConfigurationAuthService } from './configuration.auth.service';
 
 @Module({
   imports: [
@@ -16,13 +17,25 @@ import { ConfigurationCoreService } from './configuration.core.service';
       load: [
         envHttpConfigFactory,
         envDatabaseConfigFactory,
+        envAuthConfigFactory,
         environmentConfigFactory,
-        commonConfigFactory,
+        commonConfigFactory
       ],
-      isGlobal: true,
-    }),
+      isGlobal: true
+    })
   ],
-  providers: [ConfigurationHttpService, ConfigurationDatabaseService, ConfigurationCoreService],
-  exports: [ConfigurationHttpService, ConfigurationDatabaseService, ConfigurationCoreService],
+  providers: [
+    ConfigurationHttpService,
+    ConfigurationDatabaseService,
+    ConfigurationCoreService,
+    ConfigurationAuthService
+  ],
+  exports: [
+    ConfigurationHttpService,
+    ConfigurationDatabaseService,
+    ConfigurationCoreService,
+    ConfigurationAuthService
+  ]
 })
-export class ConfigurationModule {}
+export class ConfigurationModule {
+}

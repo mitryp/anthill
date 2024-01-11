@@ -25,6 +25,11 @@ export const envHttpConfigFactory = registerAs('http', () => ({
 // structure.
 export const envDatabaseConfigFactory = registerAs('database', () => dataSourceOptions);
 
+export const envAuthConfigFactory = registerAs('auth', () => ({
+  saltRounds: process.env.SALT_ROUNDS,
+
+}));
+
 export const commonConfigFactory = () => loadConfigYaml('common');
 
 // Returns the record with the yaml file with the specified configuration name.
