@@ -38,4 +38,9 @@ export class AuthController {
 
     return successDto.user;
   }
+
+  @Post('restore')
+  async restoreSession(@Req() req: Request): Promise<UserReadDto> {
+    return await this.authService.login(req.user as User).then((dto) => dto.user);
+  }
 }
