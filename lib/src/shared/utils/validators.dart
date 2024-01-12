@@ -28,14 +28,52 @@ StringValidationCallback isAmount(BuildContext context) {
   return ValidationBuilder(localeName: 'en').required().add(amountConstraint).build();
 }
 
-StringValidationCallback isRequired(BuildContext context) {
+StringValidationCallback isRequired(BuildContext context, {int minLength = 1}) {
   String? notEmptyConstraint(String? value) {
     return (value?.trim().isEmpty ?? true) ? 'Must be not empty' : null;
   }
 
   return ValidationBuilder(localeName: 'en')
       .required()
-      .minLength(4)
+      .minLength(minLength)
       .add(notEmptyConstraint)
       .build();
 }
+
+StringValidationCallback isPassword(
+  BuildContext context, {
+  int minLength = 0,
+  int minNumbers = 0,
+  int minLowercase = 0,
+  int minUppercase = 0,
+  int minSymbols = 0,
+}) =>
+    (value) {
+      if (value == null) {
+        return 'Password must be provided';
+      }
+
+      if (value.length < minLength) {
+        return 'The length must be not less than $minLength';
+      }
+
+
+
+      if (value.replaceAll(RegExp(r'\D'), '').length < minNumbers) {
+        return 'Must contain at least $minNumbers numbers';
+      }
+
+      if (value.replaceAll(RegExp(r'[^a-z]'), '').length < minLowercase) {
+        return 'Must contain at least $minLowercase lowercase characters';
+      }
+
+      if (value.replaceAll(RegExp(r'[^A-Z]'), '').length < minUppercase) {
+        return 'Must contain at least $minUppercase uppercase characters';
+      }
+
+      if (value.replaceAll(RegExp(r'(\W|_)'), '').length < minSymbols) {
+        return 'Must contain at least $minSymbols symbols';
+      }
+
+      return null;
+    };

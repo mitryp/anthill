@@ -1,5 +1,6 @@
 import '../../../modules/transactions/transactions_module.dart';
 import '../../../modules/users/presentation/pages/single_user_page.dart';
+import '../../../modules/users/presentation/pages/user_editor.dart';
 import '../../../modules/users/presentation/pages/users_page.dart';
 import '../../typedefs.dart';
 
@@ -13,6 +14,7 @@ enum AppPage {
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
   transaction('/transactions/$idParamPlaceholder', SingleTransactionView.pageBuilder),
   users('/users', UsersPage.pageBuilder),
+  userEditor('/users/editor', UserEditor.pageBuilder),
   user('/users/$idParamPlaceholder', SingleUserPage.pageBuilder),
   ;
 

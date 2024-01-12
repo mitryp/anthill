@@ -35,8 +35,7 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
   }
 
   @override
-  // TODO: implement editorPage
-  AppPage get editorPage => throw UnimplementedError();
+  AppPage get editorPage => AppPage.userEditor;
 
   @override
   ProviderListenable<
@@ -101,6 +100,7 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
               const SizedBox(height: 32),
               SingleModelControls(
                 onDeletePressed: () => deleteModel(context, ref, user),
+                onEditPressed: () => openEditor(context, user),
               ),
             ],
           ),
