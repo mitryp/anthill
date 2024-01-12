@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../modules/transactions/application/providers/transaction_by_id_provider.dart';
 import '../../domain/interfaces/model.dart';
 import 'dio_error_interceptor.dart';
 import 'http_service.dart';
@@ -22,8 +21,7 @@ mixin CollectionControllerMixin<TRead, TCreate extends Model, TUpdate extends Mo
 
   void invalidateCollectionProvider() => ref.invalidate(collectionProvider);
 
-  void invalidateSingleResourceProviderWithId(int id) =>
-      ref.invalidate(transactionByIdProvider(id));
+  void invalidateSingleResourceProviderWithId(int id) => ref.invalidate(resourceByIdProvider(id));
 
   Future<TRead> createResource(TCreate dto, [BuildContext? context]) =>
       _readService().create(dto).whenComplete(invalidateCollectionProvider).onError(

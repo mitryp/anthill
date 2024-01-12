@@ -1,6 +1,4 @@
-import '../../../modules/transactions/presentation/pages/transactions_page.dart';
-import '../../../modules/transactions/presentation/pages/single_transaction_view.dart';
-import '../../../modules/transactions/presentation/transaction_editor.dart';
+import '../../../modules/transactions/transactions_module.dart';
 import '../../typedefs.dart';
 
 const idParamPlaceholder = ':id';
