@@ -90,7 +90,7 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
 
     return Scaffold(
       appBar: AppBar(
-        actions: const [CopyLinkButton()],
+        actions: [CopyLinkButton(link: '${GoRouterState.of(context).uri}')],
       ),
       body: PageBody(
         child: Padding(
