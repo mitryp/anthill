@@ -7,7 +7,7 @@ const defaultPage = AppPage.transactions;
 enum AppPage {
   transactions('/transactions', TransactionsPage.pageBuilder),
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
-  transaction('/transactions/$idParamPlaceholder', SingleTransactionView.pageBuilder);
+  transaction('/transactions/$idParamPlaceholder', SingleTransactionPage.pageBuilder);
 
   final String location;
   final PageBuilder pageBuilder;
