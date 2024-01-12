@@ -57,8 +57,6 @@ StringValidationCallback isPassword(
         return 'The length must be not less than $minLength';
       }
 
-
-
       if (value.replaceAll(RegExp(r'\D'), '').length < minNumbers) {
         return 'Must contain at least $minNumbers numbers';
       }

@@ -17,7 +17,8 @@ class CopyLinkButton extends StatelessWidget {
         tooltip: 'Copy to clipboard',
       );
 
-  String _sameOriginLink(String path) => Uri.base.resolve('/#${path.startsWith('/') ? '' : '/'}$path').toString();
+  String _sameOriginLink(String path) =>
+      Uri.base.resolve('/#${path.startsWith('/') ? '' : '/'}$path').toString();
 
   Future<void> _copyLink(BuildContext context) async {
     final rawLink = _link ?? window.location.href;
