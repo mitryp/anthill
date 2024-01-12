@@ -53,10 +53,10 @@ export class UsersService extends ModifiableResourceServiceBase<
   async update(id: number, dto: UserUpdateDto): Promise<UserReadDto | undefined> {
     const dtoWithPassword = dto as Partial<HashedPasswordUserDto>;
 
-    if (dtoWithPassword.password !== undefined) {
+    if (dtoWithPassword.password) {
       dtoWithPassword.passwordHash = await this.encryptionService.hashPassword(dto.password);
-      dtoWithPassword.password = undefined;
     }
+    dtoWithPassword.password = undefined;
 
     return super.update(id, dtoWithPassword);
   }
@@ -65,6 +65,6 @@ export class UsersService extends ModifiableResourceServiceBase<
 export const usersPaginateConfig: PaginateConfig<User> = {
   sortableColumns: ['createDate', 'name'],
   defaultSortBy: [['name', 'ASC']],
-  searchableColumns: ['name'],
+  searchableColumns: ['name', 'email'],
   // todo filters
 };
