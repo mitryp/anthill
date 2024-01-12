@@ -7,6 +7,7 @@ import { Mapper } from 'automapper-core';
 import { UserReadDto } from '../users/data/dtos/user.read.dto';
 import { UsersService } from '../users/users.service';
 import { InjectMapper } from 'automapper-nestjs';
+import { JwtPayloadDto } from './data/dtos/jwt.payload.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -16,12 +17,12 @@ export class AuthenticationService {
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
-  async login(user: User | null): Promise<LoginSuccessDto> {
-    if (user === null) {
+  async login(userPayload: JwtPayloadDto | null): Promise<LoginSuccessDto> {
+    if (userPayload === null) {
       throw new UnauthorizedException();
     }
 
-    const userReadDto = this.mapper.map(user, User, UserReadDto);
+    const userReadDto = await this.usersService.readOne(userPayload.id);
 
     const payload = {
       id: userReadDto.id,
