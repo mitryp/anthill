@@ -35,9 +35,10 @@ Database:
 Auth:
 
 ```
-`SALT_ROUNDS` - a number of rounds to generate salt for hashing. Default: 10.
-`JWT_SECRET`  - a secret for signing JWT tokens.
-`JWT_TTL`     - an expiration time for JWT tokens (in ms format).
+`SALT_ROUNDS`    - a number of rounds to generate salt for hashing. Default: 10.
+`JWT_SECRET`     - a secret for signing JWT tokens.
+`JWT_TTL`        - an expiration time for JWT tokens (in ms format).
+`SECURE_COOKIES` - whether the token cookies should use `Secure` option. Default: 1, 0 to disable.
 ```
 
 > More info on JWT_TTL format can be found [here](https://github.com/vercel/ms).
@@ -62,6 +63,7 @@ ENV DB_PASSWORD=db_user_password
 ENV SALT_ROUNDS=10
 ENV JWT_SECRET=your_secret
 ENV JWT_TTL=18h
+ENV SECURE_COOKIES=1
 ```
 
 ### Config

@@ -31,6 +31,7 @@ export const envAuthConfigFactory = registerAs('auth', () => ({
   saltRounds: process.env.SALT_ROUNDS,
   jwtSecret: process.env.JWT_SECRET,
   jwtTtl: process.env.JWT_TTL,
+  secureCookies: process.env.SECURE_COOKIES,
 }));
 
 export const commonConfigFactory = () => loadConfigYaml('common');

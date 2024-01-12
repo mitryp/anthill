@@ -4,10 +4,12 @@ import { ConfigurationHttpService } from './common/configuration/configuration.h
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigurationCoreService } from './common/configuration/configuration.core.service';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
+  app.use(cookieParser());
 
   const isDevelopment = app.get(ConfigurationCoreService).env === 'development';
 

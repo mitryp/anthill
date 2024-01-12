@@ -8,4 +8,8 @@ export class ConfigurationCoreService {
   get env() {
     return this.config.get<string>('NODE_ENV') || 'development';
   }
+
+  get isDebug() {
+    return this.env !== 'production';
+  }
 }

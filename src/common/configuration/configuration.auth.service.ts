@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ConfigurationBaseService } from './configuration.base.service';
+import ms from 'ms';
 
 @Injectable()
 export class ConfigurationAuthService extends ConfigurationBaseService {
@@ -21,6 +22,10 @@ export class ConfigurationAuthService extends ConfigurationBaseService {
   }
 
   get jwtTtl() {
-    return this.getOrThrow<string>('jwtTtl');
+    return ms(this.getOrThrow<string>('jwtTtl'));
+  }
+
+  get useSecureCookies() {
+    return (this.get<number>('secureCookies') || 1) == 1;
   }
 }
