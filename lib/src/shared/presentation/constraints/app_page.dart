@@ -1,5 +1,6 @@
 import '../../../modules/transactions/transactions_module.dart';
 import '../../../modules/users/presentation/pages/single_user_page.dart';
+import '../../../modules/users/presentation/pages/users_page.dart';
 import '../../typedefs.dart';
 
 const idParamPlaceholder = ':id';
@@ -11,6 +12,7 @@ enum AppPage {
   transactions('/transactions', TransactionsPage.pageBuilder),
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
   transaction('/transactions/$idParamPlaceholder', SingleTransactionView.pageBuilder),
+  users('/users', UsersPage.pageBuilder),
   user('/users/$idParamPlaceholder', SingleUserPage.pageBuilder),
   ;
 
