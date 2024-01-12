@@ -13,7 +13,7 @@ class UserCreateDto with _$UserCreateDto implements Model {
     required String name,
     required String email,
     required UserRole role,
-    required String password,
+    String? password,
   }) = _UserCreateDto;
 
   factory UserCreateDto.fromJson(Map<String, Object?> json) => _$UserCreateDtoFromJson(json);
