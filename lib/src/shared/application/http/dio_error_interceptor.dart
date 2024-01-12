@@ -30,7 +30,9 @@ Future<R> interceptDioError<R>(
       showSnackBar(
         context,
         title: Text(
-            '${errorDto.statusCode} ${errorDto.error?.isNotEmpty ?? false ? errorDto.error : ''}'),
+          '${errorDto.statusCode} '
+          '${errorDto.error?.isNotEmpty ?? false ? errorDto.error : ''}',
+        ),
         subtitle: Text(errorDto.message),
         backgroundColor: Colors.red.shade200,
       );
