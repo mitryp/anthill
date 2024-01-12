@@ -141,11 +141,9 @@ class SingleTransactionView extends ConsumerWidget {
       ],
     );
 
-    final currentPath = GoRouterState.of(context).uri;
-
     return Scaffold(
       appBar: AppBar(
-        actions: [CopyLinkButton(link: '$currentPath')],
+        actions: const [CopyLinkButton()],
       ),
       body: PageBody(
         child: Padding(
