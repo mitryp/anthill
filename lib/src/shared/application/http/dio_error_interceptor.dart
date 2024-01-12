@@ -5,8 +5,18 @@ import '../../domain/dtos/server_error_dto.dart';
 import '../../presentation/widgets/snack_bar_content.dart';
 import '../../typedefs.dart';
 
-Future<R> interceptDioError<R>(Object? error, StackTrace stackTrace, [BuildContext? context]) {
-  if (error is DioException && context != null) {
+bool isDioError(Object error) => error is DioException;
+
+Future<R> interceptDioError<R>(
+  Object? error,
+  StackTrace stackTrace, {
+  BuildContext? context,
+  R? returnValue,
+}) async {
+  assert(error is DioException);
+  error = error as DioException;
+
+  if (context != null) {
     final data = error.response?.data;
 
     if (data != null && data is JsonMap) {
@@ -19,12 +29,17 @@ Future<R> interceptDioError<R>(Object? error, StackTrace stackTrace, [BuildConte
 
       showSnackBar(
         context,
-        title: Text('${errorDto.statusCode} ${errorDto.error}'),
+        title: Text(
+            '${errorDto.statusCode} ${errorDto.error?.isNotEmpty ?? false ? errorDto.error : ''}'),
         subtitle: Text(errorDto.message),
         backgroundColor: Colors.red.shade200,
       );
     }
   }
 
-  throw error ?? 'Something is terribly wrong';
+  if (returnValue != null) {
+    return returnValue;
+  }
+
+  throw error;
 }

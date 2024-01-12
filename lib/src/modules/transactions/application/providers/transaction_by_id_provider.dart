@@ -13,7 +13,7 @@ Future<TransactionReadDto> transactionById(
   int id, [
   BuildContext? context,
 ]) =>
-    ref
-        .watch(transactionServiceProvider)
-        .getOne(id)
-        .onError((error, stackTrace) => interceptDioError(error, stackTrace, context));
+    ref.watch(transactionServiceProvider).getOne(id).onError(
+          (error, stackTrace) => interceptDioError(error, stackTrace, context: context),
+          test: isDioError,
+        );

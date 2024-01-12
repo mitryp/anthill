@@ -49,15 +49,18 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? showSnackBar(
   Widget? subtitle,
   required Color backgroundColor,
   Color? textColor,
-}) =>
-    ScaffoldMessenger.maybeOf(context)?.showSnackBar(
-      SnackBar(
-        padding: EdgeInsets.zero,
-        content: SnackBarContent(
-          title: title,
-          subtitle: subtitle,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-        ),
+}) {
+  if (!context.mounted) return null;
+
+  return ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+    SnackBar(
+      padding: EdgeInsets.zero,
+      content: SnackBarContent(
+        title: title,
+        subtitle: subtitle,
+        backgroundColor: backgroundColor,
+        textColor: textColor,
       ),
-    );
+    ),
+  );
+}

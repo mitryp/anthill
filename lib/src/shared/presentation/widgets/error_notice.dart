@@ -10,7 +10,13 @@ class ErrorNotice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final err = Center(
-      child: Text('$error', style: TextStyle(color: Theme.of(context).colorScheme.error)),
+      child: Text(
+        'Ooops! An error occurred. Please report this to the support',
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.error,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
 
     if (!_withScaffold) {

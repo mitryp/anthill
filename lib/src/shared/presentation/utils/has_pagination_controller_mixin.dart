@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:meta/meta.dart';
 import 'package:universal_html/html.dart';
 
+import '../../application/http/dio_error_interceptor.dart';
 import '../../application/http/http_service.dart';
 import '../../application/providers/paginate_config_provider.dart';
 import '../../utils/clean_uri.dart';
@@ -57,7 +58,15 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   }
 
   Future<void> _loadConfig() async {
-    final config = await ref.watch(paginateConfigProvider(httpServiceProvider).future);
+    final config = await ref.watch(paginateConfigProvider(httpServiceProvider).future).onError(
+          (error, stackTrace) => interceptDioError(
+            error,
+            stackTrace,
+            context: context,
+            returnValue: const PaginateConfig(),
+          ),
+          test: isDioError,
+        );
 
     _initController(config, queryParams);
     _lastParams = controller.toMap();

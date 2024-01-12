@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,7 +9,8 @@ part 'transactions_provider.g.dart';
 
 @riverpod
 Future<Paginated<TransactionReadDto>> transactions(
-  TransactionsRef ref, [
+  TransactionsRef ref, {
   QueryParams params = const {},
-]) =>
+  BuildContext? context,
+}) =>
     ref.watch(transactionServiceProvider).getMany(params);

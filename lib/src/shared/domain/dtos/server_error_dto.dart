@@ -9,7 +9,7 @@ class ServerErrorDto with _$ServerErrorDto {
   const factory ServerErrorDto({
     required int statusCode,
     required String message,
-    required String error,
+    String? error,
   }) = _ServerErrorDto;
 
   const ServerErrorDto._();
