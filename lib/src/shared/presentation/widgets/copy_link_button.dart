@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 
 import 'snack_bar_content.dart';
 
 class CopyLinkButton extends StatelessWidget {
-  final String _link;
+  final String? _link;
 
-  const CopyLinkButton({required String link, super.key}) : _link = link;
+  const CopyLinkButton({String? link, super.key}) : _link = link;
 
   @override
   Widget build(BuildContext context) => IconButton(
@@ -24,7 +25,8 @@ class CopyLinkButton extends StatelessWidget {
   }
 
   Future<void> _copyLink(BuildContext context) async {
-    final link = Uri.parse(_link).isAbsolute ? _link : _sameOriginLink(_link);
+    final rawLink = _link ?? GoRouterState.of(context).uri.toString();
+    final link = Uri.parse(rawLink).isAbsolute ? rawLink : _sameOriginLink(rawLink);
 
     await Clipboard.setData(ClipboardData(text: link));
 
