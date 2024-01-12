@@ -8,7 +8,7 @@ part 'user_read_dto.freezed.dart';
 part 'user_read_dto.g.dart';
 
 @freezed
-class UserReadDto with _$UserReadDto implements Model {
+class UserReadDto with _$UserReadDto implements IdentifiableModel {
   const factory UserReadDto({
     required int id,
     required DateTime createDate,
