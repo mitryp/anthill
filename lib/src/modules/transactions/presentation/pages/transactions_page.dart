@@ -30,12 +30,7 @@ class TransactionsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transactions'),
-        actions: [
-          Consumer(
-            builder: (context, ref, child) =>
-                CopyLinkButton(link: '${GoRouterState.of(context).uri}'),
-          ),
-        ],
+        actions: const [CopyLinkButton()],
       ),
       body: PaginatedCollectionView<TransactionReadDto>(
         queryParams: _queryParams,

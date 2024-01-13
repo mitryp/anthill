@@ -7,7 +7,7 @@ part 'transaction_read_dto.freezed.dart';
 part 'transaction_read_dto.g.dart';
 
 @freezed
-class TransactionReadDto with _$TransactionReadDto implements Model {
+class TransactionReadDto with _$TransactionReadDto implements IdentifiableModel {
   const factory TransactionReadDto({
     required int id,
     required DateTime createDate,

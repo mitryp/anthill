@@ -7,8 +7,8 @@ import '../../domain/interfaces/model.dart';
 import 'dio_error_interceptor.dart';
 import 'http_service.dart';
 
-mixin CollectionControllerMixin<TRead, TCreate extends Model, TUpdate extends Model,
-    TService extends HttpWriteMixin<TRead, TCreate, TUpdate>> {
+mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends Model,
+    TUpdate extends Model, TService extends HttpWriteMixin<TRead, TCreate, TUpdate>> {
   ProviderBase<TService> get serviceProvider;
 
   ProviderOrFamily get collectionProvider;

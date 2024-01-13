@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../shared/presentation/constraints/app_page.dart';
+import '../../../../shared/presentation/form_defaults.dart';
 import '../../../../shared/presentation/utils/context_app_pages.dart';
 import '../../../../shared/presentation/widgets/page_base.dart';
 import '../../../../shared/utils/validators.dart';
@@ -77,21 +78,15 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
       await controller.createResource(_dto, context);
     }
 
-    if (!mounted) {
-      return;
+    if (mounted) {
+      context.goPage(defaultPage);
     }
-
-    context.goPage(defaultPage);
   }
 
   @override
   Widget build(BuildContext context) {
     final TransactionCreateDto(:amount, :sourceOrPurpose, :isIncome, :note) = _dto;
     final size = MediaQuery.of(context).size;
-
-    const formHeightFraction = 0.85;
-    const verticalFormPadding = 6.0;
-    const horizontalFormPadding = 8.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -108,10 +103,7 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: horizontalFormPadding,
-                vertical: verticalFormPadding,
-              ),
+              padding: defaultFormPadding,
               child: SizedBox(
                 height: size.height * formHeightFraction,
                 child: Column(
@@ -137,7 +129,7 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                     ),
                     TextFormField(
                       initialValue: sourceOrPurpose,
-                      validator: isRequired(context),
+                      validator: isRequired(context, minLength: 4),
                       onChanged: _onSourceOrPurposeChanged,
                       decoration: InputDecoration(
                         labelText: isIncome ? 'Source' : 'Purpose',

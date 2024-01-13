@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:universal_html/html.dart';
 
 import 'snack_bar_content.dart';
 
 class CopyLinkButton extends StatelessWidget {
-  final String _link;
+  final String? _link;
 
-  const CopyLinkButton({required String link, super.key}) : _link = link;
+  const CopyLinkButton({String? link, super.key}) : _link = link;
 
   @override
   Widget build(BuildContext context) => IconButton(
@@ -16,22 +17,19 @@ class CopyLinkButton extends StatelessWidget {
         tooltip: 'Copy to clipboard',
       );
 
-  String _sameOriginLink(String path) {
-    final pathStartIndex = path.indexOf(RegExp(r'[^/]'));
-    final cleanPath = pathStartIndex < 0 ? path : path.substring(pathStartIndex);
-
-    return '${Uri.base.origin}/#/$cleanPath';
-  }
+  String _sameOriginLink(String path) =>
+      Uri.base.resolve('/#${path.startsWith('/') ? '' : '/'}$path').toString();
 
   Future<void> _copyLink(BuildContext context) async {
-    final link = Uri.parse(_link).isAbsolute ? _link : _sameOriginLink(_link);
+    final rawLink = _link ?? window.location.href;
+    final link = Uri.parse(rawLink).hasAuthority ? rawLink : _sameOriginLink(rawLink);
 
     await Clipboard.setData(ClipboardData(text: link));
 
     // ignore: use_build_context_synchronously
     showSnackBar(
       context,
-      title: const Text('Copied to clipboard'),
+      title: Text('Copied to clipboard: $link'),
       backgroundColor: Colors.lightGreen,
     );
   }
