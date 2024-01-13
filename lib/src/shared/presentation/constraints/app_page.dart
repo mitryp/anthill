@@ -12,7 +12,7 @@ const defaultPage = AppPage.transactions;
 enum AppPage {
   transactions('/transactions', TransactionsPage.pageBuilder),
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
-  transaction('/transactions/$idParamPlaceholder', SingleTransactionView.pageBuilder),
+  transaction('/transactions/$idParamPlaceholder', SingleTransactionPage.pageBuilder),
   users('/users', UsersPage.pageBuilder),
   userEditor('/users/editor', UserEditor.pageBuilder),
   user('/users/$idParamPlaceholder', SingleUserPage.pageBuilder),
