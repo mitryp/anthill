@@ -8,10 +8,8 @@ part 'auth_provider.g.dart';
 
 @riverpod
 class Auth extends _$Auth {
-  Future<bool> login(LoginDto loginDto) {
-    print('logging in with $loginDto');
-    return ref.read(authServiceProvider).login(loginDto).whenComplete(ref.invalidateSelf);
-  }
+  Future<bool> login(LoginDto loginDto) =>
+      ref.read(authServiceProvider).login(loginDto).whenComplete(ref.invalidateSelf);
 
   @override
   Future<UserReadDto?> build() async {
