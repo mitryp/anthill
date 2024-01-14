@@ -8,6 +8,7 @@ import { UserReadDto } from '../users/data/dtos/user.read.dto';
 import { ConfigurationAuthService } from '../../common/configuration/configuration.auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './data/dtos/login.dto';
+import { JwtPayloadDto } from './data/dtos/jwt.payload.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -24,23 +25,23 @@ export class AuthController {
     @Body() loginDto: LoginDto,
     @Req() req: Request,
     @Res() res: Response,
-  ): Promise<UserReadDto> {
+  ): Promise<object> {
     const successDto = await this.authService.login(req.user as User);
 
     res
       .cookie('accessToken', successDto.accessToken, {
         httpOnly: true,
         secure: this.authConfig.useSecureCookies,
-        sameSite: 'lax',
+        sameSite: 'strict',
         maxAge: this.authConfig.jwtTtl,
       })
-      .json(successDto.user);
+      .send();
 
-    return successDto.user;
+    return {};
   }
 
   @Post('restore')
   async restoreSession(@Req() req: Request): Promise<UserReadDto> {
-    return await this.authService.login(req.user as User).then((dto) => dto.user);
+    return this.authService.restoreUser(req.user as JwtPayloadDto);
   }
 }

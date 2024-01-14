@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:universal_html/html.dart';
 
+import '../../../modules/auth/auth_module.dart';
 import '../../domain/dtos/server_error_dto.dart';
 import '../../presentation/widgets/snack_bar_content.dart';
 import '../../typedefs.dart';
@@ -36,6 +39,10 @@ Future<R> interceptDioError<R>(
         subtitle: Text(errorDto.message),
         backgroundColor: Colors.red.shade200,
       );
+    }
+
+    if (error.response?.statusCode == HttpStatus.unauthorized) {
+      ProviderScope.containerOf(context).invalidate(authProvider);
     }
   }
 

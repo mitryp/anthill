@@ -3,30 +3,26 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../users/data/entities/user.entity';
 import { LoginSuccessDto } from './data/dtos/login-success.dto';
 import { JwtService } from '@nestjs/jwt';
-import { Mapper } from 'automapper-core';
-import { UserReadDto } from '../users/data/dtos/user.read.dto';
 import { UsersService } from '../users/users.service';
-import { InjectMapper } from 'automapper-nestjs';
 import { JwtPayloadDto } from './data/dtos/jwt.payload.dto';
+import { UserReadDto } from '../users/data/dtos/user.read.dto';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
   async login(userPayload: JwtPayloadDto | null): Promise<LoginSuccessDto> {
-    if (userPayload === null) {
+    if (!userPayload) {
       throw new UnauthorizedException();
     }
 
     const userReadDto = await this.usersService.readOne(userPayload.id);
 
-    const payload = {
+    const payload: JwtPayloadDto = {
       id: userReadDto.id,
-      email: userReadDto.email,
       role: userReadDto.role,
     };
 
@@ -34,6 +30,10 @@ export class AuthenticationService {
       user: userReadDto,
       accessToken: this.jwtService.sign(payload),
     };
+  }
+
+  async restoreUser(jwtPayload: JwtPayloadDto): Promise<UserReadDto> {
+    return this.usersService.readOne(jwtPayload.id);
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {

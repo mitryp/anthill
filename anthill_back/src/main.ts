@@ -14,7 +14,7 @@ async function bootstrap() {
   const isDevelopment = app.get(ConfigurationCoreService).env === 'development';
 
   if (isDevelopment) {
-    app.enableCors({ origin: '*' });
+    app.enableCors({ origin: true, credentials: true });
     setupSwaggerApi(app);
   }
 
