@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/providers/auth_provider.dart';
+import '../application/providers/auth_provider.dart';
 
 class Loader extends ConsumerWidget {
   final Widget child;
+  final Widget loginPage;
 
   const Loader({
     required this.child,
+    required this.loginPage,
     super.key,
   });
 
@@ -17,7 +19,8 @@ class Loader extends ConsumerWidget {
 
     return switch (value) {
       AsyncLoading() => const Center(child: CircularProgressIndicator()),
-      _ => child,
+      AsyncData(:final value) => value != null ? child : loginPage,
+      _ => loginPage,
     };
   }
 }

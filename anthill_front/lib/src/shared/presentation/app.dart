@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../modules/auth/presentation/pages/login_page.dart';
 import 'router.dart';
-import 'widgets/loader.dart';
+import '../../modules/auth/presentation/loader.dart';
 
 class AnthillApp extends StatelessWidget {
   const AnthillApp({super.key});
@@ -13,6 +14,11 @@ class AnthillApp extends StatelessWidget {
 
     return ProviderScope(
       child: Loader(
+        loginPage: const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Login | Anthill',
+          home: LoginPage(),
+        ),
         child: MaterialApp.router(
           routerConfig: router,
           debugShowCheckedModeBanner: false,
