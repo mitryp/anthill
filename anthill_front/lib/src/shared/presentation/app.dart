@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../modules/auth/presentation/pages/login_page.dart';
+import '../../modules/auth/auth_module.dart';
 import 'router.dart';
-import '../../modules/auth/presentation/loader.dart';
 
 class AnthillApp extends StatelessWidget {
   const AnthillApp({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart';
 
-import '../../../modules/auth/application/providers/auth_provider.dart';
+import '../../../modules/auth/auth_module.dart';
 import '../../domain/dtos/server_error_dto.dart';
 import '../../presentation/widgets/snack_bar_content.dart';
 import '../../typedefs.dart';

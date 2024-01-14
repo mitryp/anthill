@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../modules/auth/application/providers/auth_provider.dart';
+import '../../modules/auth/auth_module.dart';
 import 'constraints/app_page.dart';
 
 GoRouter buildRouter(BuildContext context) {
