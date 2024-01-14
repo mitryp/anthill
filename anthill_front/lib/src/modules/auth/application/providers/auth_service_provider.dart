@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../shared/application/providers/http_client_provider.dart';
 import '../services/auth_service.dart';
-import 'http_client_provider.dart';
 
 part 'auth_service_provider.g.dart';
 
