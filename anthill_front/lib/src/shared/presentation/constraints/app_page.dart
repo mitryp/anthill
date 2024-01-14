@@ -1,7 +1,5 @@
 import '../../../modules/transactions/transactions_module.dart';
-import '../../../modules/users/presentation/pages/single_user_page.dart';
-import '../../../modules/users/presentation/pages/user_editor.dart';
-import '../../../modules/users/presentation/pages/users_page.dart';
+import '../../../modules/users/users_module.dart';
 import '../../typedefs.dart';
 
 const idParamPlaceholder = ':id';
