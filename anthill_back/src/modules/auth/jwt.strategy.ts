@@ -26,7 +26,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayloadDto): Promise<JwtPayloadDto> {
     const user = await this.usersService.readOne(payload.id);
-    
+
     if (!user || user.deleteDate) {
       throw new UnauthorizedException(null, { description: 'User is not defined' });
     }

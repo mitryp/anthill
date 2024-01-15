@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { createMap, forMember, mapFrom, Mapper, MappingProfile } from 'automapper-core';
 import { Transaction } from './entities/transaction.entity';
 import { TransactionReadDto } from './dtos/transaction.read.dto';
-import { TransactionCreateDto, TransactionCreateDtoWithUser } from './dtos/transaction.create.dto';
+import { TransactionCreateDtoWithUser } from './dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './dtos/transaction.update.dto';
 import { UserReadDto } from '../../users/data/dtos/user.read.dto';
 import { User } from '../../users/data/entities/user.entity';
