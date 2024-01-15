@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/http/http_service.dart';
 import '../domain/interfaces/model.dart';
-import '../presentation/utils/has_pagination_controller_mixin.dart';
+import '../presentation/utils/has_pagination_controller.dart';
 import '../presentation/widgets/error_notice.dart';
 import '../presentation/widgets/page_base.dart';
 import '../presentation/widgets/pagination_controls.dart';
