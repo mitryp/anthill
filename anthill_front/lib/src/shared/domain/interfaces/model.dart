@@ -6,4 +6,8 @@ abstract interface class Model {
 
 abstract interface class IdentifiableModel extends Model {
   int get id;
+
+  DateTime get createDate;
+
+  DateTime? get deleteDate;
 }
