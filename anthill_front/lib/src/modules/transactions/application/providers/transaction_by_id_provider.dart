@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../shared/application/http/dio_error_interceptor.dart';
+import '../../../../shared/http.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 import 'transaction_service_provider.dart';
 

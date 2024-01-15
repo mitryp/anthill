@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/presentation/constraints/app_page.dart';
-import '../../../../shared/presentation/dialogs/confirmation_dialog.dart';
-import '../../../../shared/presentation/utils/context_app_pages.dart';
-import '../../../../shared/presentation/widgets/copy_link_button.dart';
-import '../../../../shared/presentation/widgets/error_notice.dart';
-import '../../../../shared/presentation/widgets/page_base.dart';
-import '../../../../shared/utils/date_format.dart';
-import '../../application/providers/transaction_controller_provider.dart';
+import '../../../../shared/navigation.dart';
+import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_by_id_provider.dart';
+import '../../application/providers/transaction_controller_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 
 class SingleTransactionPage extends ConsumerWidget {

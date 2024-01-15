@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../shared/presentation/form_defaults.dart';
-import '../../../../shared/presentation/widgets/page_base.dart';
-import '../../../../shared/presentation/widgets/snack_bar_content.dart';
-import '../../../../shared/utils/validators.dart';
+import '../../../../shared/widgets.dart';
 import '../../application/providers/auth_provider.dart';
 import '../../domain/dtos/login_dto.dart';
 
