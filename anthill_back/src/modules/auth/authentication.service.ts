@@ -39,7 +39,7 @@ export class AuthenticationService {
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.usersService.readByEmail(email);
 
-    if ((await bcrypt.compare(password, user.passwordHash)) === true) {
+    if (user && (await bcrypt.compare(password, user.passwordHash))) {
       return user;
     }
 
