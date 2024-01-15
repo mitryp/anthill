@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../modules/auth/auth_module.dart';
 import 'constraints/app_page.dart';
+import 'widgets/navigation_shell.dart';
 
 GoRouter buildRouter(BuildContext context) {
   return GoRouter(
@@ -20,12 +21,17 @@ GoRouter buildRouter(BuildContext context) {
       );
     },
     routes: [
-      for (final page in AppPage.values)
-        GoRoute(
-          path: page.location,
-          name: page.name,
-          builder: page.pageBuilder,
-        ),
+      ShellRoute(
+        builder: (context, state, child) => NavigationShell(state: state, child: child),
+        routes: [
+          for (final page in AppPage.values)
+            GoRoute(
+              path: page.location,
+              name: page.name,
+              builder: page.pageBuilder,
+            ),
+        ],
+      ),
     ],
   );
 }
