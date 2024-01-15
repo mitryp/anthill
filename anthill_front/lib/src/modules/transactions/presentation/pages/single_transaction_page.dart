@@ -74,10 +74,33 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
               backgroundColor: transaction.isIncome ? Colors.green[300] : Colors.redAccent[100],
             ),
             Chip(label: Text('$time $date')),
-            if (transaction.deleteDate != null) Chip(label: Text('${transaction.deleteDate}')),
+            Chip(
+              label: Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(text: 'Created by '),
+                    TextSpan(
+                      text: transaction.user.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: transaction.user.isDeleted ? TextDecoration.lineThrough : null,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+            if (transaction.deleteDate != null)
+              Chip(
+                label: Text.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(text: 'Deleted at '),
+                      TextSpan(text: '${transaction.deleteDate}'),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ],
