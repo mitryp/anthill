@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:universal_html/html.dart';
 
@@ -47,6 +49,6 @@ class AuthService {
 
 T Function(Object? err, StackTrace stackTrace) _printErrorAndReturn<T>(T returnValue) =>
     (err, stackTrace) {
-      print('[AuthService] [info]: Caught $err');
+      log('[AuthService] [info]: Caught $err');
       return returnValue;
     };
