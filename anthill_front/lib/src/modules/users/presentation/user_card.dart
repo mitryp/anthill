@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared/presentation/constraints/app_page.dart';
-import '../../../shared/presentation/utils/context_app_pages.dart';
+import '../../../shared/navigation.dart';
 import '../../../shared/widgets.dart';
 import '../domain/dtos/user_read_dto.dart';
 

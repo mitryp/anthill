@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/presentation/constraints/app_page.dart';
-import '../../../../shared/presentation/utils/context_app_pages.dart';
+import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_by_id_provider.dart';
 import '../../application/providers/transaction_controller_provider.dart';

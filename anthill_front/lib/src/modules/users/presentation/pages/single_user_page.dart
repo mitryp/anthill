@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../shared/http.dart';
-import '../../../../shared/presentation/constraints/app_page.dart';
+import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
 import '../../domain/dtos/user_by_id_provider.dart';
 import '../../users_module.dart';

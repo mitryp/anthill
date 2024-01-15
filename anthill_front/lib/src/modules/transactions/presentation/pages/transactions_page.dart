@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../shared/navigation.dart';
 import '../../../../shared/pagination.dart';
-import '../../../../shared/presentation/constraints/app_page.dart';
-import '../../../../shared/presentation/utils/context_app_pages.dart';
 import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_service_provider.dart';
 import '../../application/providers/transactions_provider.dart';
