@@ -1,5 +1,6 @@
 library shared_widgets;
 
+export 'presentation/app.dart' show AnthillApp;
 export 'presentation/dialogs/confirmation_dialog.dart' show ConfirmationDialog, askUserConfirmation;
 export 'presentation/form_defaults.dart'
     show defaultFormPadding, formHeightFraction, verticalFormPadding, horizontalFormPadding;
