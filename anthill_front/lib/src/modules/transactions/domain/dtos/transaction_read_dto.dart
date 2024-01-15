@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../shared/http.dart';
-import '../../../users/users_module.dart';
+import '../../../users/domain/dtos/user_read_dto.dart';
 
 part 'transaction_read_dto.freezed.dart';
 
