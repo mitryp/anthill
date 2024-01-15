@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../shared/http.dart';
 import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_by_id_provider.dart';
 import '../../application/providers/transaction_controller_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 
-class SingleTransactionPage extends ConsumerWidget {
+class SingleTransactionPage extends ConsumerWidget with CanControlCollection<TransactionReadDto> {
   final int _transactionId;
   final TransactionReadDto? _transaction;
 
@@ -20,47 +21,25 @@ class SingleTransactionPage extends ConsumerWidget {
         _transaction = transaction;
 
   factory SingleTransactionPage.pageBuilder(BuildContext context, GoRouterState state) {
-    final idStr = state.pathParameters['id'];
-    final extra = state.extra;
-    final passedTransaction = extra is TransactionReadDto ? extra : null;
-    final id = (idStr != null ? int.tryParse(idStr) : null) ?? passedTransaction?.id;
-
-    if (id == null) {
-      throw StateError('transaction id was not correct');
-    }
+    final (:id, :model) = modelFromRouterState<TransactionReadDto>(state);
 
     return SingleTransactionPage(
       transactionId: id,
-      transaction: passedTransaction,
+      transaction: model,
     );
   }
 
-  Future<void> _deleteTransaction(
-    BuildContext context,
-    WidgetRef ref,
-    TransactionReadDto transaction,
-  ) async {
-    if (!await askUserConfirmation(
-          context,
-          const Text('Do you really want to delete this transaction?'),
-        ) ||
-        !context.mounted) {
-      return;
-    }
+  @override
+  ProviderListenable<
+      CollectionControllerMixin<TransactionReadDto, Model, Model,
+          HttpWriteMixin<TransactionReadDto, Model, Model>>> get collectionControllerProvider =>
+      transactionControllerProvider.notifier;
 
-    // ignore: use_build_context_synchronously
-    await ref.read(transactionControllerProvider.notifier).deleteResource(transaction.id, context);
-
-    if (context.mounted) {
-      context.pop();
-    }
-  }
+  @override
+  AppPage get editorPage => AppPage.transactionEditor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    const elementsSpacing = 8.0;
-    const controlsSeparation = elementsSpacing * 4;
-
     final passedTransaction = _transaction;
     final transactionId = _transactionId;
 
@@ -68,14 +47,9 @@ class SingleTransactionPage extends ConsumerWidget {
         ? AsyncData(passedTransaction)
         : ref.watch(transactionByIdProvider(transactionId));
 
-    switch (value) {
-      case AsyncError(:final error):
-        return ErrorNotice(error: error, withScaffold: true);
-      case AsyncLoading():
-        return Scaffold(
-          appBar: AppBar(title: const Text('Loading')),
-          body: const Center(child: CircularProgressIndicator()),
-        );
+    final stateRepr = switchSingleModelValue(value, context: context);
+    if (stateRepr != null) {
+      return stateRepr;
     }
 
     final transaction = value.requireValue;
@@ -90,50 +64,51 @@ class SingleTransactionPage extends ConsumerWidget {
             subtitle: transaction.note.isNotEmpty ? Text(transaction.note) : null,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(4),
-          child: OverflowBar(
-            alignment: MainAxisAlignment.spaceEvenly,
-            overflowAlignment: OverflowBarAlignment.center,
-            overflowDirection: VerticalDirection.up,
-            spacing: elementsSpacing,
-            overflowSpacing: elementsSpacing,
-            children: [
-              Chip(
-                label: Text(
-                  '${transaction.amount}GBP',
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                backgroundColor: transaction.isIncome ? Colors.green[300] : Colors.redAccent[100],
+        ModelInfoChips(
+          children: [
+            Chip(
+              label: Text(
+                '${transaction.amount}GBP',
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              Chip(label: Text('$time $date')),
-              if (transaction.deleteDate != null) Chip(label: Text('${transaction.deleteDate}')),
-            ],
-          ),
+              backgroundColor: transaction.isIncome ? Colors.green[300] : Colors.redAccent[100],
+            ),
+            Chip(label: Text('$time $date')),
+            Chip(
+              label: Text.rich(
+                TextSpan(
+                  children: [
+                    const TextSpan(text: 'Created by '),
+                    TextSpan(
+                      text: transaction.user.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: transaction.user.isDeleted ? TextDecoration.lineThrough : null,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (transaction.deleteDate != null)
+              Chip(
+                label: Text.rich(
+                  TextSpan(
+                    children: [
+                      const TextSpan(text: 'Deleted at '),
+                      TextSpan(text: '${transaction.deleteDate}'),
+                    ],
+                  ),
+                ),
+              ),
+          ],
         ),
       ],
     );
 
-    final controls = OverflowBar(
-      alignment: MainAxisAlignment.center,
-      overflowAlignment: OverflowBarAlignment.center,
-      overflowSpacing: elementsSpacing,
-      children: [
-        Consumer(
-          builder: (context, ref, child) => OutlinedButton.icon(
-            onPressed: () => _deleteTransaction(context, ref, transaction),
-            icon: const Icon(Icons.delete),
-            label: const Text('Delete'),
-            style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Colors.red[400])),
-          ),
-        ),
-        const SizedBox(width: controlsSeparation),
-        ElevatedButton.icon(
-          onPressed: () => context.goPage(AppPage.transactionEditor, extra: _transaction),
-          icon: const Icon(Icons.edit),
-          label: const Text('Edit'),
-        ),
-      ],
+    final controls = SingleModelControls(
+      onDeletePressed: () => deleteModel(context, ref, transaction),
+      onEditPressed: () => openEditor(context, transaction),
     );
 
     return Scaffold(

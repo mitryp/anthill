@@ -7,15 +7,21 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { transactionsPaginateConfig, TransactionsService } from './transactions.service';
 import { TransactionReadDto } from './data/dtos/transaction.read.dto';
-import { TransactionCreateDto } from './data/dtos/transaction.create.dto';
+import {
+  TransactionCreateDto,
+  TransactionCreateDtoWithUser,
+} from './data/dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './data/dtos/transaction.update.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ReadManyDto } from '../../common/domain/read-many.dto';
 import { Paginate, PaginateConfig, PaginatedSwaggerDocs, PaginateQuery } from 'nestjs-paginate';
 import { Transaction } from './data/entities/transaction.entity';
+import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
+import { Request } from 'express';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -45,8 +51,16 @@ export class TransactionsController {
   }
 
   @Post()
-  async create(@Body() transaction: TransactionCreateDto): Promise<TransactionReadDto> {
-    return this.transactionService.create(transaction);
+  async create(
+    @Body() transaction: TransactionCreateDto,
+    @Req() req: Request,
+  ): Promise<TransactionReadDto> {
+    const userId = (req.user as JwtPayloadDto).id;
+
+    const transactionWithUser = transaction as TransactionCreateDtoWithUser;
+    transactionWithUser.userId = userId;
+
+    return this.transactionService.create(transactionWithUser);
   }
 
   @Patch(':id')

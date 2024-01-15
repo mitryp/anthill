@@ -4,3 +4,4 @@ export 'presentation/constraints/app_page.dart' show defaultPage, idParamPlaceho
 export 'presentation/router.dart' show buildRouter;
 export 'presentation/utils/context_app_pages.dart' show ContextAppPages;
 export 'presentation/widgets/navigation_shell.dart' show NavigationShell, Destination;
+export 'utils/model_from_router_state.dart' show modelFromRouterState;

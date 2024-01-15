@@ -9,4 +9,4 @@ export 'domain/dtos/server_error_dto.dart' show ServerErrorDto;
 export 'domain/exceptions/no_resource_error.dart' show NoResourceError;
 export 'domain/interfaces/model.dart' show Model, IdentifiableModel;
 export 'presentation/utils/can_control_collection.dart' show CanControlCollection;
-export 'utils/model_from_router_state.dart' show modelFromRouterState;
+export 'utils/identifiable_model_is_deleted.dart' show IdentifiableModelIsDeleted;

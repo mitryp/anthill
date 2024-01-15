@@ -19,3 +19,7 @@ export class TransactionCreateDto {
   @AutoMap()
   note?: string;
 }
+
+export class TransactionCreateDtoWithUser extends TransactionCreateDto {
+  userId: number;
+}

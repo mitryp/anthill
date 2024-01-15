@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ModifiableResourceServiceBase } from '../../common/domain/resource.service.base';
 import { User } from './data/entities/user.entity';
 import { UserReadDto } from './data/dtos/user.read.dto';
@@ -31,13 +31,7 @@ export class UsersService extends ModifiableResourceServiceBase<
   //
   // Intended for internal use only.
   async readByEmail(email: string): Promise<User> {
-    const user = await this.repository.findOne({ where: { email } });
-
-    if (user === null) {
-      throw new NotFoundException();
-    }
-
-    return user;
+    return await this.repository.findOne({ where: { email } });
   }
 
   async create(dto: UserCreateDto): Promise<UserReadDto> {

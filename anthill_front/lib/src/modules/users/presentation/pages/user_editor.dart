@@ -54,10 +54,8 @@ class _UserEditorState extends ConsumerState<UserEditor> {
       setState(() => _dto = _dto.copyWith(password: password));
 
   Future<void> _saveUser() async {
-    if (!(_formKey.currentState?.validate() ?? false)) {
-      print('incorrect model');
-      return;
-    }
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+
     final existingUser = widget._readDto;
     final isEditing = existingUser != null;
 

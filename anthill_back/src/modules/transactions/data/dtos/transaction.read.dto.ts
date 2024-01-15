@@ -1,5 +1,6 @@
 import { IsBoolean, IsDate, IsNotEmpty, IsNumber } from 'class-validator';
 import { AutoMap } from 'automapper-classes';
+import { UserReadDto } from '../../../users/data/dtos/user.read.dto';
 
 export class TransactionReadDto {
   @AutoMap()
@@ -27,4 +28,6 @@ export class TransactionReadDto {
 
   @AutoMap()
   note?: string;
+
+  user: UserReadDto;
 }
