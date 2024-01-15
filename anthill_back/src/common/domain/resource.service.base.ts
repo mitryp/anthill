@@ -30,6 +30,7 @@ export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> 
   async readOne(id: number): Promise<TReadDto | undefined> {
     const entity = await this.repository.findOne({
       where: { id } as FindOptionsWhere<TEntity>,
+      withDeleted: true,
     });
 
     return this.mapOne(entity);
