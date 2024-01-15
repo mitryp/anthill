@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../../shared/http.dart';
+import '../../../users/users_module.dart';
 
 part 'transaction_read_dto.freezed.dart';
 
@@ -16,6 +17,7 @@ class TransactionReadDto with _$TransactionReadDto implements IdentifiableModel 
     required bool isIncome,
     required String sourceOrPurpose,
     required String note,
+    required UserReadDto user,
   }) = _TransactionReadDto;
 
   factory TransactionReadDto.fromJson(Map<String, Object?> json) =>
