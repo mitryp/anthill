@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
-import '../presentation/widgets/search_controls.dart';
-import '../presentation/widgets/single_sort_selector.dart';
+import 'search_controls.dart';
+import 'single_sort_selector.dart';
 
 class PaginationControlRow extends StatelessWidget {
   static const defaultInputDecoration = InputDecorationTheme(

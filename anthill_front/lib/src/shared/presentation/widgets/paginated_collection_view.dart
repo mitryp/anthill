@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../application/http/http_service.dart';
-import '../domain/interfaces/model.dart';
-import '../presentation/utils/has_pagination_controller.dart';
-import '../presentation/widgets/error_notice.dart';
-import '../presentation/widgets/page_base.dart';
-import '../presentation/widgets/pagination_controls.dart';
-import '../presentation/widgets/riverpod_paginated_view.dart';
+import '../../application/http/http_service.dart';
+import '../../domain/interfaces/model.dart';
+import '../utils/has_pagination_controller.dart';
+import 'error_notice.dart';
+import 'page_base.dart';
+import 'pagination_controls.dart';
+import 'riverpod_paginated_view.dart';
 import 'pagination_control_row.dart';
 
 typedef PaginatedCollectionProvider<TRead extends Model>
