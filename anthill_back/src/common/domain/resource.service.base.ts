@@ -2,7 +2,7 @@ import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
 import { Mapper } from 'automapper-core';
 import { NotFoundException, Type } from '@nestjs/common';
 import { EntityBase } from './entity.base';
-import { paginate, Paginate, PaginateConfig, PaginateQuery } from 'nestjs-paginate';
+import { paginate, Paginate, PaginateConfig, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { ReadManyDto } from './read-many.dto';
 
 export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> {
@@ -18,13 +18,17 @@ export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> 
     return this.mapper.map(entity, this.entityType, this.readDtoType);
   }
 
-  async readAll(@Paginate() query: PaginateQuery): Promise<ReadManyDto<TReadDto>> {
-    const paginatedEntities = await paginate(query, this.repository, this.paginateConfig);
-
+  protected mapPaginated(paginated: Paginated<TEntity>): ReadManyDto<TReadDto> {
     return {
-      meta: paginatedEntities.meta,
-      data: paginatedEntities.data.map((value) => this.mapOne(value)),
+      meta: paginated.meta,
+      data: paginated.data.map((value) => this.mapOne(value)),
     };
+  }
+
+  async readAll(@Paginate() query: PaginateQuery): Promise<ReadManyDto<TReadDto>> {
+    const paginated = await paginate(query, this.repository, this.paginateConfig);
+
+    return this.mapPaginated(paginated);
   }
 
   async readOne(id: number): Promise<TReadDto | undefined> {
