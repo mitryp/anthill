@@ -16,12 +16,11 @@ class ModelInfoChips extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding ?? EdgeInsets.all(elementsSpacing / 2),
-      child: OverflowBar(
-        alignment: MainAxisAlignment.spaceEvenly,
-        overflowAlignment: OverflowBarAlignment.center,
-        overflowDirection: VerticalDirection.up,
+      child: Wrap(
+        alignment: WrapAlignment.spaceEvenly,
+        crossAxisAlignment: WrapCrossAlignment.center,
         spacing: elementsSpacing,
-        overflowSpacing: elementsSpacing,
+        runSpacing: elementsSpacing,
         children: children,
       ),
     );
