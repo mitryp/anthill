@@ -3,7 +3,7 @@ import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../shared/pagination.dart';
-import '../../../../shared/presentation/widgets/copy_link_button.dart';
+import '../../../../shared/widgets.dart';
 import '../../application/providers/user_service_provider.dart';
 import '../../application/providers/users_provider.dart';
 import '../../domain/dtos/user_read_dto.dart';

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/pagination.dart';
 import '../../../../shared/presentation/constraints/app_page.dart';
 import '../../../../shared/presentation/utils/context_app_pages.dart';
-import '../../../../shared/presentation/widgets/copy_link_button.dart';
+import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_service_provider.dart';
 import '../../application/providers/transactions_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';

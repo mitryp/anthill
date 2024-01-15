@@ -6,7 +6,7 @@ import '../../application/http/http_service.dart';
 import '../../domain/interfaces/model.dart';
 import '../utils/has_pagination_controller.dart';
 import 'error_notice.dart';
-import 'page_base.dart';
+import 'page_body.dart';
 import 'pagination_controls.dart';
 import 'riverpod_paginated_view.dart';
 import 'pagination_control_row.dart';

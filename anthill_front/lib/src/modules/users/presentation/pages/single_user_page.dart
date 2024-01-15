@@ -4,12 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/http.dart';
 import '../../../../shared/presentation/constraints/app_page.dart';
-import '../../../../shared/presentation/widgets/copy_link_button.dart';
-import '../../../../shared/presentation/widgets/model_info_chips.dart';
-import '../../../../shared/presentation/widgets/page_base.dart';
-import '../../../../shared/presentation/widgets/single_model_controls.dart';
-import '../../../../shared/presentation/widgets/switch_single_model_value.dart';
-import '../../../../shared/utils/date_format.dart';
+import '../../../../shared/widgets.dart';
 import '../../domain/dtos/user_by_id_provider.dart';
 import '../../users_module.dart';
 
