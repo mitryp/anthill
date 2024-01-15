@@ -35,7 +35,11 @@ export class TransactionsService extends ModifiableResourceServiceBase<
 
   override async readAll(query: PaginateQuery): Promise<ReadManyDto<TransactionReadDto>> {
     // to load soft-deleted users
-    const queryBuilder = this.repository.createQueryBuilder('transaction').withDeleted();
+    const queryBuilder = this.repository
+      .createQueryBuilder('transactions')
+      .withDeleted()
+      .where('transactions."deleteDate" IS NULL')
+      .leftJoinAndSelect('transactions.user', 'user');
 
     const paginated = await paginate(query, queryBuilder, this.paginateConfig);
 
@@ -44,8 +48,6 @@ export class TransactionsService extends ModifiableResourceServiceBase<
 }
 
 export const transactionsPaginateConfig: PaginateConfig<Transaction> = {
-  withDeleted: true,
-  relations: { user: true },
   sortableColumns: ['createDate', 'amount', 'sourceOrPurpose'],
   defaultSortBy: [['createDate', 'DESC']],
   searchableColumns: ['sourceOrPurpose', 'note'],
