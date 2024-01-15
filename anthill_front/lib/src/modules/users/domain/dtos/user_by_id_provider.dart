@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../../shared/http.dart';
+import '../../../../shared/application/http/dio_error_interceptor.dart';
 import '../../application/providers/user_service_provider.dart';
 import 'user_read_dto.dart';
 

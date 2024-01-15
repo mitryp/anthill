@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../shared/http.dart';
+import '../../../../shared/application/providers/http_client_provider.dart';
 import '../services/auth_service.dart';
 
 part 'auth_service_provider.g.dart';

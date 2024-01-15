@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../shared/http.dart';
+import '../../../../shared/application/http/collection_controller_mixin.dart';
 import '../../domain/dtos/user_by_id_provider.dart';
 import '../../domain/dtos/user_create_dto.dart';
 import '../../domain/dtos/user_read_dto.dart';

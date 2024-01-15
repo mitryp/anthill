@@ -3,8 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/navigation.dart';
-import '../../../../shared/widgets.dart';
+import '../../../../shared/presentation/constraints/app_page.dart';
+import '../../../../shared/presentation/form_defaults.dart';
+import '../../../../shared/presentation/utils/context_app_pages.dart';
+import '../../../../shared/presentation/widgets/page_base.dart';
+import '../../../../shared/utils/validators.dart';
 import '../../application/providers/user_controller_provider.dart';
 import '../../domain/constraints/user_role.dart';
 import '../../domain/dtos/user_create_dto.dart';

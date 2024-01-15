@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../shared/http.dart';
+import '../../../../shared/application/http/dio_error_interceptor.dart';
 import '../../domain/dtos/user_read_dto.dart';
 import 'user_service_provider.dart';
 

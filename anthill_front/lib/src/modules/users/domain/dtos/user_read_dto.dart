@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../shared/http.dart';
+import '../../../../shared/domain/interfaces/model.dart';
 import '../constraints/user_role.dart';
 
 part 'user_read_dto.freezed.dart';

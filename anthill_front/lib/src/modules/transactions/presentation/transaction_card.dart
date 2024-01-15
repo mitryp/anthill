@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../shared/navigation.dart';
-import '../../../shared/widgets.dart';
+import '../../../shared/presentation/constraints/app_page.dart';
+import '../../../shared/presentation/utils/context_app_pages.dart';
+import '../../../shared/utils/date_format.dart';
 import '../domain/dtos/transaction_read_dto.dart';
 
 class TransactionCard extends StatelessWidget {

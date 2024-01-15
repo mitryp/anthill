@@ -1,4 +1,4 @@
-import '../../../../shared/http.dart';
+import '../../../../shared/application/http/http_service.dart';
 import '../../domain/dtos/user_create_dto.dart';
 import '../../domain/dtos/user_read_dto.dart';
 
