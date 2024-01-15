@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../shared/domain/interfaces/model.dart';
+import '../../../../shared/http.dart';
 
 part 'transaction_read_dto.freezed.dart';
 

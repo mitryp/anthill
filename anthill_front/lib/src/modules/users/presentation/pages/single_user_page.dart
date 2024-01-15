@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/application/http/collection_controller_mixin.dart';
-import '../../../../shared/application/http/http_service.dart';
-import '../../../../shared/domain/interfaces/model.dart';
+import '../../../../shared/http.dart';
 import '../../../../shared/presentation/constraints/app_page.dart';
-import '../../../../shared/presentation/utils/can_control_collection.dart';
 import '../../../../shared/presentation/widgets/copy_link_button.dart';
 import '../../../../shared/presentation/widgets/model_info_chips.dart';
 import '../../../../shared/presentation/widgets/page_base.dart';
