@@ -10,7 +10,6 @@ import '../../../../shared/presentation/widgets/page_base.dart';
 import '../../../../shared/presentation/widgets/single_model_controls.dart';
 import '../../../../shared/presentation/widgets/switch_single_model_value.dart';
 import '../../../../shared/utils/date_format.dart';
-import '../../../../shared/utils/model_from_router_state.dart';
 import '../../domain/dtos/user_by_id_provider.dart';
 import '../../users_module.dart';
 
