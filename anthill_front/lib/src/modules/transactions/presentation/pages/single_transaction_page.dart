@@ -115,7 +115,7 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
 
     return Scaffold(
       appBar: AppBar(
-        actions: const [CopyLinkButton()],
+        actions: [CopyLinkButton(link: '${GoRouterState.of(context).uri}')],
       ),
       body: PageBody(
         child: Padding(
