@@ -29,21 +29,23 @@ class TransactionsPage extends StatelessWidget {
         title: const Text('Transactions'),
         actions: const [CopyLinkButton()],
       ),
-      body: PaginatedCollectionView<TransactionReadDto>(
-        queryParams: _queryParams,
-        httpServiceProvider: transactionServiceProvider,
-        collectionProvider: transactionsProvider,
-        viewBuilder: (context, transactions) {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: transactions.data.length,
-            itemBuilder: (context, index) {
-              final item = transactions.data[index];
+      body: PageBody(
+        child: PaginatedCollectionView<TransactionReadDto>(
+          queryParams: _queryParams,
+          httpServiceProvider: transactionServiceProvider,
+          collectionProvider: transactionsProvider,
+          viewBuilder: (context, transactions) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: transactions.data.length,
+              itemBuilder: (context, index) {
+                final item = transactions.data[index];
 
-              return TransactionCard(transaction: item);
-            },
-          );
-        },
+                return TransactionCard(transaction: item);
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),

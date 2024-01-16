@@ -30,17 +30,19 @@ class UsersPage extends StatelessWidget {
         title: const Text('Users'),
         actions: const [CopyLinkButton()],
       ),
-      body: PaginatedCollectionView<UserReadDto>(
-        queryParams: _queryParams,
-        httpServiceProvider: userServiceProvider,
-        collectionProvider: usersProvider,
-        viewBuilder: (context, users) {
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: users.data.length,
-            itemBuilder: (context, index) => UserCard(user: users.data[index]),
-          );
-        },
+      body: PageBody(
+        child: PaginatedCollectionView<UserReadDto>(
+          queryParams: _queryParams,
+          httpServiceProvider: userServiceProvider,
+          collectionProvider: usersProvider,
+          viewBuilder: (context, users) {
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: users.data.length,
+              itemBuilder: (context, index) => UserCard(user: users.data[index]),
+            );
+          },
+        ),
       ),
     );
   }

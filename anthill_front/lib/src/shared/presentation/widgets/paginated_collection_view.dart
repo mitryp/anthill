@@ -6,7 +6,6 @@ import '../../application/http/http_service.dart';
 import '../../domain/interfaces/model.dart';
 import '../utils/has_pagination_controller.dart';
 import 'error_notice.dart';
-import 'page_body.dart';
 import 'pagination_control_row.dart';
 import 'pagination_controls.dart';
 import 'riverpod_paginated_view.dart';
@@ -80,45 +79,43 @@ class _PaginatedCollectionViewState<TRead extends Model>
 
     final meta = _meta;
 
-    return PageBody(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
-            child: PaginationControlRow(
-              controller: controller,
-              isLocked: _areControlsLocked,
-              includeSearch: widget._showSearch,
-              includeSort: widget._showSort,
-            ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+          child: PaginationControlRow(
+            controller: controller,
+            isLocked: _areControlsLocked,
+            includeSearch: widget._showSearch,
+            includeSort: widget._showSort,
           ),
-          Expanded(
-            child: RiverpodPaginatedView<TRead>(
-              controller: controller,
-              collectionProvider: ([params = const {}]) =>
-                  widget._collectionProvider(params: params, context: context),
-              onDataLoaded: (value) {
-                if (!mounted || (_meta == value.meta && !_areControlsLocked)) return;
+        ),
+        Expanded(
+          child: RiverpodPaginatedView<TRead>(
+            controller: controller,
+            collectionProvider: ([params = const {}]) =>
+                widget._collectionProvider(params: params, context: context),
+            onDataLoaded: (value) {
+              if (!mounted || (_meta == value.meta && !_areControlsLocked)) return;
 
-                setState(() {
-                  _meta = value.meta;
-                  _areControlsLocked = false;
-                });
-              },
-              onUpdateRequest: () {
-                if (!_areControlsLocked) {
-                  setState(() => _areControlsLocked = true);
-                }
-              },
-              viewBuilder: widget._viewBuilder,
-              errorBuilder: widget._errorBuilder ?? (context, error) => ErrorNotice(error: error),
-              loadingIndicator: loadingIndicator,
-            ),
+              setState(() {
+                _meta = value.meta;
+                _areControlsLocked = false;
+              });
+            },
+            onUpdateRequest: () {
+              if (!_areControlsLocked) {
+                setState(() => _areControlsLocked = true);
+              }
+            },
+            viewBuilder: widget._viewBuilder,
+            errorBuilder: widget._errorBuilder ?? (context, error) => ErrorNotice(error: error),
+            loadingIndicator: loadingIndicator,
           ),
-          if (meta != null)
-            PaginationControls.fromMetadata(meta, isLocked: _areControlsLocked).bind(controller),
-        ],
-      ),
+        ),
+        if (meta != null)
+          PaginationControls.fromMetadata(meta, isLocked: _areControlsLocked).bind(controller),
+      ],
     );
   }
 }
