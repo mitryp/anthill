@@ -98,7 +98,7 @@ class _PaginatedCollectionViewState<TRead extends Model>
               collectionProvider: ([params = const {}]) =>
                   widget._collectionProvider(params: params, context: context),
               onDataLoaded: (value) {
-                if (!mounted) return;
+                if (!mounted || (_meta == value.meta && !_areControlsLocked)) return;
 
                 setState(() {
                   _meta = value.meta;
