@@ -26,7 +26,7 @@ export class LoggingService extends ResourceServiceBase<LogEntryEntity, LogEntry
   }
 }
 
-const loggingPaginateConfig: PaginateConfig<LogEntryEntity> = {
+export const loggingPaginateConfig: PaginateConfig<LogEntryEntity> = {
   sortableColumns: ['createDate'],
   defaultSortBy: [['createDate', 'DESC']],
   relations: { user: true },
