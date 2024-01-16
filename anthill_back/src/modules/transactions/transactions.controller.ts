@@ -29,7 +29,7 @@ import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 @Controller('transactions')
 export class TransactionsController {
   constructor(
-    protected readonly transactionService: TransactionsService,
+    private readonly transactionService: TransactionsService,
     private readonly logger: LoggingService,
   ) {}
 
@@ -110,7 +110,7 @@ export class TransactionsController {
 
   async log(
     logDto: Omit<
-      LogEntryCreateDto<typeof transactionModuleActions>,
+      LogEntryCreateDto<typeof transactionsModuleActions>,
       'moduleName' | 'resourceAffected' | 'jsonPayload'
     >,
   ): Promise<void> {
@@ -124,7 +124,7 @@ export class TransactionsController {
   }
 }
 
-const transactionModuleActions = [
+const transactionsModuleActions = [
   'createTransaction',
   'deleteTransaction',
   'updateTransaction',
