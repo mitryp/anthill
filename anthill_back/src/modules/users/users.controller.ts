@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  Req,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { usersPaginateConfig, UsersService } from './users.service';
@@ -17,12 +18,18 @@ import { UserReadDto } from './data/dtos/user.read.dto';
 import { User } from './data/entities/user.entity';
 import { UserCreateDto } from './data/dtos/user.create.dto';
 import { UserUpdateDto } from './data/dtos/user.update.dto';
-import { AuthenticationService } from '../auth/authentication.service';
+import { LoggingService } from '../logging/logging.service';
+import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
+import { Request } from 'express';
+import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
-  constructor(protected readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly logger: LoggingService,
+  ) {}
 
   @Get('/paginate_config')
   readPaginateConfig(): PaginateConfig<User> {
@@ -47,17 +54,64 @@ export class UsersController {
   }
 
   @Post()
-  async create(@Body() user: UserCreateDto): Promise<UserReadDto> {
-    return this.usersService.create(user);
+  async create(@Body() user: UserCreateDto, @Req() req: Request): Promise<UserReadDto> {
+    const res = await this.usersService.create(user);
+
+    await this.log({
+      userId: (req.user as JwtPayloadDto).id,
+      action: 'createUser',
+      targetEntityId: res.id,
+    });
+
+    return res;
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() user: UserUpdateDto): Promise<UserReadDto> {
-    return this.usersService.update(id, user);
+  async update(
+    @Param('id') id: number,
+    @Body() user: UserUpdateDto,
+    @Req() req: Request,
+  ): Promise<UserReadDto> {
+    const res = await this.usersService.update(id, user);
+
+    await this.log({
+      userId: (req.user as JwtPayloadDto).id,
+      action: 'updateUser',
+      targetEntityId: res.id,
+    });
+
+    return res;
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<boolean> {
-    return this.usersService.delete(id);
+  async delete(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
+    const res = await this.usersService.delete(id);
+
+    if (res) {
+      await this.log({
+        userId: (req.user as JwtPayloadDto).id,
+        action: 'deleteUser',
+        targetEntityId: id,
+      });
+    }
+
+    return res;
+  }
+
+  async log(
+    logDto: Omit<
+      LogEntryCreateDto<typeof usersModuleActions>,
+      'moduleName' | 'resourceAffected' | 'jsonPayload'
+    >,
+  ): Promise<void> {
+    const dto: LogEntryCreateDto<any> = {
+      moduleName: 'users',
+      resourceAffected: 'user',
+      ...logDto,
+    };
+
+    return this.logger.log(dto);
   }
 }
+
+const usersModuleActions = ['createUser', 'deleteUser', 'updateUser'] as const;

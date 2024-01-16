@@ -62,7 +62,8 @@ export abstract class ModifiableResourceServiceBase<
   async create(dto: TCreateDto): Promise<TReadDto> {
     const toInsert = this.mapper.map(dto, this.createDtoType, this.entityType);
 
-    const res = await this.repository.save(toInsert);
+    const { id } = await this.repository.save(toInsert);
+    const res = await this.repository.findOne({ where: { id } as FindOptionsWhere<TEntity> });
 
     return this.mapOne(res);
   }
