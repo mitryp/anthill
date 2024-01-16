@@ -78,6 +78,8 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
       ],
     );
 
+    final isDeleted = user.isDeleted;
+
     return Scaffold(
       appBar: AppBar(
         actions: [CopyLinkButton(link: '${GoRouterState.of(context).uri}')],
@@ -90,8 +92,8 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
               child,
               const SizedBox(height: 32),
               SingleModelControls(
-                onDeletePressed: () => deleteModel(context, ref, user),
-                onEditPressed: () => openEditor(context, user),
+                onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, user),
+                onEditPressed: isDeleted ? null : () => openEditor(context, user),
               ),
             ],
           ),

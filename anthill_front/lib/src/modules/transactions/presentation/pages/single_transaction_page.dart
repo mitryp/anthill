@@ -106,9 +106,11 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
       ],
     );
 
+    final isDeleted = transaction.isDeleted;
+
     final controls = SingleModelControls(
-      onDeletePressed: () => deleteModel(context, ref, transaction),
-      onEditPressed: () => openEditor(context, transaction),
+      onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, transaction),
+      onEditPressed: isDeleted ? null : () => openEditor(context, transaction),
     );
 
     return Scaffold(
