@@ -5,33 +5,24 @@ import { LogEntryCreateDto } from './data/dtos/log-entry.create.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LogEntryEntity } from './data/entities/log-entry.entity';
 import { Repository } from 'typeorm';
-import { paginate, PaginateConfig, PaginateQuery } from 'nestjs-paginate';
-import { ReadManyDto } from '../../common/domain/read-many.dto';
+import { PaginateConfig } from 'nestjs-paginate';
 import { LogEntryReadDto } from './data/dtos/log-entry.read.dto';
+import { ResourceServiceBase } from '../../common/domain/resource.service.base';
 
 @Injectable()
-export class LoggingService {
+export class LoggingService extends ResourceServiceBase<LogEntryEntity, LogEntryReadDto> {
   constructor(
     @InjectRepository(LogEntryEntity)
-    private readonly logEntryRepository: Repository<LogEntryEntity>,
-    @InjectMapper() private readonly mapper: Mapper,
-  ) {}
+    repository: Repository<LogEntryEntity>,
+    @InjectMapper() mapper: Mapper,
+  ) {
+    super(repository, mapper, LogEntryEntity, LogEntryReadDto, loggingPaginateConfig);
+  }
 
   async log(entryDto: LogEntryCreateDto<any>): Promise<void> {
     const entity = this.mapper.map(entryDto, LogEntryCreateDto, LogEntryEntity);
 
-    console.log(entity);
-
-    await this.logEntryRepository.save(entity);
-  }
-
-  async readAll(query: PaginateQuery): Promise<ReadManyDto<LogEntryReadDto>> {
-    const paginated = await paginate(query, this.logEntryRepository, loggingPaginateConfig);
-
-    return {
-      meta: paginated.meta,
-      data: paginated.data.map((value) => this.mapper.map(value, LogEntryEntity, LogEntryReadDto)),
-    };
+    await this.repository.save(entity);
   }
 }
 
