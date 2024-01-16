@@ -30,7 +30,14 @@ class SingleModelControls extends StatelessWidget {
             onPressed: onDeletePressed?.call,
             icon: const Icon(Icons.delete),
             label: const Text('Delete'),
-            style: ButtonStyle(foregroundColor: MaterialStatePropertyAll(Colors.red[400])),
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.resolveWith(
+                (states) {
+                  if (states.contains(MaterialState.disabled)) return null;
+                  return Colors.red[400];
+                },
+              ),
+            ),
           ),
         if (showDeleteButton && showEditButton)
           SizedBox(
