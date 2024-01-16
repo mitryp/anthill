@@ -157,18 +157,26 @@ class _MobileNavigationShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mobileDestinations =
+        Destination.values.where((dest) => dest.isShownInMobileNav).toList(growable: false);
+
+    final selectedIndex = mobileDestinations.indexOf(Destination.values[this.selectedIndex]);
+
     return Scaffold(
       body: child,
       bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: onDestinationSelected,
+        selectedIndex: selectedIndex != -1 ? selectedIndex : 0,
+        onDestinationSelected: (index) => onDestinationSelected(mobileDestinations[index].index),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         destinations: [
-          for (final dest in Destination.values.where((dest) => dest.isShownInMobileNav))
-            NavigationDestination(
-              icon: Icon(dest.icon),
-              label: dest.localize(context),
-            ),
+          for (var i = 0; i < mobileDestinations.length; i++)
+            (() {
+              final dest = mobileDestinations[i];
+              return NavigationDestination(
+                icon: Icon(dest.icon),
+                label: dest.localize(context),
+              );
+            })(),
         ],
       ),
     );
