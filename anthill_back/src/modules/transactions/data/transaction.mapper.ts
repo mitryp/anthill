@@ -31,7 +31,7 @@ export class TransactionMapper extends AutomapperProfile {
         Transaction,
         forMember(
           (dest) => dest.user,
-          mapFrom((source) => source.userId as any), // typeorm will use the id as a FK
+          mapFrom((source) => ({ id: source.userId })),
         ),
       );
       createMap(

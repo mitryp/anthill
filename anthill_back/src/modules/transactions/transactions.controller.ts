@@ -22,11 +22,16 @@ import { Paginate, PaginateConfig, PaginatedSwaggerDocs, PaginateQuery } from 'n
 import { Transaction } from './data/entities/transaction.entity';
 import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
 import { Request } from 'express';
+import { LoggingService } from '../logging/logging.service';
+import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 
 @ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionsController {
-  constructor(protected readonly transactionService: TransactionsService) {}
+  constructor(
+    private readonly transactionService: TransactionsService,
+    private readonly logger: LoggingService,
+  ) {}
 
   @Get('/paginate_config')
   readPaginateConfig(): PaginateConfig<Transaction> {
@@ -60,19 +65,67 @@ export class TransactionsController {
     const transactionWithUser = transaction as TransactionCreateDtoWithUser;
     transactionWithUser.userId = userId;
 
-    return this.transactionService.create(transactionWithUser);
+    const res = await this.transactionService.create(transactionWithUser);
+
+    await this.log({
+      userId,
+      action: 'createTransaction',
+      targetEntityId: res.id,
+    });
+
+    return res;
   }
 
   @Patch(':id')
   async update(
     @Param('id') id: number,
     @Body() transaction: TransactionUpdateDto,
+    @Req() req: Request,
   ): Promise<TransactionReadDto> {
-    return this.transactionService.update(id, transaction);
+    const res = await this.transactionService.update(id, transaction);
+
+    await this.log({
+      userId: (req.user as JwtPayloadDto).id,
+      action: 'updateTransaction',
+      targetEntityId: res.id,
+    });
+
+    return res;
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<boolean> {
-    return this.transactionService.delete(id);
+  async delete(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
+    const res = await this.transactionService.delete(id);
+
+    if (res) {
+      await this.log({
+        userId: (req.user as JwtPayloadDto).id,
+        action: 'deleteTransaction',
+        targetEntityId: id,
+      });
+    }
+
+    return res;
+  }
+
+  async log(
+    logDto: Omit<
+      LogEntryCreateDto<typeof transactionsModuleActions>,
+      'moduleName' | 'resourceAffected' | 'jsonPayload'
+    >,
+  ): Promise<void> {
+    const dto: LogEntryCreateDto<any> = {
+      moduleName: 'transactions',
+      resourceAffected: 'transaction',
+      ...logDto,
+    };
+
+    return this.logger.log(dto);
   }
 }
+
+const transactionsModuleActions = [
+  'createTransaction',
+  'deleteTransaction',
+  'updateTransaction',
+] as const;

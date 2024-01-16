@@ -12,6 +12,10 @@ enum Destination {
   users(
     AppPage.users,
     icon: Icons.people,
+  ),
+  logs(
+    AppPage.logs,
+    icon: Icons.pending_actions,
   );
 
   final AppPage page;
@@ -24,6 +28,7 @@ enum Destination {
     return switch (this) {
       Destination.transactions => 'Transactions',
       Destination.users => 'Users',
+      Destination.logs => 'Logs',
     };
   }
 }
