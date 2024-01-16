@@ -106,14 +106,16 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
       ],
     );
 
+    final isDeleted = transaction.isDeleted;
+
     final controls = SingleModelControls(
-      onDeletePressed: () => deleteModel(context, ref, transaction),
-      onEditPressed: () => openEditor(context, transaction),
+      onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, transaction),
+      onEditPressed: isDeleted ? null : () => openEditor(context, transaction),
     );
 
     return Scaffold(
       appBar: AppBar(
-        actions: const [CopyLinkButton()],
+        actions: [CopyLinkButton(link: '${GoRouterState.of(context).uri}')],
       ),
       body: PageBody(
         child: Padding(

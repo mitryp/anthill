@@ -2,13 +2,15 @@ import '../../../modules/logging/logging_module.dart';
 import '../../../modules/transactions/transactions_module.dart';
 import '../../../modules/users/users_module.dart';
 import '../../typedefs.dart';
+import '../pages/dashboard_page.dart';
 
 const idParamPlaceholder = ':id';
-const defaultPage = AppPage.logs;
+const defaultPage = AppPage.dashboard;
 
 // todo invent a way to register routes for modules dynamically
 
 enum AppPage {
+  dashboard('/dashboard', DashboardPage.pageBuilder),
   transactions('/transactions', TransactionsPage.pageBuilder),
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
   transaction('/transactions/$idParamPlaceholder', SingleTransactionPage.pageBuilder),

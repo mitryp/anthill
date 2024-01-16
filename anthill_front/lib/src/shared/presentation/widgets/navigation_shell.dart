@@ -5,6 +5,11 @@ import '../constraints/app_page.dart';
 import '../utils/context_app_pages.dart';
 
 enum Destination {
+  dashboard(
+    AppPage.dashboard,
+    icon: Icons.dashboard,
+    isShownAtDashboard: false,
+  ),
   transactions(
     AppPage.transactions,
     icon: Icons.attach_money,
@@ -12,6 +17,7 @@ enum Destination {
   users(
     AppPage.users,
     icon: Icons.people,
+    isShownInMobileNav: false,
   ),
   logs(
     AppPage.logs,
@@ -20,8 +26,15 @@ enum Destination {
 
   final AppPage page;
   final IconData icon;
+  final bool isShownAtDashboard;
+  final bool isShownInMobileNav;
 
-  const Destination(this.page, {required this.icon});
+  const Destination(
+    this.page, {
+    required this.icon,
+    this.isShownAtDashboard = true,
+    this.isShownInMobileNav = true,
+  });
 
   String localize(BuildContext context) {
     // todo localize
@@ -29,6 +42,7 @@ enum Destination {
       Destination.transactions => 'Transactions',
       Destination.users => 'Users',
       Destination.logs => 'Logs',
+      Destination.dashboard => 'Dashboard',
     };
   }
 }
@@ -87,7 +101,7 @@ class NavigationShell extends StatelessWidget {
         index: index,
         currentPath: path,
       ),
-      selectedIndex: selectedIndex,
+      selectedIndex: selectedIndex != -1 ? selectedIndex : null,
       child: child,
     );
   }
@@ -143,18 +157,26 @@ class _MobileNavigationShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mobileDestinations =
+        Destination.values.where((dest) => dest.isShownInMobileNav).toList(growable: false);
+
+    final selectedIndex = mobileDestinations.indexOf(Destination.values[this.selectedIndex]);
+
     return Scaffold(
       body: child,
       bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: onDestinationSelected,
+        selectedIndex: selectedIndex != -1 ? selectedIndex : 0,
+        onDestinationSelected: (index) => onDestinationSelected(mobileDestinations[index].index),
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         destinations: [
-          for (final dest in Destination.values)
-            NavigationDestination(
-              icon: Icon(dest.icon),
-              label: dest.localize(context),
-            ),
+          for (var i = 0; i < mobileDestinations.length; i++)
+            (() {
+              final dest = mobileDestinations[i];
+              return NavigationDestination(
+                icon: Icon(dest.icon),
+                label: dest.localize(context),
+              );
+            })(),
         ],
       ),
     );

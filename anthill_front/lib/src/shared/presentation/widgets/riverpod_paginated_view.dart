@@ -74,6 +74,9 @@ class _RiverpodPaginatedViewState<TModel extends Model>
   Widget build(BuildContext context) {
     final value = ref.watch(widget.collectionProvider(_params));
 
+    // generally speaking, putting callbacks in the build
+    // method is not what you would want to do
+
     return value.when(
       data: (data) {
         _deferCallback(() => widget.onDataLoaded?.call(data));
