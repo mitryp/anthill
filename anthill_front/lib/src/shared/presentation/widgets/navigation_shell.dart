@@ -8,7 +8,7 @@ enum Destination {
   dashboard(
     AppPage.dashboard,
     icon: Icons.dashboard,
-    isShown: false,
+    isShownAtDashboard: false,
   ),
   transactions(
     AppPage.transactions,
@@ -25,12 +25,12 @@ enum Destination {
 
   final AppPage page;
   final IconData icon;
-  final bool isShown;
+  final bool isShownAtDashboard;
 
   const Destination(
     this.page, {
     required this.icon,
-    this.isShown = true,
+    this.isShownAtDashboard = true,
   });
 
   String localize(BuildContext context) {

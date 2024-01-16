@@ -28,7 +28,7 @@ class DashboardPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     final tileDestinations =
-        Destination.values.where((dest) => dest.isShown).toList(growable: false);
+        Destination.values.where((dest) => dest.isShownAtDashboard).toList(growable: false);
 
     final greeting = Consumer(
       builder: (context, ref, child) {
