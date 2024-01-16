@@ -7,9 +7,9 @@ import '../../domain/interfaces/model.dart';
 import '../utils/has_pagination_controller.dart';
 import 'error_notice.dart';
 import 'page_body.dart';
+import 'pagination_control_row.dart';
 import 'pagination_controls.dart';
 import 'riverpod_paginated_view.dart';
-import 'pagination_control_row.dart';
 
 typedef PaginatedCollectionProvider<TRead extends Model>
     = AutoDisposeFutureProvider<Paginated<TRead>> Function({
@@ -25,15 +25,22 @@ class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidge
   final WidgetBuilder? _loadingIndicator;
   final ErrorBuilder? _errorBuilder;
 
+  final bool _showSearch;
+  final bool _showSort;
+
   const PaginatedCollectionView({
     required ProviderBase<HttpService> httpServiceProvider,
     required PaginatedCollectionProvider<TRead> collectionProvider,
     required PaginatedViewBuilder<TRead> viewBuilder,
+    bool showSearch = true,
+    bool showSort = true,
     WidgetBuilder? loadingIndicator,
     ErrorBuilder? errorBuilder,
     QueryParams queryParams = const {},
     super.key,
-  })  : _httpServiceProvider = httpServiceProvider,
+  })  : _showSort = showSort,
+        _showSearch = showSearch,
+        _httpServiceProvider = httpServiceProvider,
         _collectionProvider = collectionProvider,
         _viewBuilder = viewBuilder,
         _loadingIndicator = loadingIndicator,
@@ -81,6 +88,8 @@ class _PaginatedCollectionViewState<TRead extends Model>
             child: PaginationControlRow(
               controller: controller,
               isLocked: _areControlsLocked,
+              includeSearch: widget._showSearch,
+              includeSort: widget._showSort,
             ),
           ),
           Expanded(
