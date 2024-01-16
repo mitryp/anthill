@@ -5,6 +5,11 @@ import '../constraints/app_page.dart';
 import '../utils/context_app_pages.dart';
 
 enum Destination {
+  dashboard(
+    AppPage.dashboard,
+    icon: Icons.dashboard,
+    isShown: false,
+  ),
   transactions(
     AppPage.transactions,
     icon: Icons.attach_money,
@@ -20,8 +25,13 @@ enum Destination {
 
   final AppPage page;
   final IconData icon;
+  final bool isShown;
 
-  const Destination(this.page, {required this.icon});
+  const Destination(
+    this.page, {
+    required this.icon,
+    this.isShown = true,
+  });
 
   String localize(BuildContext context) {
     // todo localize
@@ -29,6 +39,7 @@ enum Destination {
       Destination.transactions => 'Transactions',
       Destination.users => 'Users',
       Destination.logs => 'Logs',
+      Destination.dashboard => 'Dashboard',
     };
   }
 }
@@ -87,7 +98,7 @@ class NavigationShell extends StatelessWidget {
         index: index,
         currentPath: path,
       ),
-      selectedIndex: selectedIndex,
+      selectedIndex: selectedIndex != -1 ? selectedIndex : null,
       child: child,
     );
   }
