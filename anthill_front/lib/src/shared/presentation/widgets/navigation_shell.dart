@@ -17,6 +17,7 @@ enum Destination {
   users(
     AppPage.users,
     icon: Icons.people,
+    isShownInMobileNav: false,
   ),
   logs(
     AppPage.logs,
@@ -26,11 +27,13 @@ enum Destination {
   final AppPage page;
   final IconData icon;
   final bool isShownAtDashboard;
+  final bool isShownInMobileNav;
 
   const Destination(
     this.page, {
     required this.icon,
     this.isShownAtDashboard = true,
+    this.isShownInMobileNav = true,
   });
 
   String localize(BuildContext context) {
@@ -161,7 +164,7 @@ class _MobileNavigationShell extends StatelessWidget {
         onDestinationSelected: onDestinationSelected,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         destinations: [
-          for (final dest in Destination.values)
+          for (final dest in Destination.values.where((dest) => dest.isShownInMobileNav))
             NavigationDestination(
               icon: Icon(dest.icon),
               label: dest.localize(context),
