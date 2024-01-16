@@ -3,7 +3,9 @@ import { Paginate, PaginateQuery } from 'nestjs-paginate';
 import { ReadManyDto } from '../../common/domain/read-many.dto';
 import { LogEntryReadDto } from './data/dtos/log-entry.read.dto';
 import { LoggingService } from './logging.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Logs')
 @Controller('logs')
 export class LoggingController {
   constructor(private readonly loggingService: LoggingService) {}
