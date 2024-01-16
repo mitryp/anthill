@@ -14,15 +14,4 @@ export class LoggingController {
   async readAll(@Paginate() query: PaginateQuery): Promise<ReadManyDto<LogEntryReadDto>> {
     return this.loggingService.readAll(query);
   }
-
-  @Get(':id')
-  async readOne(@Param('id') id: number) {
-    const entry = await this.loggingService.readOne(id);
-
-    if (!entry) {
-      throw new NotFoundException();
-    }
-
-    return entry;
-  }
 }
