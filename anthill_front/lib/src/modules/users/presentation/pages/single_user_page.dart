@@ -5,8 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/http.dart';
 import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
+import '../../../auth/auth_module.dart';
+import '../../application/providers/user_controller_provider.dart';
+import '../../domain/constraints/user_role.dart';
 import '../../domain/dtos/user_by_id_provider.dart';
-import '../../users_module.dart';
+import '../../domain/dtos/user_read_dto.dart';
 
 class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDto> {
   final int _userId;
@@ -91,9 +94,12 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
             children: [
               child,
               const SizedBox(height: 32),
-              SingleModelControls(
-                onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, user),
-                onEditPressed: isDeleted ? null : () => openEditor(context, user),
+              VisibleFor(
+                roles: const [UserRole.admin],
+                child: SingleModelControls(
+                  onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, user),
+                  onEditPressed: isDeleted ? null : () => openEditor(context, user),
+                ),
               ),
             ],
           ),
