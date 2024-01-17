@@ -15,13 +15,14 @@ import { transactionsPaginateConfig } from '../transactions/transactions.service
 import { Paginate, PaginateConfig, PaginatedSwaggerDocs, PaginateQuery } from 'nestjs-paginate';
 import { ReadManyDto } from '../../common/domain/read-many.dto';
 import { UserReadDto } from './data/dtos/user.read.dto';
-import { User } from './data/entities/user.entity';
+import { User, UserRole } from './data/entities/user.entity';
 import { UserCreateDto } from './data/dtos/user.create.dto';
 import { UserUpdateDto } from './data/dtos/user.update.dto';
 import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { Request } from 'express';
 import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
+import { RequireRoles } from '../auth/roles_guard/require-roles.decorator';
 
 @ApiTags('Users')
 @Controller('users')
@@ -53,6 +54,7 @@ export class UsersController {
     return user;
   }
 
+  @RequireRoles([UserRole.admin])
   @Post()
   async create(@Body() user: UserCreateDto, @Req() req: Request): Promise<UserReadDto> {
     const res = await this.usersService.create(user);
@@ -66,6 +68,7 @@ export class UsersController {
     return res;
   }
 
+  @RequireRoles([UserRole.admin])
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -83,6 +86,7 @@ export class UsersController {
     return res;
   }
 
+  @RequireRoles([UserRole.admin])
   @Delete(':id')
   async delete(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
     const res = await this.usersService.delete(id);
