@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { InjectMapper } from 'automapper-nestjs';
 import { Mapper } from 'automapper-core';
-import { PaginateConfig } from 'nestjs-paginate';
+import { FilterOperator, FilterSuffix, PaginateConfig } from 'nestjs-paginate';
 import { UserUpdateDto } from './data/dtos/user.update.dto';
 import { EncryptionService } from '../../common/utils/encryption.service';
 
@@ -57,8 +57,10 @@ export class UsersService extends ModifiableResourceServiceBase<
 }
 
 export const usersPaginateConfig: PaginateConfig<User> = {
+  withDeleted: true,
   sortableColumns: ['createDate', 'name'],
   defaultSortBy: [['name', 'ASC']],
   searchableColumns: ['name', 'email'],
+  filterableColumns: { deleteDate: [FilterOperator.NULL, FilterSuffix.NOT] },
   // todo filters
 };

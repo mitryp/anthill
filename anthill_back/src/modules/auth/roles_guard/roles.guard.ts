@@ -3,7 +3,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { RequireRoles } from './require-roles.decorator';
 import { Request } from 'express';
-import { User } from '../../users/data/entities/user.entity';
+import { JwtPayloadDto } from '../data/dtos/jwt.payload.dto';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -20,7 +20,7 @@ export class RolesGuard implements CanActivate {
     }
 
     const req = context.switchToHttp().getRequest<Request>();
-    const user = req.user as User;
+    const user = req.user as JwtPayloadDto;
 
     return requiredRoles.includes(user.role);
   }

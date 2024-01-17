@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
+import '../../../auth/auth_module.dart';
 import '../../application/providers/user_controller_provider.dart';
 import '../../domain/constraints/user_role.dart';
 import '../../domain/dtos/user_create_dto.dart';
@@ -15,11 +16,20 @@ class UserEditor extends ConsumerStatefulWidget {
 
   const UserEditor({UserReadDto? userToEdit, super.key}) : _readDto = userToEdit;
 
-  factory UserEditor.pageBuilder(BuildContext context, GoRouterState state) {
+  static Widget pageBuilder(BuildContext context, GoRouterState state) {
     final extra = state.extra;
     final toEdit = extra is UserReadDto ? extra : null;
 
-    return UserEditor(userToEdit: toEdit);
+    return VisibleFor(
+      roles: const {UserRole.admin},
+      unauthorizedPlaceholder: Scaffold(
+        appBar: AppBar(),
+        body: const Center(
+          child: Text('You are not authorized to see this page'),
+        ),
+      ),
+      child: UserEditor(userToEdit: toEdit),
+    );
   }
 
   @override

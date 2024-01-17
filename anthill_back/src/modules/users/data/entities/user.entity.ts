@@ -2,19 +2,10 @@ import { Column, Entity } from 'typeorm';
 import { EntityBase } from '../../../../common/domain/entity.base';
 import { AutoMap } from 'automapper-classes';
 
-/*
- Користувач
-	* Логін (why?)
-	* ПІБ
-	* Дата реєстрації
-	* Email
-	* Ролі
-	* Password hash
- */
-
 export enum UserRole {
   accountant = 'accountant',
   volunteer = 'volunteer',
+  admin = 'admin',
 }
 
 @Entity('users')
