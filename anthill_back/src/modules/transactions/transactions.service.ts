@@ -8,7 +8,13 @@ import { Mapper } from 'automapper-core';
 import { TransactionCreateDtoWithUser } from './data/dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './data/dtos/transaction.update.dto';
 import { ModifiableResourceServiceBase } from '../../common/domain/resource.service.base';
-import { paginate, PaginateConfig, PaginateQuery } from 'nestjs-paginate';
+import {
+  FilterOperator,
+  FilterSuffix,
+  paginate,
+  PaginateConfig,
+  PaginateQuery,
+} from 'nestjs-paginate';
 import { ReadManyDto } from '../../common/domain/read-many.dto';
 
 @Injectable()
@@ -34,11 +40,9 @@ export class TransactionsService extends ModifiableResourceServiceBase<
   }
 
   override async readAll(query: PaginateQuery): Promise<ReadManyDto<TransactionReadDto>> {
-    // to load soft-deleted users
     const queryBuilder = this.repository
       .createQueryBuilder('transactions')
       .withDeleted()
-      .where('transactions."deleteDate" IS NULL')
       .leftJoinAndSelect('transactions.user', 'user');
 
     const paginated = await paginate(query, queryBuilder, this.paginateConfig);
@@ -48,8 +52,10 @@ export class TransactionsService extends ModifiableResourceServiceBase<
 }
 
 export const transactionsPaginateConfig: PaginateConfig<Transaction> = {
+  withDeleted: true,
   sortableColumns: ['createDate', 'amount', 'sourceOrPurpose'],
   defaultSortBy: [['createDate', 'DESC']],
   searchableColumns: ['sourceOrPurpose', 'note'],
+  filterableColumns: { deleteDate: [FilterOperator.NULL, FilterSuffix.NOT] },
   // todo filters
 };
