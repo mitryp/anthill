@@ -12,4 +12,5 @@ export 'presentation/widgets/single_model_controls.dart' show SingleModelControl
 export 'presentation/widgets/snack_bar_content.dart' show SnackBarContent, showSnackBar;
 export 'presentation/widgets/switch_single_model_value.dart' show switchSingleModelValue;
 export 'utils/date_format.dart' show formatDate;
+export 'utils/if_has_roles.dart' show ifHasRoles;
 export 'utils/validators.dart' show isRequired, isPassword, isAmount;
