@@ -43,6 +43,6 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
 
   void openEditor(BuildContext context, TModel model) {
     if (!context.mounted) return;
-    context.goPage(editorPage, extra: model);
+    context.pushPage(editorPage, extra: model);
   }
 }
