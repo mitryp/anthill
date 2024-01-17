@@ -37,6 +37,13 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   QueryParams get queryParams => const {};
   late QueryParams _lastParams = queryParams;
 
+  /// Initial filters for the controller to be initialized with.
+  ///
+  /// If the restored controller already has the filter by a field, the respective operators from
+  /// this Map will not be applied.
+  @visibleForOverriding
+  Map<String, Set<FilterOperator>> get initialFilters => {};
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -75,7 +82,22 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   void _initController(PaginateConfig config, [QueryParams params = const {}]) {
     if (!mounted || isControllerInitialized) return;
 
-    controller = restoreController(params, paginateConfig: config);
+    try {
+      controller = restoreController(params, paginateConfig: config);
+    } catch (_) {
+      controller = PaginationController(paginateConfig: config);
+    }
+    // add initial filters
+    final presentFilters = controller.filters;
+    controller.silently((controller) {
+      for (final MapEntry(key: field, value: filters) in initialFilters.entries) {
+        for (final filter in filters) {
+          if (presentFilters.containsKey(field)) return;
+          controller.addFilter(field, filter);
+        }
+      }
+    });
+
     controller.addListener(_updateUri);
     _updateUri();
 
