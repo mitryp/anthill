@@ -10,7 +10,10 @@ PaginationController restoreController(
     final MapEntry(:key, :value) = e;
     final filterStrings = (value is List ? value.cast<String>() : [value]).cast<String>();
 
-    return MapEntry(key.replaceFirst('filter.', ''), filterStrings.map(_parseFilter).toSet());
+    return MapEntry(
+      key.replaceFirst('filter.', ''),
+      filterStrings.map(_parseFilter).nonNulls.toSet(),
+    );
   });
 
   final maybeSort = params['sortBy'] as String?;
@@ -33,7 +36,12 @@ PaginationController restoreController(
   );
 }
 
-FilterOperator _parseFilter(String filterStr) {
+FilterOperator? _parseFilter(String filterStr) {
+  if (!filterStr.contains(':')) {
+    if (filterStr == '\$null') return const Null();
+    return null;
+  }
+
   final [filterRepr, filterValue] = filterStr.split(':');
   final value = num.tryParse(filterValue) ?? filterValue;
 
@@ -50,10 +58,16 @@ FilterOperator _parseFilter(String filterStr) {
 
         return Btw(a, b);
       })(),
-    'or' => Or(_parseFilter(filterValue)),
-    'not' => Not(_parseFilter(filterValue)),
+    'or' => (() {
+        final innerFilter = _parseFilter(filterValue);
+        return innerFilter != null ? Or(innerFilter) : null;
+      })(),
+    'not' => (() {
+        final innerFilter = _parseFilter(filterValue);
+        return innerFilter != null ? Not(innerFilter) : null;
+      })(),
     'null' => const Null(),
-    _ => throw UnsupportedError('Got an unsupported filter for restoration: $filterStr')
+    _ => null,
   };
 }
 

@@ -26,6 +26,9 @@ class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidge
 
   final bool _showSearch;
   final bool _showSort;
+  final Widget Function(PaginationController controller)? _additionalFiltersBuilder;
+
+  final Map<String, Set<FilterOperator>> _initialFilters;
 
   const PaginatedCollectionView({
     required ProviderBase<HttpService> httpServiceProvider,
@@ -33,11 +36,15 @@ class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidge
     required PaginatedViewBuilder<TRead> viewBuilder,
     bool showSearch = true,
     bool showSort = true,
+    Widget Function(PaginationController controller)? additionalFiltersBuilder,
+    Map<String, Set<FilterOperator>> initialFilters = const {},
     WidgetBuilder? loadingIndicator,
     ErrorBuilder? errorBuilder,
     QueryParams queryParams = const {},
     super.key,
-  })  : _showSort = showSort,
+  })  : _initialFilters = initialFilters,
+        _additionalFiltersBuilder = additionalFiltersBuilder,
+        _showSort = showSort,
         _showSearch = showSearch,
         _httpServiceProvider = httpServiceProvider,
         _collectionProvider = collectionProvider,
@@ -66,7 +73,12 @@ class _PaginatedCollectionViewState<TRead extends Model>
   QueryParams get queryParams => widget._queryParams;
 
   @override
+  Map<String, Set<FilterOperator>> get initialFilters => widget._initialFilters;
+
+  @override
   Widget build(BuildContext context) {
+    const controlsPadding = EdgeInsets.symmetric(horizontal: 4, vertical: 16);
+
     final loadingIndicator = widget._loadingIndicator ??
         (BuildContext context) => const Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,11 +90,12 @@ class _PaginatedCollectionViewState<TRead extends Model>
     }
 
     final meta = _meta;
+    final additionalFilters = widget._additionalFiltersBuilder;
 
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
+          padding: controlsPadding,
           child: PaginationControlRow(
             controller: controller,
             isLocked: _areControlsLocked,
@@ -90,6 +103,11 @@ class _PaginatedCollectionViewState<TRead extends Model>
             includeSort: widget._showSort,
           ),
         ),
+        if (additionalFilters != null)
+          Padding(
+            padding: controlsPadding.copyWith(top: 0),
+            child: additionalFilters(controller),
+          ),
         Expanded(
           child: RiverpodPaginatedView<TRead>(
             controller: controller,

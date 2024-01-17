@@ -12,42 +12,25 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (:date, :time) = formatDate(_transaction.createDate);
-
-    return Card(
-      child: ListTile(
-        title: Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(text: _transaction.sourceOrPurpose),
-              const TextSpan(text: ' - '),
-              TextSpan(
-                text: '${_transaction.amount}GBP',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        subtitle: _transaction.note.isNotEmpty ? Text(_transaction.note) : null,
-        trailing: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
+    return ResourceCard(
+      model: _transaction,
+      title: Text.rich(
+        TextSpan(
           children: [
-            Text(date),
-            Text(
-              time,
-              style: const TextStyle(
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.bold,
-              ),
+            TextSpan(text: _transaction.sourceOrPurpose),
+            const TextSpan(text: ' - '),
+            TextSpan(
+              text: '${_transaction.amount}GBP',
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
-        onTap: () => context.pushPage(
-          AppPage.transaction,
-          resourceId: _transaction.id,
-          extra: _transaction,
-        ),
+      ),
+      subtitle: _transaction.note.isNotEmpty ? Text(_transaction.note) : null,
+      onTap: () => context.pushPage(
+        AppPage.transaction,
+        resourceId: _transaction.id,
+        extra: _transaction,
       ),
     );
   }

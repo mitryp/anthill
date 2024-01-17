@@ -10,8 +10,8 @@ import '../application/providers/auth_provider.dart';
 /// It utilizes riverpod and [authProvider] to get the current user.
 /// If the user is not yet initialized, it will consider the user not authorized.
 class VisibleFor extends ConsumerWidget {
-  /// The list of [UserRole]s allowed to see the [child].
-  final List<UserRole> roles;
+  /// The set of [UserRole]s allowed to see the [child].
+  final Set<UserRole> roles;
 
   /// The widget which should not be visible for roles not in the [roles] list.
   final Widget child;

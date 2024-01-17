@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/navigation.dart';
 import '../../../../shared/pagination.dart';
 import '../../../../shared/widgets.dart';
+import '../../../users/users_module.dart';
 import '../../application/providers/transaction_service_provider.dart';
 import '../../application/providers/transactions_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
@@ -34,6 +35,14 @@ class TransactionsPage extends StatelessWidget {
           queryParams: _queryParams,
           httpServiceProvider: transactionServiceProvider,
           collectionProvider: transactionsProvider,
+          additionalFiltersBuilder: ifHasRoles(
+            context,
+            roles: const {UserRole.admin},
+            then: (controller) => Row(children: [DeleteFilter(controller: controller)]),
+          ),
+          initialFilters: {
+            'deleteDate': {const Null()},
+          },
           viewBuilder: (context, transactions) {
             return ListView.builder(
               shrinkWrap: true,

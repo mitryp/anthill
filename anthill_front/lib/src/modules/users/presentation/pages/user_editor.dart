@@ -21,7 +21,7 @@ class UserEditor extends ConsumerStatefulWidget {
     final toEdit = extra is UserReadDto ? extra : null;
 
     return VisibleFor(
-      roles: const [UserRole.admin],
+      roles: const {UserRole.admin},
       unauthorizedPlaceholder: Scaffold(
         appBar: AppBar(),
         body: const Center(
