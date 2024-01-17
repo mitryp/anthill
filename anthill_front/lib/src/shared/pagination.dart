@@ -1,6 +1,7 @@
 library shared_pagination;
 
 export 'presentation/utils/has_pagination_controller.dart' show HasPaginationController;
+export 'presentation/widgets/delete_filter.dart' show DeleteFilter;
 export 'presentation/widgets/paginated_collection_view.dart'
     show PaginatedCollectionView, PaginatedCollectionProvider;
 export 'presentation/widgets/pagination_control_row.dart' show PaginationControlRow;
