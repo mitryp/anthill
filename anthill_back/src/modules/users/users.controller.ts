@@ -102,6 +102,20 @@ export class UsersController {
     return res;
   }
 
+  @RequireRoles([UserRole.admin])
+  @Post(':id')
+  async restore(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
+    const res = await this.usersService.restore(id);
+
+    await this.log({
+      userId: (req.user as JwtPayloadDto).id,
+      action: 'restoreUser',
+      targetEntityId: id,
+    });
+
+    return res;
+  }
+
   async log(
     logDto: Omit<
       LogEntryCreateDto<typeof usersModuleActions>,
@@ -118,4 +132,10 @@ export class UsersController {
   }
 }
 
-const usersModuleActions = ['createUser', 'deleteUser', 'updateUser'] as const;
+const usersModuleActions = [
+  'createUser',
+  'deleteUser',
+  'updateUser',
+  'restoreUser',
+  //
+] as const;
