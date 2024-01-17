@@ -45,6 +45,14 @@ class UsersPage extends StatelessWidget {
           queryParams: _queryParams,
           httpServiceProvider: userServiceProvider,
           collectionProvider: usersProvider,
+          additionalFiltersBuilder: ifHasRoles(
+            context,
+            roles: const {UserRole.admin},
+            then: (controller) => Row(children: [DeleteFilter(controller: controller)]),
+          ),
+          initialFilters: {
+            'deleteDate': {const Null()},
+          },
           viewBuilder: (context, users) {
             return ListView.builder(
               shrinkWrap: true,
