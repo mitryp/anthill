@@ -6,3 +6,4 @@ export 'application/services/auth_service.dart' show AuthService;
 export 'domain/dtos/login_dto.dart' show LoginDto;
 export 'presentation/loader.dart' show Loader;
 export 'presentation/pages/login_page.dart' show LoginPage;
+export 'presentation/visible_for.dart' show VisibleFor;
