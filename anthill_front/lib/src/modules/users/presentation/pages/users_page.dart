@@ -34,7 +34,7 @@ class UsersPage extends StatelessWidget {
         actions: const [CopyLinkButton()],
       ),
       floatingActionButton: VisibleFor(
-        roles: const [UserRole.admin],
+        roles: const {UserRole.admin},
         child: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () => context.pushPage(AppPage.userEditor),

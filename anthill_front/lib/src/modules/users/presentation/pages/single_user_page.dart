@@ -95,7 +95,7 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
               child,
               const SizedBox(height: 32),
               VisibleFor(
-                roles: const [UserRole.admin],
+                roles: const {UserRole.admin},
                 child: SingleModelControls(
                   onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, user),
                   onEditPressed: isDeleted ? null : () => openEditor(context, user),
