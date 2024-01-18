@@ -13,22 +13,16 @@ import '../../domain/dtos/transaction_read_dto.dart';
 
 class SingleTransactionPage extends ConsumerWidget with CanControlCollection<TransactionReadDto> {
   final int _transactionId;
-  final TransactionReadDto? _transaction;
 
   const SingleTransactionPage({
     required int transactionId,
-    TransactionReadDto? transaction,
     super.key,
-  })  : _transactionId = transactionId,
-        _transaction = transaction;
+  }) : _transactionId = transactionId;
 
   factory SingleTransactionPage.pageBuilder(BuildContext context, GoRouterState state) {
-    final (:id, :model) = modelFromRouterState<TransactionReadDto>(state);
+    final (:id, model: _) = modelFromRouterState<TransactionReadDto>(state);
 
-    return SingleTransactionPage(
-      transactionId: id,
-      transaction: model,
-    );
+    return SingleTransactionPage(transactionId: id);
   }
 
   @override
@@ -42,12 +36,7 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final passedTransaction = _transaction;
-    final transactionId = _transactionId;
-
-    final value = passedTransaction != null
-        ? AsyncData(passedTransaction)
-        : ref.watch(transactionByIdProvider(transactionId));
+    final value = ref.watch(transactionByIdProvider(_transactionId));
 
     final stateRepr = switchSingleModelValue(value, context: context);
     if (stateRepr != null) {
@@ -114,7 +103,8 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
       onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, transaction),
       onEditPressed: isDeleted ? null : () => openEditor(context, transaction),
       showRestoreButton: ref.watch(authProvider).value?.role == UserRole.admin,
-      onRestorePressed: !isDeleted ? null : () => restoreModel(context, ref, transaction),
+      onRestorePressed:
+          !isDeleted ? null : () => restoreModel(context, ref, transaction),
     );
 
     return Scaffold(
