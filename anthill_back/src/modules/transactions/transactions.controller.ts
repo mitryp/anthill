@@ -24,6 +24,8 @@ import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
 import { Request } from 'express';
 import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
+import { RequireRoles } from '../auth/roles_guard/require-roles.decorator';
+import { UserRole } from '../users/data/entities/user.entity';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -108,6 +110,20 @@ export class TransactionsController {
     return res;
   }
 
+  @RequireRoles([UserRole.admin])
+  @Post(':id')
+  async restore(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
+    const res = await this.transactionService.restore(id);
+
+    await this.log({
+      userId: (req.user as JwtPayloadDto).id,
+      action: 'restoreTransaction',
+      targetEntityId: id,
+    });
+
+    return res;
+  }
+
   async log(
     logDto: Omit<
       LogEntryCreateDto<typeof transactionsModuleActions>,
@@ -128,4 +144,5 @@ const transactionsModuleActions = [
   'createTransaction',
   'deleteTransaction',
   'updateTransaction',
+  'restoreTransaction',
 ] as const;
