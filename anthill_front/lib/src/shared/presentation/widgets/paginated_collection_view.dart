@@ -11,10 +11,7 @@ import 'pagination_controls.dart';
 import 'riverpod_paginated_view.dart';
 
 typedef PaginatedCollectionProvider<TRead extends Model>
-    = AutoDisposeFutureProvider<Paginated<TRead>> Function({
-  QueryParams params,
-  BuildContext? context,
-});
+    = AutoDisposeFutureProvider<Paginated<TRead>> Function(QueryParams params);
 
 class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidget {
   final QueryParams _queryParams;
@@ -29,11 +26,13 @@ class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidge
   final Widget Function(PaginationController controller)? _additionalFiltersBuilder;
 
   final Map<String, Set<FilterOperator>> _initialFilters;
+  final String _collectionName;
 
   const PaginatedCollectionView({
     required ProviderBase<HttpService> httpServiceProvider,
     required PaginatedCollectionProvider<TRead> collectionProvider,
     required PaginatedViewBuilder<TRead> viewBuilder,
+    required String collectionName,
     bool showSearch = true,
     bool showSort = true,
     Widget Function(PaginationController controller)? additionalFiltersBuilder,
@@ -42,7 +41,8 @@ class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidge
     ErrorBuilder? errorBuilder,
     QueryParams queryParams = const {},
     super.key,
-  })  : _initialFilters = initialFilters,
+  })  : _collectionName = collectionName,
+        _initialFilters = initialFilters,
         _additionalFiltersBuilder = additionalFiltersBuilder,
         _showSort = showSort,
         _showSearch = showSearch,
@@ -74,6 +74,9 @@ class _PaginatedCollectionViewState<TRead extends Model>
 
   @override
   Map<String, Set<FilterOperator>> get initialFilters => widget._initialFilters;
+
+  @override
+  String get collectionName => widget._collectionName;
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +114,7 @@ class _PaginatedCollectionViewState<TRead extends Model>
         Expanded(
           child: RiverpodPaginatedView<TRead>(
             controller: controller,
-            collectionProvider: ([params = const {}]) =>
-                widget._collectionProvider(params: params, context: context),
+            collectionProvider: widget._collectionProvider,
             onDataLoaded: (value) {
               if (!mounted || (_meta == value.meta && !_areControlsLocked)) return;
 

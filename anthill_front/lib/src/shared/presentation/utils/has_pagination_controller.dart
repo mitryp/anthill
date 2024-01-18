@@ -44,6 +44,11 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   @visibleForOverriding
   Map<String, Set<FilterOperator>> get initialFilters => {};
 
+  /// The collection name which will be used to fetch the [PaginateConfig].
+  /// Has to be the same as apiPrefix of HttpService descendants.
+  @visibleForOverriding
+  String get collectionName;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -65,7 +70,7 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   }
 
   Future<void> _loadConfig() async {
-    final config = await ref.watch(paginateConfigProvider(httpServiceProvider).future).onError(
+    final config = await ref.watch(paginateConfigProvider(collectionName).future).onError(
           (error, stackTrace) => interceptDioError(
             error,
             stackTrace,

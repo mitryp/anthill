@@ -9,9 +9,8 @@ class RiverpodPaginatedView<TModel extends Model> extends ConsumerStatefulWidget
   final ErrorBuilder errorBuilder;
   final PaginatedViewBuilder<TModel> viewBuilder;
   final WidgetBuilder loadingIndicator;
-  final AutoDisposeFutureProvider<Paginated<TModel>> Function([
-    QueryParams params,
-  ]) collectionProvider;
+  final AutoDisposeFutureProvider<Paginated<TModel>> Function(QueryParams params)
+      collectionProvider;
   final VoidCallback? onUpdateRequest;
   final ValueChanged<Paginated<TModel>>? onDataLoaded;
 

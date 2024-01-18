@@ -6,6 +6,7 @@ import '../../../../shared/pagination.dart';
 import '../../../../shared/presentation/widgets/page_body.dart';
 import '../../application/providers/logging_service_provider.dart';
 import '../../application/providers/logs_provider.dart';
+import '../../application/services/logging_service.dart';
 import '../../domain/dtos/log_entry_read_dto.dart';
 import '../log_entry_tile.dart';
 
@@ -29,6 +30,7 @@ class LogsPage extends StatelessWidget {
           queryParams: _queryParams,
           httpServiceProvider: loggingServiceProvider,
           collectionProvider: logsProvider,
+          collectionName: logsResourceName,
           showSearch: false,
           viewBuilder: (context, logs) {
             return ListView.builder(
