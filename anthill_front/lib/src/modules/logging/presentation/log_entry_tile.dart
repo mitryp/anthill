@@ -62,9 +62,11 @@ class LogEntryTile extends StatelessWidget {
       'deleteUser': 'User {} deleted',
       'createUser': 'User {} created',
       'updateUser': 'User {} updated',
+      'restoreUser': 'User {} restored',
       'deleteTransaction': 'Transaction {} deleted',
       'createTransaction': 'Transaction {} created',
       'updateTransaction': 'Transaction {} updated',
+      'restoreTransaction': 'Transaction {} restored',
     };
 
     final repr = actionToRepr[logEntry.action];
