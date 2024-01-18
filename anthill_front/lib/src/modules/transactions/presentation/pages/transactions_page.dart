@@ -8,6 +8,7 @@ import '../../../../shared/widgets.dart';
 import '../../../users/users_module.dart';
 import '../../application/providers/transaction_service_provider.dart';
 import '../../application/providers/transactions_provider.dart';
+import '../../application/services/transaction_service.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
 import '../transaction_card.dart';
 
@@ -35,6 +36,7 @@ class TransactionsPage extends StatelessWidget {
           queryParams: _queryParams,
           httpServiceProvider: transactionServiceProvider,
           collectionProvider: transactionsProvider,
+          collectionName: transactionsResourceName,
           additionalFiltersBuilder: ifHasRoles(
             context,
             roles: const {UserRole.admin},
