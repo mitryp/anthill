@@ -53,8 +53,8 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
     await ref.read(collectionControllerProvider).restoreResource(model.id, context);
   }
 
-  void openEditor(BuildContext context, TModel model) {
+  Future<void> openEditor(BuildContext context, TModel model) async {
     if (!context.mounted) return;
-    context.pushPage(editorPage, extra: model);
+    return context.pushPage(editorPage, extra: model);
   }
 }
