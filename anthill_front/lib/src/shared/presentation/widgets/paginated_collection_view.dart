@@ -11,10 +11,7 @@ import 'pagination_controls.dart';
 import 'riverpod_paginated_view.dart';
 
 typedef PaginatedCollectionProvider<TRead extends Model>
-    = AutoDisposeFutureProvider<Paginated<TRead>> Function({
-  QueryParams params,
-  BuildContext? context,
-});
+    = AutoDisposeFutureProvider<Paginated<TRead>> Function(QueryParams params);
 
 class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidget {
   final QueryParams _queryParams;
@@ -111,8 +108,7 @@ class _PaginatedCollectionViewState<TRead extends Model>
         Expanded(
           child: RiverpodPaginatedView<TRead>(
             controller: controller,
-            collectionProvider: ([params = const {}]) =>
-                widget._collectionProvider(params: params, context: context),
+            collectionProvider: widget._collectionProvider,
             onDataLoaded: (value) {
               if (!mounted || (_meta == value.meta && !_areControlsLocked)) return;
 

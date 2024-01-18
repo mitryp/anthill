@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../modules/transactions/application/providers/transactions_provider.dart';
 import '../../domain/interfaces/model.dart';
 
 class RiverpodPaginatedView<TModel extends Model> extends ConsumerStatefulWidget {
@@ -9,9 +10,8 @@ class RiverpodPaginatedView<TModel extends Model> extends ConsumerStatefulWidget
   final ErrorBuilder errorBuilder;
   final PaginatedViewBuilder<TModel> viewBuilder;
   final WidgetBuilder loadingIndicator;
-  final AutoDisposeFutureProvider<Paginated<TModel>> Function([
-    QueryParams params,
-  ]) collectionProvider;
+  final AutoDisposeFutureProvider<Paginated<TModel>> Function(QueryParams params)
+      collectionProvider;
   final VoidCallback? onUpdateRequest;
   final ValueChanged<Paginated<TModel>>? onDataLoaded;
 
@@ -72,6 +72,7 @@ class _RiverpodPaginatedViewState<TModel extends Model>
 
   @override
   Widget build(BuildContext context) {
+    transactionsProvider(_params);
     final value = ref.watch(widget.collectionProvider(_params));
 
     // generally speaking, putting callbacks in the build

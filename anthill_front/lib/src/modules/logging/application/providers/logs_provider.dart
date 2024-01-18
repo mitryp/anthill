@@ -9,12 +9,5 @@ import 'logging_service_provider.dart';
 part 'logs_provider.g.dart';
 
 @riverpod
-Future<Paginated<LogEntryReadDto>> logs(
-  LogsRef ref, {
-  QueryParams params = const {},
-  BuildContext? context,
-}) =>
-    ref.watch(loggingServiceProvider).getMany(params).onError(
-          (error, stackTrace) => interceptDioError(error, stackTrace, context: context),
-          test: isDioError,
-        );
+Future<Paginated<LogEntryReadDto>> logs(LogsRef ref, QueryParams params) =>
+    ref.watch(loggingServiceProvider).getMany(params);

@@ -11,18 +11,16 @@ class AnthillApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = buildRouter(context);
 
-    return ProviderScope(
-      child: Loader(
-        loginPage: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Login | Anthill',
-          home: LoginPage(),
-        ),
-        child: MaterialApp.router(
-          routerConfig: router,
-          debugShowCheckedModeBanner: false,
-          title: 'Anthill',
-        ),
+    return Loader(
+      loginPage: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Login | Anthill',
+        home: LoginPage(),
+      ),
+      child: MaterialApp.router(
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
+        title: 'Anthill',
       ),
     );
   }

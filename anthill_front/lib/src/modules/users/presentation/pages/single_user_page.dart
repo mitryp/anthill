@@ -6,9 +6,9 @@ import '../../../../shared/http.dart';
 import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
 import '../../../auth/auth_module.dart';
+import '../../application/providers/user_by_id_provider.dart';
 import '../../application/providers/user_controller_provider.dart';
 import '../../domain/constraints/user_role.dart';
-import '../../domain/dtos/user_by_id_provider.dart';
 import '../../domain/dtos/user_read_dto.dart';
 
 class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDto> {
@@ -42,8 +42,7 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
     final passedUser = _user;
     final userId = _userId;
 
-    final value =
-        passedUser != null ? AsyncData(passedUser) : ref.watch(userByIdProvider(userId, context));
+    final value = passedUser != null ? AsyncData(passedUser) : ref.watch(userByIdProvider(userId));
 
     final stateRepr = switchSingleModelValue(value, context: context);
     if (stateRepr != null) {

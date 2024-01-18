@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../modules/logging/logging_module.dart';
 import '../../domain/interfaces/model.dart';
@@ -10,20 +11,27 @@ import 'http_service.dart';
 
 mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends Model,
     TUpdate extends Model, TService extends HttpWriteMixin<TRead, TCreate, TUpdate>> {
+  @visibleForOverriding
   ProviderBase<TService> get serviceProvider;
 
+  @visibleForOverriding
   ProviderOrFamily get collectionProvider;
 
+  @visibleForOverriding
   ProviderOrFamily Function(int id) get resourceByIdProvider;
 
+  @visibleForOverriding
   AutoDisposeAsyncNotifierProviderRef get ref;
 
   TService _readService() => ref.read(serviceProvider);
 
+  @visibleForOverriding
   void invalidateCollectionProvider() => ref.invalidate(collectionProvider);
 
+  @visibleForOverriding
   void invalidateSingleResourceProviderWithId(int id) => ref.invalidate(resourceByIdProvider(id));
 
+  @visibleForOverriding
   void invalidateLogsProvider() => ref.invalidate(logsProvider);
 
   Future<TRead> createResource(TCreate dto, [BuildContext? context]) =>
