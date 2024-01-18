@@ -128,6 +128,11 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
     final uri = state.uri.cleanWithParams(
       controller.toMap().cast<String, Object>()..remove('limit'),
     );
-    window.history.replaceState(null, '', '#$uri');
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ProviderScope.containerOf(context).read(shareLinkProvider.notifier).update(
+            Uri.base.resolve('#$uri').toString(),
+          );
+    });
   }
 }
