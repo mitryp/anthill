@@ -289,11 +289,12 @@ packages:
   flutter_nestjs_paginate:
     dependency: "direct main"
     description:
-      name: flutter_nestjs_paginate
-      sha256: a2ecec97b55a78771b744ae3f839b55e04d30be7b9ccadf4db407035f0c321fc
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
+      path: "."
+      ref: "feature/default-filters"
+      resolved-ref: "811b95bdacc831439377976d8022d737d7b46784"
+      url: "https://github.com/mitryp/flutter_nestjs_paginate"
+    source: git
+    version: "1.0.3"
   flutter_riverpod:
     dependency: "direct main"
     description:

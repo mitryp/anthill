@@ -1,12 +1,14 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meta/meta.dart';
-import 'package:universal_html/html.dart';
 
 import '../../application/http/dio_error_interceptor.dart';
 import '../../application/http/http_service.dart';
 import '../../application/providers/paginate_config_provider.dart';
+import '../../application/providers/share_link_provider.dart';
 import '../../utils/clean_uri.dart';
 import '../../utils/restore_pagination_controller.dart';
 
@@ -35,7 +37,6 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   /// Will be used only once during the initialization.
   @visibleForOverriding
   QueryParams get queryParams => const {};
-  late QueryParams _lastParams = queryParams;
 
   /// Initial filters for the controller to be initialized with.
   ///
@@ -56,19 +57,6 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
     if (!isControllerInitialized) _loadConfig();
   }
 
-  @override
-  void didUpdateWidget(W oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (!isControllerInitialized) return;
-
-    final newParams = queryParams;
-    if (_lastParams != newParams) {
-      controller.apply(newParams);
-      _lastParams = newParams;
-    }
-  }
-
   Future<void> _loadConfig() async {
     final config = await ref.watch(paginateConfigProvider(collectionName).future).onError(
           (error, stackTrace) => interceptDioError(
@@ -81,27 +69,21 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
         );
 
     _initController(config, queryParams);
-    _lastParams = controller.toMap();
   }
 
   void _initController(PaginateConfig config, [QueryParams params = const {}]) {
     if (!mounted || isControllerInitialized) return;
 
     try {
-      controller = restoreController(params, paginateConfig: config);
+      controller = restoreController(
+        params,
+        paginateConfig: config.copyWith(defaultFilters: initialFilters),
+      );
     } catch (_) {
-      controller = PaginationController(paginateConfig: config);
+      controller = PaginationController(
+        paginateConfig: config.copyWith(defaultFilters: initialFilters),
+      );
     }
-    // add initial filters
-    final presentFilters = controller.filters;
-    controller.silently((controller) {
-      for (final MapEntry(key: field, value: filters) in initialFilters.entries) {
-        for (final filter in filters) {
-          if (presentFilters.containsKey(field)) return;
-          controller.addFilter(field, filter);
-        }
-      }
-    });
 
     controller.addListener(_updateUri);
     _updateUri();
