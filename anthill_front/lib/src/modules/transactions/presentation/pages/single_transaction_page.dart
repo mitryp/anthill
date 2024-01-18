@@ -103,8 +103,7 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
       onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, transaction),
       onEditPressed: isDeleted ? null : () => openEditor(context, transaction),
       showRestoreButton: ref.watch(authProvider).value?.role == UserRole.admin,
-      onRestorePressed:
-          !isDeleted ? null : () => restoreModel(context, ref, transaction),
+      onRestorePressed: !isDeleted ? null : () => restoreModel(context, ref, transaction),
     );
 
     return Scaffold(

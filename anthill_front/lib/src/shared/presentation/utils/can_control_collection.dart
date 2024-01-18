@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../application/http/collection_controller_mixin.dart';
 import '../../application/http/http_service.dart';
