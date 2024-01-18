@@ -5,6 +5,6 @@ import 'transaction_service_provider.dart';
 
 part 'transaction_by_id_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<TransactionReadDto> transactionById(TransactionByIdRef ref, int id) =>
-    ref.watch(transactionServiceProvider).getOne(id);
+    ref.read(transactionServiceProvider).getOne(id);
