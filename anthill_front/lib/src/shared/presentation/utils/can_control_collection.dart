@@ -38,11 +38,7 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
     }
 
     // ignore: use_build_context_synchronously
-    ref.read(collectionControllerProvider).deleteResource(model.id, context);
-
-    if (context.mounted) {
-      context.pop();
-    }
+    await ref.read(collectionControllerProvider).deleteResource(model.id, context);
   }
 
   Future<void> restoreModel(BuildContext context, WidgetRef ref, TModel model) async {
@@ -55,11 +51,7 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
     }
 
     // ignore: use_build_context_synchronously
-    ref.read(collectionControllerProvider).restoreResource(model.id, context);
-
-    if (context.mounted) {
-      context.pop();
-    }
+    await ref.read(collectionControllerProvider).restoreResource(model.id, context);
   }
 
   void openEditor(BuildContext context, TModel model) {
