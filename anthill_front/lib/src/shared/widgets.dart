@@ -1,5 +1,6 @@
 library shared_widgets;
 
+export 'application/providers/share_link_provider.dart' show shareLinkProvider;
 export 'presentation/app.dart' show AnthillApp;
 export 'presentation/dialogs/confirmation_dialog.dart' show ConfirmationDialog, askUserConfirmation;
 export 'presentation/form_defaults.dart'

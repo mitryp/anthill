@@ -29,7 +29,7 @@ class TransactionsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transactions'),
-        actions: const [CopyLinkButton()],
+        actions: [CopyLinkButton.fromProvider()],
       ),
       body: PageBody(
         child: PaginatedCollectionView<TransactionReadDto>(
