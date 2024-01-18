@@ -6,6 +6,7 @@ import 'package:universal_html/html.dart';
 
 import '../../application/http/dio_error_interceptor.dart';
 import '../../application/http/http_service.dart';
+import '../../application/providers/paginate_config_provider.dart';
 import '../../utils/clean_uri.dart';
 import '../../utils/restore_pagination_controller.dart';
 
@@ -43,6 +44,11 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   @visibleForOverriding
   Map<String, Set<FilterOperator>> get initialFilters => {};
 
+  /// The collection name which will be used to fetch the [PaginateConfig].
+  /// Has to be the same as apiPrefix of HttpService descendants.
+  @visibleForOverriding
+  String get collectionName;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -64,7 +70,7 @@ mixin HasPaginationController<W extends ConsumerStatefulWidget> on ConsumerState
   }
 
   Future<void> _loadConfig() async {
-    final config = await ref.watch(httpServiceProvider).getPaginateConfig().onError(
+    final config = await ref.watch(paginateConfigProvider(collectionName).future).onError(
           (error, stackTrace) => interceptDioError(
             error,
             stackTrace,

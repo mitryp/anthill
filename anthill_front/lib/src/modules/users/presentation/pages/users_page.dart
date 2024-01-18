@@ -8,6 +8,7 @@ import '../../../../shared/widgets.dart';
 import '../../../auth/auth_module.dart';
 import '../../application/providers/user_service_provider.dart';
 import '../../application/providers/users_provider.dart';
+import '../../application/services/user_service.dart';
 import '../../domain/constraints/user_role.dart';
 import '../../domain/dtos/user_read_dto.dart';
 import '../user_card.dart';
@@ -45,6 +46,7 @@ class UsersPage extends StatelessWidget {
           queryParams: _queryParams,
           httpServiceProvider: userServiceProvider,
           collectionProvider: usersProvider,
+          collectionName: usersResourceName,
           additionalFiltersBuilder: ifHasRoles(
             context,
             roles: const {UserRole.admin},

@@ -26,11 +26,13 @@ class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidge
   final Widget Function(PaginationController controller)? _additionalFiltersBuilder;
 
   final Map<String, Set<FilterOperator>> _initialFilters;
+  final String _collectionName;
 
   const PaginatedCollectionView({
     required ProviderBase<HttpService> httpServiceProvider,
     required PaginatedCollectionProvider<TRead> collectionProvider,
     required PaginatedViewBuilder<TRead> viewBuilder,
+    required String collectionName,
     bool showSearch = true,
     bool showSort = true,
     Widget Function(PaginationController controller)? additionalFiltersBuilder,
@@ -39,7 +41,8 @@ class PaginatedCollectionView<TRead extends Model> extends ConsumerStatefulWidge
     ErrorBuilder? errorBuilder,
     QueryParams queryParams = const {},
     super.key,
-  })  : _initialFilters = initialFilters,
+  })  : _collectionName = collectionName,
+        _initialFilters = initialFilters,
         _additionalFiltersBuilder = additionalFiltersBuilder,
         _showSort = showSort,
         _showSearch = showSearch,
@@ -71,6 +74,9 @@ class _PaginatedCollectionViewState<TRead extends Model>
 
   @override
   Map<String, Set<FilterOperator>> get initialFilters => widget._initialFilters;
+
+  @override
+  String get collectionName => widget._collectionName;
 
   @override
   Widget build(BuildContext context) {
