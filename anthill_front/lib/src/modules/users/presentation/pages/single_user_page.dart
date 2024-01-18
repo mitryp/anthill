@@ -99,6 +99,7 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
                 child: SingleModelControls(
                   onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, user),
                   onEditPressed: isDeleted ? null : () => openEditor(context, user),
+                  onRestorePressed: !isDeleted ? null : () => restoreModel(context, ref, user),
                 ),
               ),
             ],

@@ -60,4 +60,7 @@ mixin HttpWriteMixin<TRead, TCreate extends Model, TUpdate extends Model> on Htt
 
   Future<bool> delete(int id) =>
       client.delete<String>('$apiPrefix/$id').then((value) => value.data == 'true');
+
+  Future<bool> restore(int id) =>
+      client.post<String>('$apiPrefix/$id').then((value) => value.data == 'true');
 }

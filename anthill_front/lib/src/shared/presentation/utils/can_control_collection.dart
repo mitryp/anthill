@@ -20,14 +20,18 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
       get collectionControllerProvider;
 
   @visibleForOverriding
-  String localizeConfirmationMessage(BuildContext context) =>
+  String localizeDeletionMessage(BuildContext context) =>
       'Do you really want to delete this model?';
+
+  @visibleForOverriding
+  String localizeRestorationMessage(BuildContext context) =>
+      'Do you really want to restore this model?';
 
   @protected
   Future<void> deleteModel(BuildContext context, WidgetRef ref, TModel model) async {
     if (!await askUserConfirmation(
           context,
-          Text(localizeConfirmationMessage(context)),
+          Text(localizeDeletionMessage(context)),
         ) ||
         !context.mounted) {
       return;
@@ -35,6 +39,23 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
 
     // ignore: use_build_context_synchronously
     ref.read(collectionControllerProvider).deleteResource(model.id, context);
+
+    if (context.mounted) {
+      context.pop();
+    }
+  }
+
+  Future<void> restoreModel(BuildContext context, WidgetRef ref, TModel model) async {
+    if (!await askUserConfirmation(
+          context,
+          Text(localizeRestorationMessage(context)),
+        ) ||
+        !context.mounted) {
+      return;
+    }
+
+    // ignore: use_build_context_synchronously
+    ref.read(collectionControllerProvider).restoreResource(model.id, context);
 
     if (context.mounted) {
       context.pop();

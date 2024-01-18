@@ -26,11 +26,11 @@ mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends
 
   void invalidateLogsProvider() => ref.invalidate(logsProvider);
 
-  Future<TRead> createResource(TCreate dto, [BuildContext? context]) => _readService()
-      .create(dto)
-      .whenComplete(invalidateCollectionProvider)
-      .whenComplete(invalidateLogsProvider)
-      .onError(
+  Future<TRead> createResource(TCreate dto, [BuildContext? context]) =>
+      _readService().create(dto).whenComplete(() {
+        invalidateCollectionProvider();
+        invalidateLogsProvider();
+      }).onError(
         (error, stackTrace) => interceptDioError<TRead>(
           error,
           stackTrace,
@@ -53,12 +53,32 @@ mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends
         test: isDioError,
       );
 
-  Future<bool> deleteResource(int id, [BuildContext? context]) => _readService()
-      .delete(id)
-      .whenComplete(invalidateCollectionProvider)
-      .whenComplete(invalidateLogsProvider)
-      .onError(
-        (error, stackTrace) => interceptDioError(error, stackTrace, context: context),
+  Future<bool> deleteResource(int id, [BuildContext? context]) =>
+      _readService().delete(id).whenComplete(() {
+        invalidateCollectionProvider();
+        invalidateLogsProvider();
+      }).onError(
+        (error, stackTrace) => interceptDioError(
+          error,
+          stackTrace,
+          context: context,
+          returnValue: false,
+        ),
+        test: isDioError,
+      );
+
+  Future<bool> restoreResource(int id, [BuildContext? context]) =>
+      _readService().restore(id).whenComplete(() {
+        invalidateSingleResourceProviderWithId(id);
+        invalidateCollectionProvider();
+        invalidateLogsProvider();
+      }).onError(
+        (error, stackTrace) => interceptDioError(
+          error,
+          stackTrace,
+          context: context,
+          returnValue: false,
+        ),
         test: isDioError,
       );
 }

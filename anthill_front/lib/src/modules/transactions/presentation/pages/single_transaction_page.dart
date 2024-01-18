@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/http.dart';
 import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
+import '../../../auth/application/providers/auth_provider.dart';
+import '../../../users/users_module.dart';
 import '../../application/providers/transaction_by_id_provider.dart';
 import '../../application/providers/transaction_controller_provider.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
@@ -111,6 +113,8 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
     final controls = SingleModelControls(
       onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, transaction),
       onEditPressed: isDeleted ? null : () => openEditor(context, transaction),
+      showRestoreButton: ref.watch(authProvider).value?.role == UserRole.admin,
+      onRestorePressed: !isDeleted ? null : () => restoreModel(context, ref, transaction),
     );
 
     return Scaffold(

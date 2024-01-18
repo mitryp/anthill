@@ -1,4 +1,4 @@
-import { DeepPartial, FindOptionsWhere, Repository } from 'typeorm';
+import { DeepPartial, FindOptionsWhere, IsNull, Not, Repository } from 'typeorm';
 import { Mapper } from 'automapper-core';
 import { NotFoundException, Type } from '@nestjs/common';
 import { EntityBase } from './entity.base';
@@ -84,7 +84,7 @@ export abstract class ModifiableResourceServiceBase<
     return true;
   }
 
-  async update(id: number, dto: TUpdateDto): Promise<TReadDto | undefined> {
+  async update(id: number, dto: TUpdateDto): Promise<TReadDto> {
     const existing = await this.repository.findOne({ where: { id } as FindOptionsWhere<TEntity> });
 
     if (!existing || existing.deleteDate !== null) {
@@ -95,5 +95,23 @@ export abstract class ModifiableResourceServiceBase<
     const updated = await this.repository.save({ id, ...entity } as DeepPartial<TEntity>);
 
     return this.mapOne(Object.assign(updated, existing));
+  }
+
+  async restore(id: number): Promise<boolean> {
+    const existing = await this.repository.findOne({
+      withDeleted: true,
+      where: {
+        id,
+        deleteDate: Not(IsNull()),
+      } as FindOptionsWhere<TEntity>,
+    });
+
+    if (!existing) {
+      throw new NotFoundException();
+    }
+
+    await this.repository.restore({ id } as FindOptionsWhere<TEntity>);
+
+    return true;
   }
 }
