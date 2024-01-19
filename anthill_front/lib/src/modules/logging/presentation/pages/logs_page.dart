@@ -3,7 +3,7 @@ import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../shared/pagination.dart';
-import '../../../../shared/presentation/widgets/page_body.dart';
+import '../../../../shared/widgets.dart';
 import '../../application/providers/logging_service_provider.dart';
 import '../../application/providers/logs_provider.dart';
 import '../../application/services/logging_service.dart';
@@ -24,7 +24,10 @@ class LogsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Logs')),
+      appBar: AppBar(
+        title: const Text('Logs'),
+        actions: [CopyLinkButton.fromProvider()],
+      ),
       body: PageBody(
         child: PaginatedCollectionView<LogEntryReadDto>(
           queryParams: _queryParams,

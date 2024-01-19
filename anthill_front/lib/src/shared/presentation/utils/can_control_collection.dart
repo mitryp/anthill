@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../application/http/collection_controller_mixin.dart';
 import '../../application/http/http_service.dart';
@@ -38,11 +37,7 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
     }
 
     // ignore: use_build_context_synchronously
-    ref.read(collectionControllerProvider).deleteResource(model.id, context);
-
-    if (context.mounted) {
-      context.pop();
-    }
+    await ref.read(collectionControllerProvider).deleteResource(model.id, context);
   }
 
   Future<void> restoreModel(BuildContext context, WidgetRef ref, TModel model) async {
@@ -55,15 +50,11 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
     }
 
     // ignore: use_build_context_synchronously
-    ref.read(collectionControllerProvider).restoreResource(model.id, context);
-
-    if (context.mounted) {
-      context.pop();
-    }
+    await ref.read(collectionControllerProvider).restoreResource(model.id, context);
   }
 
-  void openEditor(BuildContext context, TModel model) {
+  Future<void> openEditor(BuildContext context, TModel model) async {
     if (!context.mounted) return;
-    context.pushPage(editorPage, extra: model);
+    return context.pushPage(editorPage, extra: model);
   }
 }

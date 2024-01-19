@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/widget_list_divide.dart';
+import '../../typedefs.dart';
+import 'progress_indicator_button.dart';
 
 class SingleModelControls extends StatelessWidget {
   final bool showEditButton;
-  final VoidCallback? onEditPressed;
+  final FutureVoidCallback? onEditPressed;
   final bool showDeleteButton;
-  final VoidCallback? onDeletePressed;
+  final FutureVoidCallback? onDeletePressed;
   final double overflowSpacing;
   final double controlsSeparation;
   final bool showRestoreButton;
-  final VoidCallback? onRestorePressed;
+  final FutureVoidCallback? onRestorePressed;
 
   const SingleModelControls({
     this.showEditButton = true,
@@ -26,16 +27,17 @@ class SingleModelControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverflowBar(
-      alignment: MainAxisAlignment.center,
-      overflowAlignment: OverflowBarAlignment.center,
-      overflowSpacing: overflowSpacing,
+    return Wrap(
+      alignment: WrapAlignment.spaceEvenly,
+      spacing: overflowSpacing,
+      runSpacing: MediaQuery.of(context).textScaleFactor * overflowSpacing,
       children: [
         if (showDeleteButton)
-          OutlinedButton.icon(
+          ProgressIndicatorButton.icon(
+            iconButtonBuilder: OutlinedButton.icon,
             onPressed: onDeletePressed?.call,
-            icon: const Icon(Icons.delete),
             label: const Text('Delete'),
+            icon: const Icon(Icons.delete),
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.resolveWith(
                 (states) {
@@ -46,18 +48,20 @@ class SingleModelControls extends StatelessWidget {
             ),
           ),
         if (showEditButton)
-          ElevatedButton.icon(
+          ProgressIndicatorButton.icon(
+            iconButtonBuilder: ElevatedButton.icon,
             onPressed: onEditPressed?.call,
             icon: const Icon(Icons.edit),
             label: const Text('Edit'),
           ),
         if (showRestoreButton)
-          ElevatedButton.icon(
+          ProgressIndicatorButton.icon(
+            iconButtonBuilder: ElevatedButton.icon,
             onPressed: onRestorePressed,
             icon: const Icon(Icons.restore),
             label: const Text('Restore'),
           ),
-      ].divide(SizedBox(width: controlsSeparation)),
+      ],
     );
   }
 }

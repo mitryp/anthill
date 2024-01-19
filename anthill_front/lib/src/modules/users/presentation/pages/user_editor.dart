@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
 import '../../../auth/auth_module.dart';
 import '../../application/providers/user_controller_provider.dart';
@@ -78,8 +77,8 @@ class _UserEditorState extends ConsumerState<UserEditor> {
       await controller.createResource(_dto);
     }
 
-    if (mounted) {
-      context.goPage(defaultPage);
+    if (mounted && context.canPop()) {
+      context.pop();
     }
   }
 
@@ -160,7 +159,8 @@ class _UserEditorState extends ConsumerState<UserEditor> {
       appBar: AppBar(
         title: const Text('Editing user'),
       ),
-      floatingActionButton: ElevatedButton.icon(
+      floatingActionButton: ProgressIndicatorButton.icon(
+        iconButtonBuilder: ElevatedButton.icon,
         onPressed: _saveUser,
         icon: const Icon(Icons.save),
         label: const Text('Save'),

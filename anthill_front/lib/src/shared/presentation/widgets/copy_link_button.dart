@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:universal_html/html.dart';
 
+import '../../application/providers/share_link_provider.dart';
 import 'snack_bar_content.dart';
 
 class CopyLinkButton extends StatelessWidget {
   final String? _link;
 
   const CopyLinkButton({String? link, super.key}) : _link = link;
+
+  static Widget fromProvider() => Consumer(
+        builder: (context, ref, child) => CopyLinkButton(
+          link: ref.watch(shareLinkProvider),
+        ),
+      );
 
   @override
   Widget build(BuildContext context) => IconButton(

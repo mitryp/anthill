@@ -65,6 +65,7 @@ mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends
       _readService().delete(id).whenComplete(() {
         invalidateCollectionProvider();
         invalidateLogsProvider();
+        invalidateSingleResourceProviderWithId(id);
       }).onError(
         (error, stackTrace) => interceptDioError(
           error,

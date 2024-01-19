@@ -13,19 +13,16 @@ import '../../domain/dtos/user_read_dto.dart';
 
 class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDto> {
   final int _userId;
-  final UserReadDto? _user;
 
   const SingleUserPage({
     required int userId,
-    UserReadDto? user,
     super.key,
-  })  : _userId = userId,
-        _user = user;
+  }) : _userId = userId;
 
   factory SingleUserPage.pageBuilder(BuildContext _, GoRouterState state) {
-    final (:id, :model) = modelFromRouterState<UserReadDto>(state);
+    final (:id, model: _) = modelFromRouterState<UserReadDto>(state);
 
-    return SingleUserPage(userId: id, user: model);
+    return SingleUserPage(userId: id);
   }
 
   @override
@@ -39,10 +36,13 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final passedUser = _user;
-    final userId = _userId;
+    final provider = userByIdProvider(_userId);
+    Future<void> waitUntilInvalidated() async {
+      if (!context.mounted) return;
+      return ref.read(provider.future);
+    }
 
-    final value = passedUser != null ? AsyncData(passedUser) : ref.watch(userByIdProvider(userId));
+    final value = ref.watch(userByIdProvider(_userId));
 
     final stateRepr = switchSingleModelValue(value, context: context);
     if (stateRepr != null) {
@@ -96,9 +96,15 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
               VisibleFor(
                 roles: const {UserRole.admin},
                 child: SingleModelControls(
-                  onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, user),
-                  onEditPressed: isDeleted ? null : () => openEditor(context, user),
-                  onRestorePressed: !isDeleted ? null : () => restoreModel(context, ref, user),
+                  onDeletePressed: isDeleted
+                      ? null
+                      : () => deleteModel(context, ref, user).whenComplete(waitUntilInvalidated),
+                  onEditPressed: isDeleted
+                      ? null
+                      : () => openEditor(context, user).whenComplete(waitUntilInvalidated),
+                  onRestorePressed: !isDeleted
+                      ? null
+                      : () => restoreModel(context, ref, user).whenComplete(waitUntilInvalidated),
                 ),
               ),
             ],

@@ -30,7 +30,6 @@ class TransactionCard extends StatelessWidget {
       onTap: () => context.pushPage(
         AppPage.transaction,
         resourceId: _transaction.id,
-        extra: _transaction,
       ),
     );
   }

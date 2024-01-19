@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../shared/navigation.dart';
 import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_controller_provider.dart';
 import '../../domain/dtos/transaction_create_dto.dart';
@@ -75,8 +74,8 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
       await controller.createResource(_dto, context);
     }
 
-    if (mounted) {
-      context.goPage(defaultPage);
+    if (mounted && context.canPop()) {
+      context.pop();
     }
   }
 
@@ -89,7 +88,8 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
       appBar: AppBar(
         title: const Text('Editing transaction'),
       ),
-      floatingActionButton: ElevatedButton.icon(
+      floatingActionButton: ProgressIndicatorButton.icon(
+        iconButtonBuilder: ElevatedButton.icon,
         onPressed: _saveTransaction,
         icon: const Icon(Icons.save),
         label: const Text('Save'),

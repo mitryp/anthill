@@ -29,7 +29,7 @@ class UserCard extends StatelessWidget {
         ),
       ),
       subtitle: Text(_user.email),
-      onTap: () => context.pushPage(AppPage.user, resourceId: _user.id, extra: _user),
+      onTap: () => context.pushPage(AppPage.user, resourceId: _user.id),
     );
   }
 }
