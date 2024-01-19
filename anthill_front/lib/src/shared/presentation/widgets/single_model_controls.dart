@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../typedefs.dart';
-import '../../utils/widget_list_divide.dart';
 import 'progress_indicator_button.dart';
 
 class SingleModelControls extends StatelessWidget {
@@ -28,10 +27,10 @@ class SingleModelControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OverflowBar(
-      alignment: MainAxisAlignment.center,
-      overflowAlignment: OverflowBarAlignment.center,
-      overflowSpacing: overflowSpacing,
+    return Wrap(
+      alignment: WrapAlignment.spaceEvenly,
+      spacing: overflowSpacing,
+      runSpacing: MediaQuery.of(context).textScaleFactor * overflowSpacing,
       children: [
         if (showDeleteButton)
           ProgressIndicatorButton.icon(
@@ -62,7 +61,7 @@ class SingleModelControls extends StatelessWidget {
             icon: const Icon(Icons.restore),
             label: const Text('Restore'),
           ),
-      ].divide(SizedBox(width: controlsSeparation)),
+      ],
     );
   }
 }
