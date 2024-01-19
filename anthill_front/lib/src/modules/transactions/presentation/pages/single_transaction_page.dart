@@ -36,7 +36,13 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final value = ref.watch(transactionByIdProvider(_transactionId));
+    final provider = transactionByIdProvider(_transactionId);
+    Future<void> waitUntilInvalidated() async {
+      if (!context.mounted) return;
+      return ref.read(provider.future);
+    }
+
+    final value = ref.watch(provider);
 
     final stateRepr = switchSingleModelValue(value, context: context);
     if (stateRepr != null) {
@@ -100,10 +106,16 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
     final isDeleted = transaction.isDeleted;
 
     final controls = SingleModelControls(
-      onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, transaction),
-      onEditPressed: isDeleted ? null : () => openEditor(context, transaction),
+      onEditPressed: isDeleted
+          ? null
+          : () => openEditor(context, transaction).whenComplete(waitUntilInvalidated),
+      onDeletePressed: isDeleted
+          ? null
+          : () => deleteModel(context, ref, transaction).whenComplete(waitUntilInvalidated),
+      onRestorePressed: !isDeleted
+          ? null
+          : () => restoreModel(context, ref, transaction).whenComplete(waitUntilInvalidated),
       showRestoreButton: ref.watch(authProvider).value?.role == UserRole.admin,
-      onRestorePressed: !isDeleted ? null : () => restoreModel(context, ref, transaction),
     );
 
     return Scaffold(
