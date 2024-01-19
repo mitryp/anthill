@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,3 +19,5 @@ typedef IconButtonBuilder = Widget Function({
   required Widget label,
   ButtonStyle? style,
 });
+
+typedef FutureVoidCallback = FutureOr<void> Function();
