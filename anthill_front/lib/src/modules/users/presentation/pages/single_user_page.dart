@@ -36,6 +36,12 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final provider = userByIdProvider(_userId);
+    Future<void> waitUntilInvalidated() async {
+      if (!context.mounted) return;
+      return ref.read(provider.future);
+    }
+
     final value = ref.watch(userByIdProvider(_userId));
 
     final stateRepr = switchSingleModelValue(value, context: context);
@@ -90,9 +96,15 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
               VisibleFor(
                 roles: const {UserRole.admin},
                 child: SingleModelControls(
-                  onDeletePressed: isDeleted ? null : () => deleteModel(context, ref, user),
-                  onEditPressed: isDeleted ? null : () => openEditor(context, user),
-                  onRestorePressed: !isDeleted ? null : () => restoreModel(context, ref, user),
+                  onDeletePressed: isDeleted
+                      ? null
+                      : () => deleteModel(context, ref, user).whenComplete(waitUntilInvalidated),
+                  onEditPressed: isDeleted
+                      ? null
+                      : () => openEditor(context, user).whenComplete(waitUntilInvalidated),
+                  onRestorePressed: !isDeleted
+                      ? null
+                      : () => restoreModel(context, ref, user).whenComplete(waitUntilInvalidated),
                 ),
               ),
             ],
