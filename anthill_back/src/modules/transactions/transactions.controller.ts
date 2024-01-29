@@ -7,7 +7,7 @@ import {
   Param,
   Patch,
   Post,
-  Req,
+  Req, UseGuards
 } from '@nestjs/common';
 import { transactionsPaginateConfig, TransactionsService } from './transactions.service';
 import { TransactionReadDto } from './data/dtos/transaction.read.dto';
@@ -24,8 +24,8 @@ import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
 import { Request } from 'express';
 import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
-import { RequireRoles } from '../auth/roles_guard/require-roles.decorator';
 import { UserRole } from '../users/data/entities/user.entity';
+import { RolesGuard } from '../auth/roles_guard/roles.guard';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -110,7 +110,7 @@ export class TransactionsController {
     return res;
   }
 
-  @RequireRoles([UserRole.admin])
+  @UseGuards(new RolesGuard(UserRole.admin))
   @Post(':id')
   async restore(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
     const res = await this.transactionService.restore(id);

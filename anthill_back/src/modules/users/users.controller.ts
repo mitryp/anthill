@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { usersPaginateConfig, UsersService } from './users.service';
@@ -22,7 +23,7 @@ import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { Request } from 'express';
 import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
-import { RequireRoles } from '../auth/roles_guard/require-roles.decorator';
+import { RolesGuard } from '../auth/roles_guard/roles.guard';
 
 @ApiTags('Users')
 @Controller('users')
@@ -54,7 +55,7 @@ export class UsersController {
     return user;
   }
 
-  @RequireRoles([UserRole.admin])
+  @UseGuards(new RolesGuard(UserRole.admin))
   @Post()
   async create(@Body() user: UserCreateDto, @Req() req: Request): Promise<UserReadDto> {
     const res = await this.usersService.create(user);
@@ -68,7 +69,7 @@ export class UsersController {
     return res;
   }
 
-  @RequireRoles([UserRole.admin])
+  @UseGuards(new RolesGuard(UserRole.admin))
   @Patch(':id')
   async update(
     @Param('id') id: number,
@@ -86,7 +87,7 @@ export class UsersController {
     return res;
   }
 
-  @RequireRoles([UserRole.admin])
+  @UseGuards(new RolesGuard(UserRole.admin))
   @Delete(':id')
   async delete(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
     const res = await this.usersService.delete(id);
@@ -102,7 +103,7 @@ export class UsersController {
     return res;
   }
 
-  @RequireRoles([UserRole.admin])
+  @UseGuards(new RolesGuard(UserRole.admin))
   @Post(':id')
   async restore(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
     const res = await this.usersService.restore(id);
