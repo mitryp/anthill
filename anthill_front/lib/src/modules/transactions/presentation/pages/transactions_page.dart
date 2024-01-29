@@ -60,7 +60,7 @@ class TransactionsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => context.goPage(AppPage.transactionEditor),
+        onPressed: () => context.pushPage(AppPage.transactionEditor),
       ),
     );
   }
