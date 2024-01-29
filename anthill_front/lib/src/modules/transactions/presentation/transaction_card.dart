@@ -17,12 +17,12 @@ class TransactionCard extends StatelessWidget {
       title: Text.rich(
         TextSpan(
           children: [
-            TextSpan(text: _transaction.sourceOrPurpose),
-            const TextSpan(text: ' - '),
             TextSpan(
               text: '${_transaction.amount}GBP',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
+            const TextSpan(text: ': '),
+            TextSpan(text: _transaction.sourceOrPurpose),
           ],
         ),
       ),
