@@ -11,9 +11,10 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   logging: true,
-  entities: ['dist/modules/**/*.entity.{js,ts}'],
+  entities: ['dist/**/*.entity.{js,ts}'],
   migrations: ['migrations/*.{js,ts}'],
-  synchronize: process.env.NODE_ENV === 'development',
+  synchronize: false,
 };
 
+// noinspection JSUnusedGlobalSymbols
 export const dataSource = new DataSource(dataSourceOptions);
