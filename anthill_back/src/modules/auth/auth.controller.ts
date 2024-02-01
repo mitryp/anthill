@@ -33,7 +33,7 @@ export class AuthController {
         httpOnly: true,
         secure: this.authConfig.useSecureCookies,
         sameSite: 'strict',
-        maxAge: this.authConfig.jwtTtl,
+        maxAge: this.authConfig.sessionTtl,
       })
       .send();
 

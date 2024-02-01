@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         },
       ]),
       ignoreExpiration: false,
-      secretOrKey: authConfig.jwtSecret,
+      secretOrKey: authConfig.sessionSecret,
     });
   }
 

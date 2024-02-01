@@ -22,9 +22,9 @@ import { EncryptionService } from '../../common/utils/encryption.service';
       imports: [ConfigurationModule],
       inject: [ConfigurationAuthService],
       useFactory: (authConfig: ConfigurationAuthService) => ({
-        secret: authConfig.jwtSecret,
+        secret: authConfig.sessionSecret,
         signOptions: {
-          expiresIn: authConfig.jwtTtl,
+          expiresIn: authConfig.sessionTtl,
         },
       }),
     }),
