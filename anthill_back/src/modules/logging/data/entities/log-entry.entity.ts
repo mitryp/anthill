@@ -4,7 +4,7 @@ import { User } from '../../../users/data/entities/user.entity';
 import { AutoMap } from 'automapper-classes';
 
 @Entity('log_entries')
-export class LogEntryEntity extends EntityBase {
+export class LogEntry extends EntityBase {
   // A user who performed the action this log entry is about.
   @ManyToOne(() => User, {
     onDelete: 'RESTRICT',
