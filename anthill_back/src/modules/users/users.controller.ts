@@ -23,7 +23,7 @@ import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { Request } from 'express';
 import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
-import { RolesGuard } from '../auth/roles_guard/roles.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Users')
 @Controller('users')

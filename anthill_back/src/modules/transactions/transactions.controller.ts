@@ -25,7 +25,7 @@ import { Request } from 'express';
 import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { UserRole } from '../users/data/entities/user.entity';
-import { RolesGuard } from '../auth/roles_guard/roles.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Transactions')
 @Controller('transactions')
