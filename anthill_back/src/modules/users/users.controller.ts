@@ -22,7 +22,7 @@ import { UserUpdateDto } from './data/dtos/user.update.dto';
 import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { Request } from 'express';
-import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
+import { SessionPayloadDto } from '../auth/data/dtos/session.payload.dto';
 import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Users')
@@ -61,7 +61,7 @@ export class UsersController {
     const res = await this.usersService.create(user);
 
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'createUser',
       targetEntityId: res.id,
     });
@@ -79,7 +79,7 @@ export class UsersController {
     const res = await this.usersService.update(id, user);
 
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'updateUser',
       targetEntityId: res.id,
     });
@@ -94,7 +94,7 @@ export class UsersController {
 
     if (res) {
       await this.log({
-        userId: (req.user as JwtPayloadDto).id,
+        userId: (req.user as SessionPayloadDto).id,
         action: 'deleteUser',
         targetEntityId: id,
       });
@@ -109,7 +109,7 @@ export class UsersController {
     const res = await this.usersService.restore(id);
 
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'restoreUser',
       targetEntityId: id,
     });
