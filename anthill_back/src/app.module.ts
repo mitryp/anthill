@@ -14,7 +14,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { QueryFailFilter } from './common/filters/query-fail.filter';
-import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
+import { SessionAuthGuard } from './modules/auth/session-auth.guard';
 
 @Module({
   imports: [
@@ -51,7 +51,7 @@ import { JwtAuthGuard } from './modules/auth/jwt-auth.guard';
     },
     {
       provide: APP_GUARD,
-      useClass: JwtAuthGuard,
+      useClass: SessionAuthGuard,
     },
   ],
 })
