@@ -10,6 +10,9 @@ export class InitialMigration1706533409820 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "transactions" ("id" SERIAL NOT NULL, "createDate" TIMESTAMP NOT NULL DEFAULT now(), "deleteDate" TIMESTAMP, "amount" numeric(10,2) NOT NULL, "isIncome" boolean NOT NULL, "sourceOrPurpose" character varying NOT NULL, "note" character varying NOT NULL DEFAULT '', "userId" integer NOT NULL, CONSTRAINT "PK_a219afd8dd77ed80f5a862f1db9" PRIMARY KEY ("id"))`);
         await queryRunner.query(`ALTER TABLE "log_entries" ADD CONSTRAINT "FK_6dfb67abaab46cdd5ab9f35e32e" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE "transactions" ADD CONSTRAINT "FK_6bb58f2b6e30cb51a6504599f41" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE`);
+
+        // the default admin credentials must be changed as soon as possible
+        await queryRunner.query(`INSERT INTO users VALUES (1, CURRENT_TIMESTAMP, null, 'admin', 'admin', 'admin', '$2b$10$giu25FlGLZXtHxwAzR5kpuAiTghC0HN1BUvO/ds9b.j1Q6aOsPd.W')`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
