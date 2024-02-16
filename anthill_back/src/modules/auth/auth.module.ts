@@ -1,37 +1,26 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { AuthenticationService } from './authentication.service';
+import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/data/entities/user.entity';
 import { ConfigurationModule } from '../../common/configuration/configuration.module';
-import { JwtModule } from '@nestjs/jwt';
-import { ConfigurationAuthService } from '../../common/configuration/configuration.auth.service';
 import { UsersModule } from '../users/users.module';
-import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
-import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { EncryptionService } from '../../common/utils/encryption.service';
+import { Session } from './data/entities/session.entity';
+import { AuthMapper } from './data/auth.mapper';
+import { AccountSerializer } from './account.serializer';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
     forwardRef(() => UsersModule),
-    PassportModule,
-    TypeOrmModule.forFeature([User]),
-    JwtModule.registerAsync({
-      global: true,
-      imports: [ConfigurationModule],
-      inject: [ConfigurationAuthService],
-      useFactory: (authConfig: ConfigurationAuthService) => ({
-        secret: authConfig.sessionSecret,
-        signOptions: {
-          expiresIn: authConfig.sessionTtl,
-        },
-      }),
-    }),
+    PassportModule.register({ session: true }),
+    TypeOrmModule.forFeature([User, Session]),
     ConfigurationModule,
   ],
   controllers: [AuthController],
-  providers: [AuthenticationService, LocalStrategy, JwtStrategy, EncryptionService],
-  exports: [AuthenticationService, EncryptionService],
+  providers: [AuthService, LocalStrategy, EncryptionService, AuthMapper, AccountSerializer],
+  exports: [AuthService, EncryptionService],
 })
 export class AuthModule {}
