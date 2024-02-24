@@ -21,7 +21,14 @@ import { SessionsService } from './sessions.service';
     ConfigurationModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, EncryptionService, AuthMapper, AccountSerializer, SessionsService],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    EncryptionService,
+    AuthMapper,
+    AccountSerializer,
+    SessionsService,
+  ],
   exports: [AuthService, EncryptionService, SessionsService],
 })
 export class AuthModule {}
