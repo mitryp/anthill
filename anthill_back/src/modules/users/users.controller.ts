@@ -24,12 +24,14 @@ import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { Request } from 'express';
 import { SessionPayloadDto } from '../auth/data/dtos/session.payload.dto';
 import { RolesGuard } from '../auth/roles.guard';
+import { SessionsService } from '../auth/sessions.service';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
+    private readonly sessionsService: SessionsService,
     private readonly logger: LoggingService,
   ) {}
 
@@ -78,6 +80,10 @@ export class UsersController {
   ): Promise<UserReadDto> {
     const res = await this.usersService.update(id, user);
 
+    if (user.password || user.email) {
+      await this.sessionsService.logOffUser(id);
+    }
+
     await this.log({
       userId: (req.user as SessionPayloadDto).id,
       action: 'updateUser',
@@ -93,11 +99,14 @@ export class UsersController {
     const res = await this.usersService.delete(id);
 
     if (res) {
-      await this.log({
-        userId: (req.user as SessionPayloadDto).id,
-        action: 'deleteUser',
-        targetEntityId: id,
-      });
+      await Promise.all([
+        this.sessionsService.logOffUser(id),
+        this.log({
+          userId: (req.user as SessionPayloadDto).id,
+          action: 'deleteUser',
+          targetEntityId: id,
+        }),
+      ]);
     }
 
     return res;

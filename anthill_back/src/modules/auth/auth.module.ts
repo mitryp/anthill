@@ -11,6 +11,7 @@ import { Session } from './data/entities/session.entity';
 import { AuthMapper } from './data/auth.mapper';
 import { AccountSerializer } from './account.serializer';
 import { PassportModule } from '@nestjs/passport';
+import { SessionsService } from './sessions.service';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { PassportModule } from '@nestjs/passport';
     ConfigurationModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, EncryptionService, AuthMapper, AccountSerializer],
-  exports: [AuthService, EncryptionService],
+  providers: [AuthService, LocalStrategy, EncryptionService, AuthMapper, AccountSerializer, SessionsService],
+  exports: [AuthService, EncryptionService, SessionsService],
 })
 export class AuthModule {}
