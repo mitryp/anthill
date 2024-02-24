@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { isPublicKey } from './public.guard';
 
@@ -14,6 +14,10 @@ export class SessionAuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    return isPublic || request.isAuthenticated();
+    if (!isPublic && !request.isAuthenticated()) {
+      throw new UnauthorizedException();
+    }
+
+    return true;
   }
 }
