@@ -5,6 +5,7 @@ import 'package:universal_html/html.dart';
 
 import '../../../modules/auth/auth_module.dart';
 import '../../domain/dtos/server_error_dto.dart';
+import '../../presentation/utils/dio_exception_feedback.dart';
 import '../../presentation/widgets/snack_bar_content.dart';
 import '../../typedefs.dart';
 
@@ -20,30 +21,7 @@ Future<R> interceptDioError<R>(
   error = error as DioException;
 
   if (context != null) {
-    final data = error.response?.data;
-
-    if (data != null && data is JsonMap) {
-      final messageField = data['message'];
-      if (messageField is List) {
-        data['message'] = messageField.join('\n');
-      }
-
-      final errorDto = ServerErrorDto.fromJson(data);
-
-      showSnackBar(
-        context,
-        title: Text(
-          '${errorDto.statusCode} '
-          '${errorDto.error?.isNotEmpty ?? false ? errorDto.error : ''}',
-        ),
-        subtitle: Text(errorDto.message),
-        backgroundColor: Colors.red.shade200,
-      );
-    }
-
-    if (error.response?.statusCode == HttpStatus.unauthorized) {
-      ProviderScope.containerOf(context).invalidate(authProvider);
-    }
+    provideExceptionFeedback(error, context);
   }
 
   if (returnValue != null) {
