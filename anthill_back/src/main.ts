@@ -48,6 +48,7 @@ async function setupSessions(app: INestApplication) {
   app.use(
     session({
       resave: false,
+      rolling: false,
       saveUninitialized: false,
       secret: sessionSecret,
       store: new TypeormStore({
