@@ -1,8 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/interfaces/model.dart';
+import '../utils/dio_exception_feedback.dart';
 
 class RiverpodPaginatedView<TModel extends Model> extends ConsumerStatefulWidget {
   final PaginationController controller;
@@ -81,7 +83,16 @@ class _RiverpodPaginatedViewState<TModel extends Model>
         _deferCallback(() => widget.onDataLoaded?.call(data));
         return widget.viewBuilder(context, data);
       },
-      error: (error, _) => widget.errorBuilder(context, error),
+      error: (error, _) {
+        if (error is DioException) {
+          _deferCallback(() {
+            provideExceptionFeedback(error, context);
+            ref.invalidate(widget.collectionProvider(_params));
+          });
+        }
+
+        return widget.errorBuilder(context, error);
+      },
       loading: () {
         _deferCallback(() => widget.onUpdateRequest?.call());
         return widget.loadingIndicator(context);
