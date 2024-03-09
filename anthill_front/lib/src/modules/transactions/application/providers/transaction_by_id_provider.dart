@@ -11,5 +11,5 @@ part 'transaction_by_id_provider.g.dart';
 Future<TransactionReadDto> transactionById(TransactionByIdRef ref, int id) {
   ref.cacheFor();
 
-  return ref.watch(transactionServiceProvider).getOne(id).invalidateOnError(ref);
+  return ref.watch(transactionServiceProvider).getOne(id).invalidateOnHttpError(ref);
 }

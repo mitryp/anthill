@@ -8,4 +8,4 @@ part 'log_entry_by_id_provider.g.dart';
 
 @riverpod
 Future<LogEntryReadDto> logEntryById(LogEntryByIdRef ref, int id) =>
-    ref.watch(loggingServiceProvider).getOne(id).invalidateOnError(ref);
+    ref.watch(loggingServiceProvider).getOne(id).invalidateOnHttpError(ref);

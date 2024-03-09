@@ -11,5 +11,5 @@ part 'user_by_id_provider.g.dart';
 Future<UserReadDto> userById(UserByIdRef ref, int id) {
   ref.cacheFor();
 
-  return ref.watch(userServiceProvider).getOne(id).invalidateOnError(ref);
+  return ref.watch(userServiceProvider).getOne(id).invalidateOnHttpError(ref);
 }

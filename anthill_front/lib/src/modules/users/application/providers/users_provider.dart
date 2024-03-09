@@ -9,4 +9,4 @@ part 'users_provider.g.dart';
 
 @riverpod
 Future<Paginated<UserReadDto>> users(UsersRef ref, QueryParams params) =>
-    ref.watch(userServiceProvider).getMany(params).invalidateOnError(ref);
+    ref.watch(userServiceProvider).getMany(params).invalidateOnHttpError(ref);

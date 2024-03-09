@@ -9,4 +9,4 @@ part 'transactions_provider.g.dart';
 
 @riverpod
 Future<Paginated<TransactionReadDto>> transactions(TransactionsRef ref, QueryParams params) =>
-    ref.watch(transactionServiceProvider).getMany(params).invalidateOnError(ref);
+    ref.watch(transactionServiceProvider).getMany(params).invalidateOnHttpError(ref);

@@ -9,4 +9,4 @@ part 'logs_provider.g.dart';
 
 @riverpod
 Future<Paginated<LogEntryReadDto>> logs(LogsRef ref, QueryParams params) =>
-    ref.watch(loggingServiceProvider).getMany(params).invalidateOnError(ref);
+    ref.watch(loggingServiceProvider).getMany(params).invalidateOnHttpError(ref);
