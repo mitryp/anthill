@@ -85,10 +85,7 @@ class _RiverpodPaginatedViewState<TModel extends Model>
       },
       error: (error, _) {
         if (error is DioException) {
-          _deferCallback(() {
-            provideExceptionFeedback(error, context);
-            ref.invalidate(widget.collectionProvider(_params));
-          });
+          _deferCallback(() => provideExceptionFeedback(error, context));
         }
 
         return widget.errorBuilder(context, error);
