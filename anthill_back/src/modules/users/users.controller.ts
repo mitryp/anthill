@@ -22,14 +22,16 @@ import { UserUpdateDto } from './data/dtos/user.update.dto';
 import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { Request } from 'express';
-import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
-import { RolesGuard } from '../auth/roles_guard/roles.guard';
+import { SessionPayloadDto } from '../auth/data/dtos/session.payload.dto';
+import { RolesGuard } from '../auth/roles.guard';
+import { SessionsService } from '../auth/sessions.service';
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
+    private readonly sessionsService: SessionsService,
     private readonly logger: LoggingService,
   ) {}
 
@@ -61,7 +63,7 @@ export class UsersController {
     const res = await this.usersService.create(user);
 
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'createUser',
       targetEntityId: res.id,
     });
@@ -78,8 +80,12 @@ export class UsersController {
   ): Promise<UserReadDto> {
     const res = await this.usersService.update(id, user);
 
+    if (user.password || user.email) {
+      await this.sessionsService.logOffUser(id);
+    }
+
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'updateUser',
       targetEntityId: res.id,
     });
@@ -93,11 +99,14 @@ export class UsersController {
     const res = await this.usersService.delete(id);
 
     if (res) {
-      await this.log({
-        userId: (req.user as JwtPayloadDto).id,
-        action: 'deleteUser',
-        targetEntityId: id,
-      });
+      await Promise.all([
+        this.sessionsService.logOffUser(id),
+        this.log({
+          userId: (req.user as SessionPayloadDto).id,
+          action: 'deleteUser',
+          targetEntityId: id,
+        }),
+      ]);
     }
 
     return res;
@@ -109,7 +118,7 @@ export class UsersController {
     const res = await this.usersService.restore(id);
 
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'restoreUser',
       targetEntityId: id,
     });

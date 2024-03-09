@@ -7,7 +7,8 @@ import {
   Param,
   Patch,
   Post,
-  Req, UseGuards
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { transactionsPaginateConfig, TransactionsService } from './transactions.service';
 import { TransactionReadDto } from './data/dtos/transaction.read.dto';
@@ -20,12 +21,12 @@ import { ApiTags } from '@nestjs/swagger';
 import { ReadManyDto } from '../../common/domain/read-many.dto';
 import { Paginate, PaginateConfig, PaginatedSwaggerDocs, PaginateQuery } from 'nestjs-paginate';
 import { Transaction } from './data/entities/transaction.entity';
-import { JwtPayloadDto } from '../auth/data/dtos/jwt.payload.dto';
+import { SessionPayloadDto } from '../auth/data/dtos/session.payload.dto';
 import { Request } from 'express';
 import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { UserRole } from '../users/data/entities/user.entity';
-import { RolesGuard } from '../auth/roles_guard/roles.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -62,7 +63,7 @@ export class TransactionsController {
     @Body() transaction: TransactionCreateDto,
     @Req() req: Request,
   ): Promise<TransactionReadDto> {
-    const userId = (req.user as JwtPayloadDto).id;
+    const userId = (req.user as SessionPayloadDto).id;
 
     const transactionWithUser = transaction as TransactionCreateDtoWithUser;
     transactionWithUser.userId = userId;
@@ -87,7 +88,7 @@ export class TransactionsController {
     const res = await this.transactionService.update(id, transaction);
 
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'updateTransaction',
       targetEntityId: res.id,
     });
@@ -101,7 +102,7 @@ export class TransactionsController {
 
     if (res) {
       await this.log({
-        userId: (req.user as JwtPayloadDto).id,
+        userId: (req.user as SessionPayloadDto).id,
         action: 'deleteTransaction',
         targetEntityId: id,
       });
@@ -116,7 +117,7 @@ export class TransactionsController {
     const res = await this.transactionService.restore(id);
 
     await this.log({
-      userId: (req.user as JwtPayloadDto).id,
+      userId: (req.user as SessionPayloadDto).id,
       action: 'restoreTransaction',
       targetEntityId: id,
     });

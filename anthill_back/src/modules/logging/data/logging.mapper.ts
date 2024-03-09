@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AutomapperProfile, InjectMapper } from 'automapper-nestjs';
 import { createMap, forMember, mapFrom, Mapper, MappingProfile } from 'automapper-core';
-import { LogEntryEntity } from './entities/log-entry.entity';
+import { LogEntry } from './entities/log-entry.entity';
 import { LogEntryReadDto } from './dtos/log-entry.read.dto';
 import { UserReadDto } from '../../users/data/dtos/user.read.dto';
 import { User } from '../../users/data/entities/user.entity';
@@ -17,7 +17,7 @@ export class LoggingMapper extends AutomapperProfile {
     return (mapper) => {
       createMap(
         mapper,
-        LogEntryEntity,
+        LogEntry,
         LogEntryReadDto,
         forMember(
           (dest) => dest.user,
@@ -27,7 +27,7 @@ export class LoggingMapper extends AutomapperProfile {
       createMap(
         mapper,
         LogEntryCreateDto,
-        LogEntryEntity,
+        LogEntry,
         forMember(
           (dest) => dest.user,
           mapFrom((source) => ({ id: source.userId })),
