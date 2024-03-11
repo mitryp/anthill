@@ -74,7 +74,7 @@ class _UserEditorState extends ConsumerState<UserEditor> {
       final dto = !_isEditingPassword ? _dto.copyWith(password: null) : _dto;
       await controller.updateResource(existingUser.id, dto, context);
     } else {
-      await controller.createResource(_dto);
+      await controller.createResource(_dto, context);
     }
 
     if (mounted && context.canPop()) {

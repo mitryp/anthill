@@ -29,8 +29,8 @@ export const envDatabaseConfigFactory = registerAs('database', () => dataSourceO
 // structure.
 export const envAuthConfigFactory = registerAs('auth', () => ({
   saltRounds: process.env.SALT_ROUNDS,
-  jwtSecret: process.env.JWT_SECRET,
-  jwtTtl: process.env.JWT_TTL,
+  sessionSecret: process.env.SESSION_SECRET,
+  sessionTtl: process.env.SESSION_TTL,
   secureCookies: process.env.SECURE_COOKIES,
 }));
 
