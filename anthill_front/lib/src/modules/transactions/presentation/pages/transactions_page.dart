@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/navigation.dart';
 import '../../../../shared/pagination.dart';
+import '../../../../shared/presentation/widgets/date_range_filter.dart';
 import '../../../../shared/widgets.dart';
 import '../../../users/users_module.dart';
 import '../../application/providers/transaction_service_provider.dart';
@@ -37,10 +38,22 @@ class TransactionsPage extends StatelessWidget {
           httpServiceProvider: transactionServiceProvider,
           collectionProvider: transactionsProvider,
           collectionName: transactionsResourceName,
-          additionalFiltersBuilder: ifHasRoles(
-            context,
-            roles: const {UserRole.admin},
-            then: (controller) => Row(children: [DeleteFilter(controller: controller)]),
+          additionalFiltersBuilder: (controller) => Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.start,
+            runAlignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            children: [
+              DateRangeFilter(controller: controller),
+              ...[
+                ifHasRoles(
+                  context,
+                  roles: const {UserRole.admin},
+                  then: DeleteFilter(controller: controller),
+                ),
+              ].nonNulls,
+            ],
           ),
           initialFilters: {
             'deleteDate': {const Null()},
