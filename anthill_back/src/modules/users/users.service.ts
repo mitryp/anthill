@@ -9,7 +9,7 @@ import { InjectMapper } from 'automapper-nestjs';
 import { Mapper } from 'automapper-core';
 import { FilterOperator, FilterSuffix, PaginateConfig } from 'nestjs-paginate';
 import { UserUpdateDto } from './data/dtos/user.update.dto';
-import { EncryptionService } from '../../common/utils/encryption.service';
+import { EncryptionService } from '../auth/encryption.service';
 
 @Injectable()
 export class UsersService extends ModifiableResourceServiceBase<
