@@ -10,8 +10,8 @@ export class TransactionsStatsController {
   constructor(private readonly statsService: TransactionsStatsService) {}
 
   @Get('range')
-  @ApiQuery({ name: 'from', type: String, example: '20231231' })
-  @ApiQuery({ name: 'to', type: String, example: '20231231' })
+  @ApiQuery({ name: 'from', type: String, example: '2023-12-31' })
+  @ApiQuery({ name: 'to', type: String, example: '2023-12-31' })
   async forRange(
     @Query('from', ParseDatePipe) from: Date,
     @Query('to', ParseDatePipe) to: Date,

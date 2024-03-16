@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 
-const dateRegex = /^(2\d\d\d)(\d\d)(\d\d)$/;
+const dateRegex = /^(2\d\d\d)-(\d\d)-(\d\d)$/;
 
 @Injectable()
 export class ParseDatePipe implements PipeTransform<string, Date> {
