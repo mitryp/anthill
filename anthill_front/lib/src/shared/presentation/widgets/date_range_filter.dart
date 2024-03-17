@@ -42,7 +42,7 @@ class DateRangeFilter extends StatelessWidget {
           filterKey,
           Btw(
             formatter(dateRange.start),
-            formatter(dateRange.end.add(const Duration(days: 1))),
+            formatter(dateRange.end),
           ),
         ),
     );
