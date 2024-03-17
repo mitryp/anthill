@@ -25,7 +25,7 @@ export class TransactionsStatsService {
       fromDate: from,
       toDate: to,
       sum: sum,
-      average: sum / count,
+      average: count === 0 ? 0 : sum / count,
       count: count,
       largestDonation: largest,
     };
