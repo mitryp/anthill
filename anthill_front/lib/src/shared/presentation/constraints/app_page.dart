@@ -24,6 +24,11 @@ enum AppPage {
 
   const AppPage(this.location, this.pageBuilder);
 
-  String formatLocation({int? id}) =>
-      id == null ? location.replaceAll(idParamPlaceholder, '$id') : location;
+  String formatLocation([int? id]) {
+    if (id == null) {
+      return location;
+    }
+
+    return location.replaceAll(idParamPlaceholder, '$id');
+  }
 }
