@@ -41,7 +41,6 @@ class TransactionsStatsPage extends ConsumerWidget {
     }
 
     final stats = value.requireValue;
-    const labelStyle = TextStyle(fontWeight: FontWeight.bold);
 
     return Scaffold(
       appBar: AppBar(
@@ -56,38 +55,7 @@ class TransactionsStatsPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(
             children: [
-              Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(text: 'Total: ', style: labelStyle),
-                    TextSpan(text: '${stats.sum.roundWithPrecision()}'),
-                  ],
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(text: 'Transactions: ', style: labelStyle),
-                    TextSpan(text: '${stats.count}'),
-                  ],
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(text: 'Average donation: ', style: labelStyle),
-                    TextSpan(text: '${stats.average.roundWithPrecision()}'),
-                  ],
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(text: 'Largest donation: ', style: labelStyle),
-                    TextSpan(text: '${stats.largestDonation.roundWithPrecision()}'),
-                  ],
-                ),
-              ),
+              Text('$stats'),
             ].divide(const SizedBox(height: 4)),
           ),
         ),
