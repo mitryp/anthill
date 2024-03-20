@@ -37,7 +37,7 @@ export class TransactionsStatsService {
 
       return `${stripped.getFullYear()}-${stripped.getMonth() + 1}-${stripped.getDate()}`;
     });
-    
+
     const balances: { [key: string]: number } = {};
     for (const date in grouped) {
       balances[date] = TransactionsStatsService.sum(grouped[date]);
