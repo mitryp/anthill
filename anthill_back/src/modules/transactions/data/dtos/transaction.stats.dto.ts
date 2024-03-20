@@ -7,8 +7,8 @@ export class TransactionStatsDto {
   averageIncome: number;
   incomesSum: number;
   incomesCount: number;
-  expensesCount: number;
   expensesSum: number;
+  expensesCount: number;
 
   // a map from a Date string representation (YYYY-MM-DD)
   // to total amount received at that day
