@@ -33,6 +33,13 @@ class TransactionsStatsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    const diagramPadding = EdgeInsets.all(8.0);
+    const diagramHeight = 250.0;
+    final diagramDecoration = BoxDecoration(
+      borderRadius: BorderRadiusDirectional.circular(16),
+      color: Colors.grey.shade200,
+    );
+
     final value = ref.watch(transactionStatsProvider(fromDate: from, toDate: to));
 
     final stateRepr = switchSingleModelValue(value, context: context);
@@ -41,12 +48,6 @@ class TransactionsStatsPage extends ConsumerWidget {
     }
 
     final stats = value.requireValue;
-    const diagramPadding = EdgeInsets.all(8.0);
-    const diagramHeight = 250.0;
-    final diagramDecoration = BoxDecoration(
-      borderRadius: BorderRadiusDirectional.circular(16),
-      color: Colors.grey.shade200,
-    );
 
     return Scaffold(
       appBar: AppBar(
