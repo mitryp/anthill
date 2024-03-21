@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +9,8 @@ import '../../../../shared/utils/date_format.dart';
 import '../../../../shared/utils/date_transfer_format.dart';
 import '../../../../shared/utils/widget_list_divide.dart';
 import '../../application/providers/transaction_stats_provider.dart';
+import '../general_stats_diagram.dart';
+import '../period_stats_diagram.dart';
 
 class TransactionsStatsPage extends ConsumerWidget {
   final DateTime from;
@@ -41,6 +41,12 @@ class TransactionsStatsPage extends ConsumerWidget {
     }
 
     final stats = value.requireValue;
+    const diagramPadding = EdgeInsets.all(8.0);
+    const diagramHeight = 250.0;
+    final diagramDecoration = BoxDecoration(
+      borderRadius: BorderRadiusDirectional.circular(16),
+      color: Colors.grey.shade200,
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -53,21 +59,27 @@ class TransactionsStatsPage extends ConsumerWidget {
       body: PageBody(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Column(
-            children: [
-              Text('$stats'),
-            ].divide(const SizedBox(height: 4)),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: diagramPadding,
+                  height: diagramHeight,
+                  decoration: diagramDecoration,
+                  child: GeneralStatsDiagram(statsDto: stats),
+                ),
+                if (stats.balances.length > 1)
+                  Container(
+                    padding: diagramPadding,
+                    height: diagramHeight,
+                    decoration: diagramDecoration,
+                    child: PeriodStatsDiagram(balances: stats.balances),
+                  ),
+              ].divide(const SizedBox(height: 4)),
+            ),
           ),
         ),
       ),
     );
-  }
-}
-
-extension _RoundWithPrecision on double {
-  double roundWithPrecision([int digits = 2]) {
-    final multiplier = pow(10, digits);
-
-    return (this * multiplier).roundToDouble() / multiplier;
   }
 }
