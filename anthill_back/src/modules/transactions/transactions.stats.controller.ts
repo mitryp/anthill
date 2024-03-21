@@ -16,21 +16,6 @@ export class TransactionsStatsController {
     @Query('from', ParseDatePipe) from: Date,
     @Query('to', ParseDatePipe) to: Date,
   ): Promise<TransactionStatsDto> {
-    // for the range to be inclusive
-    to = addDay(to);
-
     return this.statsService.statsForRange(from, to);
   }
-}
-
-/**
- * Adds (24 hours - 1 ms) to the given date.
- */
-function addDay(date: Date): Date {
-  const msInSec = 1000;
-  const secInMin = 60;
-  const minInHour = 60;
-  const hrsInDay = 24;
-
-  return new Date(date.getTime() + hrsInDay * minInHour * secInMin * msInSec - 1);
 }
