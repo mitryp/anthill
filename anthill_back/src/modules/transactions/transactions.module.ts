@@ -5,10 +5,12 @@ import { Transaction } from './data/entities/transaction.entity';
 import { TransactionsController } from './transactions.controller';
 import { TransactionsService } from './transactions.service';
 import { LoggingModule } from '../logging/logging.module';
+import { TransactionsStatsController } from './transactions.stats.controller';
+import { TransactionsStatsService } from './transactions.stats.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Transaction]), LoggingModule],
-  controllers: [TransactionsController],
-  providers: [TransactionMapper, TransactionsService],
+  controllers: [TransactionsController, TransactionsStatsController],
+  providers: [TransactionMapper, TransactionsService, TransactionsStatsService],
 })
 export class TransactionsModule {}

@@ -7,12 +7,11 @@ import '../pages/dashboard_page.dart';
 const idParamPlaceholder = ':id';
 const defaultPage = AppPage.dashboard;
 
-// todo invent a way to register routes for modules dynamically
-
 enum AppPage {
   dashboard('/dashboard', DashboardPage.pageBuilder),
   transactions('/transactions', TransactionsPage.pageBuilder),
   transactionEditor('/transactions/editor', TransactionEditor.pageBuilder),
+  transactionsStats('/transactions/stats', TransactionsStatsPage.pageBuilder),
   transaction('/transactions/$idParamPlaceholder', SingleTransactionPage.pageBuilder),
   users('/users', UsersPage.pageBuilder),
   userEditor('/users/editor', UserEditor.pageBuilder),
@@ -25,6 +24,11 @@ enum AppPage {
 
   const AppPage(this.location, this.pageBuilder);
 
-  String formatLocation({int? id}) =>
-      id == null ? location.replaceAll(idParamPlaceholder, '$id') : location;
+  String formatLocation([int? id]) {
+    if (id == null) {
+      return location;
+    }
+
+    return location.replaceAll(idParamPlaceholder, '$id');
+  }
 }

@@ -6,7 +6,7 @@ import { ConfigurationModule } from '../../common/configuration/configuration.mo
 import { UsersModule } from '../users/users.module';
 import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
-import { EncryptionService } from '../../common/utils/encryption.service';
+import { EncryptionService } from './encryption.service';
 import { Session } from './data/entities/session.entity';
 import { AuthMapper } from './data/auth.mapper';
 import { AccountSerializer } from './account.serializer';

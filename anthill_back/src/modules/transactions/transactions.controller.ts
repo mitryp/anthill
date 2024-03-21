@@ -27,16 +27,28 @@ import { LoggingService } from '../logging/logging.service';
 import { LogEntryCreateDto } from '../logging/data/dtos/log-entry.create.dto';
 import { UserRole } from '../users/data/entities/user.entity';
 import { RolesGuard } from '../auth/roles.guard';
+import {
+  ModifiableResourceControllerBase,
+  PaginateConfigEndpoint,
+} from '../../common/domain/resource.controller.base';
 
 @ApiTags('Transactions')
 @Controller('transactions')
-export class TransactionsController {
+export class TransactionsController
+  implements
+    ModifiableResourceControllerBase<
+      Transaction,
+      TransactionReadDto,
+      TransactionCreateDto,
+      TransactionUpdateDto
+    >
+{
   constructor(
     private readonly transactionService: TransactionsService,
     private readonly logger: LoggingService,
   ) {}
 
-  @Get('/paginate_config')
+  @PaginateConfigEndpoint()
   readPaginateConfig(): PaginateConfig<Transaction> {
     return transactionsPaginateConfig;
   }

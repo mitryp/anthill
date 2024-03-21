@@ -5,7 +5,6 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { User } from '../users/data/entities/user.entity';
 import { Public } from './public.guard';
 import { UserReadDto } from '../users/data/dtos/user.read.dto';
-import { ConfigurationAuthService } from '../../common/configuration/configuration.auth.service';
 import { ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './data/dtos/login.dto';
 import { SessionPayloadDto } from './data/dtos/session.payload.dto';
@@ -13,10 +12,7 @@ import { SessionPayloadDto } from './data/dtos/session.payload.dto';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authConfig: ConfigurationAuthService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Public()
   @UseGuards(LocalAuthGuard)
