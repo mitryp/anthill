@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 
 class PeriodStatsDiagram extends StatelessWidget {
   final Map<DateTime, double> _balances;
+  final bool _animate;
 
   const PeriodStatsDiagram({
     required Map<DateTime, double> balances,
+    bool animate = true,
     super.key,
-  }) : _balances = balances;
+  })  : _animate = animate,
+        _balances = balances;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,7 @@ class PeriodStatsDiagram extends StatelessWidget {
 
     return charts.TimeSeriesChart(
       seriesList,
+      animate: _animate,
       defaultRenderer: charts.LineRendererConfig(
         includePoints: true,
       ),

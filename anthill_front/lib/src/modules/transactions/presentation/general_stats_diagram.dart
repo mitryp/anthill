@@ -7,11 +7,14 @@ import '../domain/dtos/transaction_stats_dto.dart';
 
 class GeneralStatsDiagram extends StatelessWidget {
   final TransactionStatsDto _statsDto;
+  final bool _animate;
 
   const GeneralStatsDiagram({
     required TransactionStatsDto statsDto,
+    bool animate = true,
     super.key,
-  }) : _statsDto = statsDto;
+  })  : _animate = animate,
+        _statsDto = statsDto;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class GeneralStatsDiagram extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        charts.PieChart(series),
+        charts.PieChart(series, animate: _animate),
         DefaultTextStyle(
           style: const TextStyle(fontSize: 16),
           child: Column(
