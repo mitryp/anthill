@@ -19,16 +19,24 @@ class TransactionsStatsPage extends ConsumerWidget {
   const TransactionsStatsPage({required this.from, required this.to, super.key});
 
   factory TransactionsStatsPage.pageBuilder(BuildContext context, GoRouterState state) {
-    final params = state.uri.queryParameters;
-    final (fromStr, toStr) = (params['from'], params['to']);
-    final from = fromStr != null ? deserializeDateQueryParam(fromStr) : null;
-    final to = toStr != null ? deserializeDateQueryParam(toStr) : null;
-
     late final today = DateTime.now();
 
-    return from != null && to != null
-        ? TransactionsStatsPage(from: from, to: to)
-        : TransactionsStatsPage(from: today, to: today.add(const Duration(days: 1)));
+    final params = state.uri.queryParameters;
+    final (fromStr, toStr) = (params['from'], params['to']);
+    final from = (fromStr != null ? deserializeDateQueryParam(fromStr) : null) ?? today;
+    final to = (toStr != null ? deserializeDateQueryParam(toStr) : null) ??
+        today.add(const Duration(days: 1));
+
+    CopyLinkButton.updateProviderWithParams(
+      params: {
+        'from': fromStr ?? serializeDateQueryParam(from),
+        'to': toStr ?? serializeDateQueryParam(to),
+      },
+      context: context,
+      state: state,
+    );
+
+    return TransactionsStatsPage(from: from, to: to);
   }
 
   @override
@@ -55,7 +63,7 @@ class TransactionsStatsPage extends ConsumerWidget {
           'Stats for '
           '${formatDate(stats.fromDate).date} - ${formatDate(stats.toDate).date}',
         ),
-        actions: const [CopyLinkButton()],
+        actions: [CopyLinkButton.fromProvider()],
       ),
       body: PageBody(
         child: Padding(
