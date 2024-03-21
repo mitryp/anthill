@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart';
 
 import '../../application/providers/share_link_provider.dart';
+import '../../pagination.dart';
 import 'snack_bar_content.dart';
 
 class CopyLinkButton extends StatelessWidget {
   final String? _link;
 
   const CopyLinkButton({String? link, super.key}) : _link = link;
+
+  static void updateProviderWithParams({
+    required Map<String, Object> params,
+    required BuildContext context,
+    GoRouterState? state,
+  }) {
+    state ??= GoRouterState.of(context);
+
+    final uri = state.uri.cleanWithParams(params);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ProviderScope.containerOf(context).read(shareLinkProvider.notifier).update(
+            Uri.base.resolve('#$uri').toString(),
+          );
+    });
+  }
 
   static Widget fromProvider() => Consumer(
         builder: (context, ref, child) => CopyLinkButton(

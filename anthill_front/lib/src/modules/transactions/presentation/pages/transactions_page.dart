@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/navigation.dart';
 import '../../../../shared/pagination.dart';
+import '../../../../shared/presentation/utils/extract_date_range_from_controller.dart';
+import '../../../../shared/presentation/widgets/date_range_filter.dart';
+import '../../../../shared/utils/date_transfer_format.dart';
 import '../../../../shared/widgets.dart';
 import '../../../users/users_module.dart';
 import '../../application/providers/transaction_service_provider.dart';
@@ -37,10 +40,43 @@ class TransactionsPage extends StatelessWidget {
           httpServiceProvider: transactionServiceProvider,
           collectionProvider: transactionsProvider,
           collectionName: transactionsResourceName,
-          additionalFiltersBuilder: ifHasRoles(
-            context,
-            roles: const {UserRole.admin},
-            then: (controller) => Row(children: [DeleteFilter(controller: controller)]),
+          additionalFiltersBuilder: (controller) => Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.start,
+            runAlignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              ...[
+                ifHasRoles(
+                  context,
+                  roles: const {UserRole.admin},
+                  then: DeleteFilter(controller: controller),
+                ),
+              ].nonNulls,
+              DateRangeFilter(controller: controller),
+              IconButton(
+                tooltip: 'Stats for '
+                    '${controller.filters['createDate'] == null ? 'today' : 'selection'}',
+                icon: const Icon(Icons.query_stats),
+                iconSize: 24,
+                splashRadius: 24,
+                onPressed: () {
+                  final baseLocation = AppPage.transactionsStats.location;
+
+                  final range = controller.extractDateRange(byKey: 'createDate');
+                  final location = range == null
+                      ? baseLocation
+                      : '$baseLocation?from=${serializeDateQueryParam(
+                          range.start,
+                        )}&to=${serializeDateQueryParam(range.end)}';
+
+                  context
+                      .push(location)
+                      .whenComplete(() => controller.silently(notifyAfter: true, (_) {}));
+                },
+              ),
+            ],
           ),
           initialFilters: {
             'deleteDate': {const Null()},

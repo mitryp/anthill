@@ -56,6 +56,9 @@ export const transactionsPaginateConfig: PaginateConfig<Transaction> = {
   sortableColumns: ['createDate', 'amount', 'sourceOrPurpose'],
   defaultSortBy: [['createDate', 'DESC']],
   searchableColumns: ['sourceOrPurpose', 'note'],
-  filterableColumns: { deleteDate: [FilterOperator.NULL, FilterSuffix.NOT] },
+  filterableColumns: {
+    deleteDate: [FilterOperator.NULL, FilterSuffix.NOT],
+    createDate: [FilterOperator.BTW],
+  },
   // todo filters
 };

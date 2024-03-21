@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigurationAuthService } from '../configuration/configuration.auth.service';
+import { ConfigurationAuthService } from '../../common/configuration/configuration.auth.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
