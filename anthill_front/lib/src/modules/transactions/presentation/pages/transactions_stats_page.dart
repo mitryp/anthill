@@ -151,7 +151,7 @@ class _StatsDiagrams extends StatelessWidget {
         ),
         if (_statsDto.balances.length > 1)
           Container(
-            padding: diagramPadding,
+            padding: diagramPadding.add(const EdgeInsets.symmetric(horizontal: 10, vertical: 2)),
             height: diagramHeight,
             decoration: diagramDecoration,
             child: PeriodStatsDiagram(balances: _statsDto.balances, animate: _animate),

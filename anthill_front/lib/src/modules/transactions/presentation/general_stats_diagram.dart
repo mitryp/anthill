@@ -23,6 +23,7 @@ class GeneralStatsDiagram extends StatelessWidget {
     final series = [
       charts.Series<double, double>(
         id: 'Incomes/expenses',
+        seriesColor: charts.MaterialPalette.red.shadeDefault,
         domainFn: (datum, index) => (index ?? 0.0).toDouble(),
         measureFn: (datum, _) => datum,
         colorFn: (datum, index) => data[index ?? 0] < 0
@@ -40,28 +41,45 @@ class GeneralStatsDiagram extends StatelessWidget {
         charts.PieChart(series, animate: _animate),
         DefaultTextStyle(
           style: TextStyle(fontSize: 16, color: Colors.grey[800]),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            mainAxisSize: MainAxisSize.min,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DefaultTextStyle(
-                style: const TextStyle(fontSize: 18, color: Colors.black),
-                child: _StatsLabel(
-                  name: 'Incomes',
-                  value: '${_statsDto.incomesSum.roundWithPrecision()}',
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DefaultTextStyle(
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: _StatsLabel(
+                      name: 'Incomes',
+                      value: '${_statsDto.incomesSum.roundWithPrecision()}',
+                    ),
+                  ),
+                  _StatsLabel(
+                    name: 'Largest',
+                    value: '${_statsDto.largestIncome.roundWithPrecision()}',
+                  ),
+                  _StatsLabel(
+                    name: 'Average',
+                    value: '${_statsDto.averageIncome.roundWithPrecision()}',
+                  ),
+                  const SizedBox(),
+                  const SizedBox(),
+                  DefaultTextStyle(
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    child: _StatsLabel(
+                      name: 'Expenses',
+                      value: '${_statsDto.expensesSum.roundWithPrecision()}',
+                    ),
+                  ),
+                ].divide(const SizedBox(height: 4)),
               ),
-              const SizedBox(),
-              _StatsLabel(name: 'Expenses', value: '${_statsDto.expensesSum.roundWithPrecision()}'),
-              _StatsLabel(
-                name: 'Largest income',
-                value: '${_statsDto.largestIncome.roundWithPrecision()}',
-              ),
-              _StatsLabel(
-                name: 'Average income',
-                value: '${_statsDto.averageIncome.roundWithPrecision()}',
-              ),
-            ].divide(const SizedBox(height: 4)),
+            ],
           ),
         ),
       ].map((e) => Expanded(child: e)).toList(growable: false),
