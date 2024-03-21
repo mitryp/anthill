@@ -64,7 +64,9 @@ class TransactionsPage extends StatelessWidget {
                           range.start,
                         )}&to=${serializeDateQueryParam(range.end)}';
 
-                  context.push(location);
+                  context
+                      .push(location)
+                      .whenComplete(() => controller.silently(notifyAfter: true, (_) {}));
                 },
               ),
               ...[
