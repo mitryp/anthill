@@ -28,7 +28,7 @@ class TransactionsStatsPage extends ConsumerWidget {
 
     return from != null && to != null
         ? TransactionsStatsPage(from: from, to: to)
-        : TransactionsStatsPage(from: today, to: today);
+        : TransactionsStatsPage(from: today, to: today.add(const Duration(days: 1)));
   }
 
   @override
