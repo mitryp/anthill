@@ -33,9 +33,11 @@ export class TransactionsStatsService {
     const largestIncome = incomes.reduce((acc, cur) => Math.max(acc, cur.amount), 0);
 
     const grouped = groupBy(transactions, (t) => {
-      const stripped = TransactionsStatsService.stripDate(t.createDate);
+      const date = t.createDate;
 
-      return `${stripped.getFullYear()}-${stripped.getMonth() + 1}-${stripped.getDate()}`;
+      return `${date.getFullYear()}-${TransactionsStatsService.padLeftWithZeros(
+        date.getMonth() + 1,
+      )}-${TransactionsStatsService.padLeftWithZeros(date.getDate())}`;
     });
 
     const balances: { [key: string]: number } = {};
@@ -60,7 +62,13 @@ export class TransactionsStatsService {
     return arr.reduce((acc, cur) => acc + cur.amount, 0);
   }
 
-  private static stripDate(date: Date): Date {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  private static padLeftWithZeros(num: number, width: number = 2): string {
+    const str = `${num}`;
+
+    if (str.length >= width) {
+      return str;
+    }
+
+    return '0'.repeat(width - str.length) + str;
   }
 }
