@@ -64,7 +64,7 @@ class TransactionsPage extends StatelessWidget {
                           range.start,
                         )}&to=${serializeDateQueryParam(range.end)}';
 
-                  context.go(location);
+                  context.push(location);
                 },
               ),
               ...[
