@@ -106,9 +106,16 @@ class TransactionsStatsPage extends ConsumerWidget {
       body: PageBody(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: SingleChildScrollView(
-            child: _StatsDiagrams(statsDto: stats),
-          ),
+          child: stats.balances.isNotEmpty
+              ? SingleChildScrollView(
+                  child: _StatsDiagrams(statsDto: stats),
+                )
+              : const Center(
+                  child: Text(
+                    'No stats for the selected period :(',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
         ),
       ),
     );

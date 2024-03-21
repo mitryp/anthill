@@ -39,12 +39,19 @@ class GeneralStatsDiagram extends StatelessWidget {
       children: [
         charts.PieChart(series, animate: _animate),
         DefaultTextStyle(
-          style: const TextStyle(fontSize: 16),
+          style: TextStyle(fontSize: 16, color: Colors.grey[800]),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _StatsLabel(name: 'Incomes', value: '${_statsDto.incomesSum.roundWithPrecision()}'),
+              DefaultTextStyle(
+                style: const TextStyle(fontSize: 18, color: Colors.black),
+                child: _StatsLabel(
+                  name: 'Incomes',
+                  value: '${_statsDto.incomesSum.roundWithPrecision()}',
+                ),
+              ),
+              const SizedBox(),
               _StatsLabel(name: 'Expenses', value: '${_statsDto.expensesSum.roundWithPrecision()}'),
               _StatsLabel(
                 name: 'Largest income',

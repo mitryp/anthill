@@ -47,6 +47,13 @@ class TransactionsPage extends StatelessWidget {
             runAlignment: WrapAlignment.start,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
+              ...[
+                ifHasRoles(
+                  context,
+                  roles: const {UserRole.admin},
+                  then: DeleteFilter(controller: controller),
+                ),
+              ].nonNulls,
               DateRangeFilter(controller: controller),
               IconButton(
                 tooltip: 'Stats for '
@@ -69,13 +76,6 @@ class TransactionsPage extends StatelessWidget {
                       .whenComplete(() => controller.silently(notifyAfter: true, (_) {}));
                 },
               ),
-              ...[
-                ifHasRoles(
-                  context,
-                  roles: const {UserRole.admin},
-                  then: DeleteFilter(controller: controller),
-                ),
-              ].nonNulls,
             ],
           ),
           initialFilters: {
