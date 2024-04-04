@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/http.dart';
 import '../../../../shared/navigation.dart';
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../../auth/application/providers/auth_provider.dart';
 import '../../../users/users_module.dart';
@@ -19,10 +20,13 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
     super.key,
   }) : _transactionId = transactionId;
 
-  factory SingleTransactionPage.pageBuilder(BuildContext context, GoRouterState state) {
+  static Widget pageBuilder(BuildContext context, GoRouterState state) {
     final (:id, model: _) = modelFromRouterState<TransactionReadDto>(state);
 
-    return SingleTransactionPage(transactionId: id);
+    return PageTitle(
+      title: 'Transaction',
+      child: SingleTransactionPage(transactionId: id),
+    );
   }
 
   @override

@@ -6,6 +6,7 @@ import '../../../../shared/navigation.dart';
 import '../../../../shared/pagination.dart';
 import '../../../../shared/presentation/utils/extract_date_range_from_controller.dart';
 import '../../../../shared/presentation/widgets/date_range_filter.dart';
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/utils/date_transfer_format.dart';
 import '../../../../shared/widgets.dart';
 import '../../../users/users_module.dart';
@@ -21,10 +22,13 @@ class TransactionsPage extends StatelessWidget {
   const TransactionsPage({QueryParams queryParams = const {}, super.key})
       : _queryParams = queryParams;
 
-  factory TransactionsPage.pageBuilder(BuildContext _, GoRouterState state) {
+  static Widget pageBuilder(BuildContext _, GoRouterState state) {
     final params = state.uri.queryParametersAll.normalize();
 
-    return TransactionsPage(queryParams: params);
+    return PageTitle(
+      title: 'Transactions',
+      child: TransactionsPage(queryParams: params),
+    );
   }
 
   @override

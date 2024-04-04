@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/http.dart';
 import '../../../../shared/navigation.dart';
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../../auth/auth_module.dart';
 import '../../application/providers/user_by_id_provider.dart';
@@ -19,10 +20,13 @@ class SingleUserPage extends ConsumerWidget with CanControlCollection<UserReadDt
     super.key,
   }) : _userId = userId;
 
-  factory SingleUserPage.pageBuilder(BuildContext _, GoRouterState state) {
+  static Widget pageBuilder(BuildContext _, GoRouterState state) {
     final (:id, model: _) = modelFromRouterState<UserReadDto>(state);
 
-    return SingleUserPage(userId: id);
+    return PageTitle(
+      title: 'User',
+      child: SingleUserPage(userId: id),
+    );
   }
 
   @override

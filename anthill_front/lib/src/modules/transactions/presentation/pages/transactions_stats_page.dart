@@ -5,6 +5,7 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../../../shared/presentation/widgets/copy_link_button.dart';
 import '../../../../shared/presentation/widgets/page_body.dart';
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/presentation/widgets/switch_single_model_value.dart';
 import '../../../../shared/utils/date_format.dart';
 import '../../../../shared/utils/date_transfer_format.dart';
@@ -21,7 +22,7 @@ class TransactionsStatsPage extends ConsumerWidget {
 
   const TransactionsStatsPage({required this.from, required this.to, super.key});
 
-  factory TransactionsStatsPage.pageBuilder(BuildContext context, GoRouterState state) {
+  static Widget pageBuilder(BuildContext context, GoRouterState state) {
     late final today = DateTime.now();
 
     final params = state.uri.queryParameters;
@@ -39,7 +40,10 @@ class TransactionsStatsPage extends ConsumerWidget {
       state: state,
     );
 
-    return TransactionsStatsPage(from: from, to: to);
+    return PageTitle(
+      title: 'Transactions stats',
+      child: TransactionsStatsPage(from: from, to: to),
+    );
   }
 
   Future<void> _downloadStats(Widget statsWidget) async {

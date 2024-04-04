@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../shared/navigation.dart';
 import '../../../../shared/pagination.dart';
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../../auth/auth_module.dart';
 import '../../application/providers/user_service_provider.dart';
@@ -21,10 +22,13 @@ class UsersPage extends StatelessWidget {
     super.key,
   }) : _queryParams = queryParams;
 
-  factory UsersPage.pageBuilder(BuildContext _, GoRouterState state) {
+  static Widget pageBuilder(BuildContext _, GoRouterState state) {
     final params = state.uri.queryParametersAll.normalize();
 
-    return UsersPage(queryParams: params);
+    return PageTitle(
+      title: 'Users',
+      child: UsersPage(queryParams: params),
+    );
   }
 
   @override
