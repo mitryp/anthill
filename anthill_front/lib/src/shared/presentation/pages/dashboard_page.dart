@@ -6,6 +6,7 @@ import '../../../modules/auth/auth_module.dart';
 import '../../navigation.dart';
 import '../widgets/page_body.dart';
 import '../widgets/page_title.dart';
+import '../widgets/progress_indicator_button.dart';
 
 const _colors = [
   Colors.blue,
@@ -90,6 +91,14 @@ class DashboardPage extends StatelessWidget {
                         ),
                       );
                     })(),
+                  Consumer(
+                    builder: (context, ref, _) => ProgressIndicatorButton.icon(
+                      iconButtonBuilder: OutlinedButton.icon,
+                      onPressed: ref.read(authProvider.notifier).logoff,
+                      icon: const Icon(Icons.logout),
+                      label: const Text('Log out'),
+                    ),
+                  ),
                 ],
               ),
             ],

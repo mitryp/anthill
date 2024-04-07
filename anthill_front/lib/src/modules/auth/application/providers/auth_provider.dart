@@ -11,6 +11,8 @@ class Auth extends _$Auth {
   Future<bool> login(LoginDto loginDto) =>
       ref.read(authServiceProvider).login(loginDto).whenComplete(ref.invalidateSelf);
 
+  Future<void> logoff() => ref.read(authServiceProvider).logoff().whenComplete(ref.invalidateSelf);
+
   @override
   Future<UserReadDto?> build() async {
     final user = await ref.watch(authServiceProvider).restore();

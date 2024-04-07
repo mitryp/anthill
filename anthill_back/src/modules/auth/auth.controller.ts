@@ -1,6 +1,14 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  InternalServerErrorException,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { LocalAuthGuard } from './local-auth.guard';
 import { User } from '../users/data/entities/user.entity';
 import { Public } from './public.guard';
@@ -24,5 +32,16 @@ export class AuthController {
   @Post('restore')
   async restoreSession(@Req() req: Request): Promise<UserReadDto> {
     return this.authService.restoreUser(req.user as SessionPayloadDto);
+  }
+
+  @Post('logoff')
+  async logoff(@Req() req: Request, @Res() res: Response) {
+    req.session.destroy((err) => {
+      if (err) {
+        throw new InternalServerErrorException(null, 'Something went wrong when logging off');
+      }
+
+      res.sendStatus(200);
+    });
   }
 }
