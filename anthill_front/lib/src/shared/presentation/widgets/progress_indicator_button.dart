@@ -96,6 +96,7 @@ class _ProgressIndicatorButtonState extends State<ProgressIndicatorButton> {
 
     return widget.buttonBuilder(
       style: ButtonStyle(
+        foregroundColor: _hadError ? MaterialStatePropertyAll(colorScheme.onError) : null,
         backgroundColor: _hadError ? MaterialStatePropertyAll(colorScheme.error) : null,
       ).merge(widget.style),
       onPressed: widget.onPressed == null ? null : _onPressed,
