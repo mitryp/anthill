@@ -7,6 +7,7 @@ import '../../../../shared/navigation.dart';
 import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../../auth/application/providers/auth_provider.dart';
+import '../../../auth/application/providers/current_user_provider.dart';
 import '../../../users/users_module.dart';
 import '../../application/providers/transaction_by_id_provider.dart';
 import '../../application/providers/transaction_controller_provider.dart';
@@ -107,20 +108,26 @@ class SingleTransactionPage extends ConsumerWidget with CanControlCollection<Tra
       ],
     );
 
+    final currentUser = ref.watch(currentUserProvider);
+    final canControlResource =
+        (currentUser.role != UserRole.volunteer || currentUser.id == transaction.user.id);
+
     final isDeleted = transaction.isDeleted;
 
-    final controls = SingleModelControls(
-      onEditPressed: isDeleted
-          ? null
-          : () => openEditor(context, transaction).whenComplete(waitUntilInvalidated),
-      onDeletePressed: isDeleted
-          ? null
-          : () => deleteModel(context, ref, transaction).whenComplete(waitUntilInvalidated),
-      onRestorePressed: !isDeleted
-          ? null
-          : () => restoreModel(context, ref, transaction).whenComplete(waitUntilInvalidated),
-      showRestoreButton: ref.watch(authProvider).value?.role == UserRole.admin,
-    );
+    final controls = canControlResource
+        ? SingleModelControls(
+            onEditPressed: isDeleted
+                ? null
+                : () => openEditor(context, transaction).whenComplete(waitUntilInvalidated),
+            onDeletePressed: isDeleted
+                ? null
+                : () => deleteModel(context, ref, transaction).whenComplete(waitUntilInvalidated),
+            onRestorePressed: !isDeleted
+                ? null
+                : () => restoreModel(context, ref, transaction).whenComplete(waitUntilInvalidated),
+            showRestoreButton: ref.watch(authProvider).value?.role == UserRole.admin,
+          )
+        : const SizedBox();
 
     return Scaffold(
       appBar: AppBar(

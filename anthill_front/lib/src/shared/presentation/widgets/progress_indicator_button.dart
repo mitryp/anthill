@@ -8,12 +8,14 @@ class ProgressIndicatorButton extends StatefulWidget {
   final FutureOr<void> Function()? onPressed;
   final ButtonBuilder buttonBuilder;
   final Widget child;
+  final Widget? errorChild;
   final ButtonStyle? style;
 
   const ProgressIndicatorButton({
     required this.onPressed,
     required this.child,
     required this.buttonBuilder,
+    this.errorChild,
     this.style,
     super.key,
   });
@@ -40,6 +42,7 @@ class ProgressIndicatorButton extends StatefulWidget {
 
 class _ProgressIndicatorButtonState extends State<ProgressIndicatorButton> {
   bool _isLoading = false;
+  bool _hadError = false;
 
   Future<void> _onPressed() async {
     final onPressed = widget.onPressed;
@@ -50,33 +53,52 @@ class _ProgressIndicatorButtonState extends State<ProgressIndicatorButton> {
 
     setState(() => _isLoading = true);
 
-    await onPressed();
+    final isSuccessful =
+        await Future(() => onPressed()).then((_) => true).onError((_, __) => false);
 
-    if (mounted) {
-      setState(() => _isLoading = false);
+    if (!mounted) {
+      return;
     }
+
+    setState(() {
+      _isLoading = false;
+      _hadError = !isSuccessful;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final child = _isLoading
-        ? SizedBox(
-            height: 24,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: CircularProgressIndicator(
-                  color: widget.style?.foregroundColor?.resolve({}) ??
-                      Theme.of(context).colorScheme.onPrimary,
-                ),
-              ),
+    late final colorScheme = Theme.of(context).colorScheme;
+
+    final Widget child;
+
+    if (_hadError) {
+      child = Padding(
+        padding: const EdgeInsets.all(2),
+        child: widget.errorChild ?? const Icon(Icons.warning),
+      );
+    } else if (_isLoading) {
+      child = SizedBox(
+        height: 24,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 2),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: CircularProgressIndicator(
+              color: widget.style?.foregroundColor?.resolve({}) ?? colorScheme.onPrimary,
             ),
-          )
-        : widget.child;
+          ),
+        ),
+      );
+    } else {
+      child = widget.child;
+    }
 
     return widget.buttonBuilder(
-      style: widget.style,
+      style: ButtonStyle(
+        foregroundColor: _hadError ? MaterialStatePropertyAll(colorScheme.onError) : null,
+        backgroundColor: _hadError ? MaterialStatePropertyAll(colorScheme.error) : null,
+      ).merge(widget.style),
       onPressed: widget.onPressed == null ? null : _onPressed,
       child: child,
     );
