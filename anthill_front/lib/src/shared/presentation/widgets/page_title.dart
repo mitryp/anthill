@@ -1,0 +1,21 @@
+import 'package:flutter/material.dart';
+
+class PageTitle extends StatelessWidget {
+  final String title;
+  final Widget child;
+
+  const PageTitle({
+    required this.title,
+    required this.child,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Title(
+      title: '$title | Anthill',
+      color: Colors.blueAccent,
+      child: child,
+    );
+  }
+}

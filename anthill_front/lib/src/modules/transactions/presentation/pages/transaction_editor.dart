@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_controller_provider.dart';
 import '../../domain/dtos/transaction_create_dto.dart';
@@ -14,11 +15,14 @@ class TransactionEditor extends ConsumerStatefulWidget {
   const TransactionEditor({TransactionReadDto? transactionToEdit, super.key})
       : _readDto = transactionToEdit;
 
-  factory TransactionEditor.pageBuilder(BuildContext context, GoRouterState state) {
+  static Widget pageBuilder(BuildContext context, GoRouterState state) {
     final extra = state.extra;
     final toEdit = extra is TransactionReadDto ? extra : null;
 
-    return TransactionEditor(transactionToEdit: toEdit);
+    return PageTitle(
+      title: toEdit != null ? 'Edit transaction' : 'Create transaction',
+      child: TransactionEditor(transactionToEdit: toEdit),
+    );
   }
 
   @override

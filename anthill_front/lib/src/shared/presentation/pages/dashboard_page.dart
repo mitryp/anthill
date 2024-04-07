@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../modules/auth/auth_module.dart';
 import '../../navigation.dart';
 import '../widgets/page_body.dart';
+import '../widgets/page_title.dart';
 
 const _colors = [
   Colors.blue,
@@ -17,7 +18,10 @@ const _colors = [
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
-  factory DashboardPage.pageBuilder(BuildContext _, GoRouterState __) => const DashboardPage();
+  static Widget pageBuilder(BuildContext _, GoRouterState __) => const PageTitle(
+        title: 'Dashboard',
+        child: DashboardPage(),
+      );
 
   @override
   Widget build(BuildContext context) {

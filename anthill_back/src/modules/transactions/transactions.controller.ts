@@ -97,10 +97,12 @@ export class TransactionsController
     @Body() transaction: TransactionUpdateDto,
     @Req() req: Request,
   ): Promise<TransactionReadDto> {
-    const res = await this.transactionService.update(id, transaction);
+    const user = req.user as SessionPayloadDto;
+
+    const res = await this.transactionService.update(id, transaction, user);
 
     await this.log({
-      userId: (req.user as SessionPayloadDto).id,
+      userId: user.id,
       action: 'updateTransaction',
       targetEntityId: res.id,
     });
@@ -110,11 +112,12 @@ export class TransactionsController
 
   @Delete(':id')
   async delete(@Param('id') id: number, @Req() req: Request): Promise<boolean> {
-    const res = await this.transactionService.delete(id);
+    const user = req.user as SessionPayloadDto;
+    const res = await this.transactionService.delete(id, user);
 
     if (res) {
       await this.log({
-        userId: (req.user as SessionPayloadDto).id,
+        userId: user.id,
         action: 'deleteTransaction',
         targetEntityId: id,
       });

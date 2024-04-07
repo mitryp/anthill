@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../../auth/auth_module.dart';
 import '../../application/providers/user_controller_provider.dart';
@@ -19,15 +20,18 @@ class UserEditor extends ConsumerStatefulWidget {
     final extra = state.extra;
     final toEdit = extra is UserReadDto ? extra : null;
 
-    return VisibleFor(
-      roles: const {UserRole.admin},
-      unauthorizedPlaceholder: Scaffold(
-        appBar: AppBar(),
-        body: const Center(
-          child: Text('You are not authorized to see this page'),
+    return PageTitle(
+      title: toEdit != null ? 'Edit user' : 'Create user',
+      child: VisibleFor(
+        roles: const {UserRole.admin},
+        unauthorizedPlaceholder: Scaffold(
+          appBar: AppBar(),
+          body: const Center(
+            child: Text('You are not authorized to see this page'),
+          ),
         ),
+        child: UserEditor(userToEdit: toEdit),
       ),
-      child: UserEditor(userToEdit: toEdit),
     );
   }
 

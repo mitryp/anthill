@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../application/providers/auth_provider.dart';
 import '../../domain/dtos/login_dto.dart';
@@ -40,35 +41,38 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageBody(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: defaultFormPadding,
-            child: Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                children: [
-                  TextFormField(
-                    validator: isRequired(context),
-                    initialValue: _loginDto.email,
-                    onChanged: _onEmailChanged,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    validator: isRequired(context),
-                    initialValue: _loginDto.password,
-                    onChanged: _onPasswordChanged,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                  ),
-                  const SizedBox(height: 32),
-                  ElevatedButton(
-                    onPressed: _login,
-                    child: const Text('Log in'),
-                  ),
-                ],
+    return PageTitle(
+      title: 'Login',
+      child: Scaffold(
+        body: PageBody(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: defaultFormPadding,
+              child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      validator: isRequired(context),
+                      initialValue: _loginDto.email,
+                      onChanged: _onEmailChanged,
+                      decoration: const InputDecoration(labelText: 'Email'),
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      validator: isRequired(context),
+                      initialValue: _loginDto.password,
+                      onChanged: _onPasswordChanged,
+                      decoration: const InputDecoration(labelText: 'Password'),
+                    ),
+                    const SizedBox(height: 32),
+                    ElevatedButton(
+                      onPressed: _login,
+                      child: const Text('Log in'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

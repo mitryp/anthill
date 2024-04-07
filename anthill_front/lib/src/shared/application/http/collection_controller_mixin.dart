@@ -71,7 +71,6 @@ mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends
           error,
           stackTrace,
           context: context,
-          returnValue: false,
         ),
         test: isDioError,
       );
@@ -86,7 +85,6 @@ mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends
           error,
           stackTrace,
           context: context,
-          returnValue: false,
         ),
         test: isDioError,
       );

@@ -3,6 +3,7 @@ import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../shared/pagination.dart';
+import '../../../../shared/presentation/widgets/page_title.dart';
 import '../../../../shared/widgets.dart';
 import '../../application/providers/logging_service_provider.dart';
 import '../../application/providers/logs_provider.dart';
@@ -15,10 +16,13 @@ class LogsPage extends StatelessWidget {
 
   const LogsPage({QueryParams params = const {}, super.key}) : _queryParams = params;
 
-  factory LogsPage.pageBuilder(BuildContext _, GoRouterState state) {
+  static Widget pageBuilder(BuildContext _, GoRouterState state) {
     final params = state.uri.queryParametersAll.normalize();
 
-    return LogsPage(params: params);
+    return PageTitle(
+      title: 'Logs',
+      child: LogsPage(params: params),
+    );
   }
 
   @override

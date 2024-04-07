@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
@@ -12,7 +14,7 @@ Widget? switchSingleModelValue(
   WidgetBuilder? loadingBuilder,
 }) {
   if (kDebugMode && value is AsyncError) {
-    print((value.error as TypeError).stackTrace);
+    log('${(value.error as TypeError).stackTrace}');
   }
 
   return switch (value) {
