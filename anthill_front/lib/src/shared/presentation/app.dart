@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../modules/auth/auth_module.dart';
 import 'router.dart';
@@ -8,21 +10,28 @@ class AnthillApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const localizationDelegates = [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ];
+
     final router = buildRouter(context);
 
     return Loader(
       loginPage: MaterialApp(
+        localizationsDelegates: localizationDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
         title: 'Anthill',
-        onGenerateRoute: (settings) {
-          return MaterialPageRoute(
-            builder: (context) {
-              return const LoginPage();
-            },
-          );
-        },
+        onGenerateRoute: (settings) => MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
       ),
       child: MaterialApp.router(
+        localizationsDelegates: localizationDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         routerConfig: router,
         debugShowCheckedModeBanner: false,
         title: 'Anthill',
