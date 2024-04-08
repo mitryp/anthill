@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../http.dart';
-import '../../utils/date_format.dart';
+import '../../widgets.dart';
 
 /// A widget providing a base for representing a single resource.
 ///
 /// When [leading] is not given, there will be a deleted marker, when the model is deleted.
 /// When [trailing] is not given, there will be a creation date representation.
 class ResourceCard extends StatelessWidget {
-  static const _deletedMarker = Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [Text('Deleted', style: TextStyle(fontWeight: FontWeight.bold))],
-  );
-
   final Widget title;
   final Widget? subtitle;
   final IdentifiableModel model;
@@ -51,7 +46,7 @@ class ResourceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final leading = this.leading ?? (model.isDeleted ? _deletedMarker : null);
+    final leading = this.leading ?? (model.isDeleted ? const _DeletedResourceMarker() : null);
 
     return Card(
       child: ListTile(
@@ -61,6 +56,23 @@ class ResourceCard extends StatelessWidget {
         trailing: trailing ?? _buildCreatedDateRepr(context),
         onTap: onTap,
       ),
+    );
+  }
+}
+
+class _DeletedResourceMarker extends StatelessWidget {
+  const _DeletedResourceMarker();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          context.locale.deletedResourceMarker,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }

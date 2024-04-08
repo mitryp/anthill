@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../typedefs.dart';
-import 'progress_indicator_button.dart';
+import '../../widgets.dart';
 
 class SingleModelControls extends StatelessWidget {
   final bool showEditButton;
@@ -27,6 +27,8 @@ class SingleModelControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
+
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
       spacing: overflowSpacing,
@@ -36,7 +38,7 @@ class SingleModelControls extends StatelessWidget {
           ProgressIndicatorButton.icon(
             iconButtonBuilder: OutlinedButton.icon,
             onPressed: onDeletePressed?.call,
-            label: const Text('Delete'),
+            label: Text(locale.modelControlsDeleteButtonLabel),
             icon: const Icon(Icons.delete),
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.resolveWith(
@@ -52,14 +54,14 @@ class SingleModelControls extends StatelessWidget {
             iconButtonBuilder: ElevatedButton.icon,
             onPressed: onEditPressed?.call,
             icon: const Icon(Icons.edit),
-            label: const Text('Edit'),
+            label: Text(locale.modelControlsEditButtonLabel),
           ),
         if (showRestoreButton)
           ProgressIndicatorButton.icon(
             iconButtonBuilder: ElevatedButton.icon,
             onPressed: onRestorePressed,
             icon: const Icon(Icons.restore),
-            label: const Text('Restore'),
+            label: Text(locale.modelControlsRestoreButtonLabel),
           ),
       ],
     );

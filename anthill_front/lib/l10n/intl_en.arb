@@ -5,6 +5,10 @@
   "confirmationDialogDefaultCancel": "Cancel",
 
   "pageTitleDashboard": "Dashboard",
+  "pageTitleTransactions": "Transactions",
+  "pageTitleUsers": "Users",
+  "pageTitleLogs": "Logs",
+
   "dashboardGreeting": "Welcome, {userName}",
   "@dashboardGreeting": {
     "placeholders": {
@@ -26,5 +30,26 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "errorNoticeTitle": "An error occurred",
+  "errorNoticeErrorMessage": "Oops! An error occurred. Please report this to the support",
+
+  "deletedResourceMarker": "Deleted",
+
+  "paginationSearchLabel": "Search",
+  "paginationDateRangeFilterPlaceholder": "Select dates",
+  "paginationShowDeletedSwitchLabel": "Show deleted",
+  "paginationSingleSortSelectorLabel": "Sort",
+
+  "modelControlsDeleteButtonLabel": "Delete",
+  "modelControlsEditButtonLabel": "Edit",
+  "modelControlsRestoreButtonLabel": "Restore",
+
+  "sortByCreateDateLabel": "Create date",
+  "sortByAmountLabel": "Amount",
+  "sortBySourceOrPurposeLabel": "Source or purpose",
+  "sortByNameLabel": "Name",
+
+  "loadingPageTitle": "Loading"
 }

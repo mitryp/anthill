@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'error_notice.dart';
+import '../../widgets.dart';
 
 Widget? switchSingleModelValue(
   AsyncValue value, {
@@ -25,7 +25,7 @@ Widget? switchSingleModelValue(
         ),
     AsyncLoading() => loadingBuilder?.call(context) ??
         Scaffold(
-          appBar: AppBar(title: const Text('Loading')),
+          appBar: AppBar(title: Text(context.locale.loadingPageTitle)),
           body: const Center(child: CircularProgressIndicator()),
         ),
     _ => null,

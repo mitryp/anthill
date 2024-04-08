@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config.dart';
+import '../../widgets.dart';
 
 class ErrorNotice extends StatelessWidget {
   final Object? error;
@@ -11,11 +12,11 @@ class ErrorNotice extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
+
     final err = Center(
       child: Text(
-        env == 'production'
-            ? 'Ooops! An error occurred. Please report this to the support'
-            : error.toString(),
+        env == 'production' ? locale.errorNoticeErrorMessage : error.toString(),
         style: TextStyle(
           color: Theme.of(context).colorScheme.error,
           fontWeight: FontWeight.bold,
@@ -29,7 +30,7 @@ class ErrorNotice extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('An error occurred'),
+        title: Text(locale.errorNoticeTitle),
       ),
       body: err,
     );
