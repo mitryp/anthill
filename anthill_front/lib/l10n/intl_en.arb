@@ -1,4 +1,19 @@
 {
   "confirmationDialogDefaultAccept": "OK",
-  "confirmationDialogDefaultCancel": "Cancel"
+  "confirmationDialogDefaultCancel": "Cancel",
+
+  "pageTitleDashboard": "Dashboard",
+
+  "dashboardGreeting": "Welcome, {userName}",
+  "@dashboardGreeting": {
+    "placeholders": {
+      "userName": {
+        "type": "String",
+        "example": "Olena"
+      }
+    }
+  },
+  "dashboardShortcutsTitle": "Your shortcuts",
+
+  "logoutButtonLabel": "Log out"
 }

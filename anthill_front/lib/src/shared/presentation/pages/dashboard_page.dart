@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../modules/auth/auth_module.dart';
 import '../../navigation.dart';
-import '../widgets/page_body.dart';
+import '../../widgets.dart';
 import '../widgets/page_title.dart';
-import '../widgets/progress_indicator_button.dart';
 
 const _colors = [
   Colors.blue,
@@ -19,9 +18,9 @@ const _colors = [
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
-  static Widget pageBuilder(BuildContext _, GoRouterState __) => const PageTitle(
-        title: 'Dashboard',
-        child: DashboardPage(),
+  static Widget pageBuilder(BuildContext context, GoRouterState __) => PageTitle(
+        title: context.locale.pageTitleDashboard,
+        child: const DashboardPage(),
       );
 
   @override
@@ -31,6 +30,7 @@ class DashboardPage extends StatelessWidget {
     const buttonRatio = 2 / 1;
 
     final theme = Theme.of(context);
+    final locale = context.locale;
 
     final tileDestinations =
         Destination.values.where((dest) => dest.isShownAtDashboard).toList(growable: false);
@@ -45,7 +45,7 @@ class DashboardPage extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Text(
-            'Welcome, ${user.name}',
+            locale.dashboardGreeting(user.name),
             style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
         );
@@ -53,7 +53,7 @@ class DashboardPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Dashboard')),
+      appBar: AppBar(title: Text(locale.pageTitleDashboard)),
       body: Padding(
         padding: const EdgeInsets.all(padding),
         child: PageBody(
@@ -64,7 +64,7 @@ class DashboardPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Text(
-                  'Your shortcuts:',
+                  '${locale.dashboardShortcutsTitle}:',
                   style: theme.textTheme.titleMedium,
                 ),
               ),
@@ -96,7 +96,7 @@ class DashboardPage extends StatelessWidget {
                       iconButtonBuilder: OutlinedButton.icon,
                       onPressed: ref.read(authProvider.notifier).logoff,
                       icon: const Icon(Icons.logout),
-                      label: const Text('Log out'),
+                      label: Text(locale.logoutButtonLabel),
                     ),
                   ),
                 ],
