@@ -1,4 +1,6 @@
 {
+  "appName": "Anthill",
+
   "confirmationDialogDefaultAccept": "OK",
   "confirmationDialogDefaultCancel": "Cancel",
 

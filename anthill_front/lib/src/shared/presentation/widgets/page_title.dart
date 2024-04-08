@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets.dart';
+
 class PageTitle extends StatelessWidget {
   final String title;
   final Widget child;
@@ -13,7 +15,7 @@ class PageTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Title(
-      title: '$title | Anthill',
+      title: '$title | ${context.locale.appName}',
       color: Colors.blueAccent,
       child: child,
     );

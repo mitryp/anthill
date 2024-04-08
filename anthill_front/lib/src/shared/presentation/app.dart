@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../modules/auth/auth_module.dart';
+import '../widgets.dart';
 import 'router.dart';
 
 class AnthillApp extends StatelessWidget {
@@ -24,7 +25,7 @@ class AnthillApp extends StatelessWidget {
         localizationsDelegates: localizationDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
-        title: 'Anthill',
+        onGenerateTitle: (context) => context.locale.appName,
         onGenerateRoute: (settings) => MaterialPageRoute(
           builder: (context) => const LoginPage(),
         ),
@@ -34,7 +35,7 @@ class AnthillApp extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         routerConfig: router,
         debugShowCheckedModeBanner: false,
-        title: 'Anthill',
+        onGenerateTitle: (context) => context.locale.appName,
       ),
     );
   }
