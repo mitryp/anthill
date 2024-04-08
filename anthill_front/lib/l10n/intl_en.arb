@@ -1,1 +1,4 @@
-{}
+{
+  "confirmationDialogDefaultAccept": "OK",
+  "confirmationDialogDefaultCancel": "Cancel"
+}
