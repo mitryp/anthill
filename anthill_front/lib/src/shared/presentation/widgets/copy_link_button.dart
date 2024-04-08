@@ -4,9 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:universal_html/html.dart';
 
-import '../../application/providers/share_link_provider.dart';
 import '../../pagination.dart';
-import 'snack_bar_content.dart';
+import '../../widgets.dart';
 
 class CopyLinkButton extends StatelessWidget {
   final String? _link;
@@ -40,13 +39,14 @@ class CopyLinkButton extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         onPressed: () => _copyLink(context),
         icon: const Icon(Icons.share),
-        tooltip: 'Copy to clipboard',
+        tooltip: context.locale.copyLinkButtonTooltip,
       );
 
   String _sameOriginLink(String path) =>
       Uri.base.resolve('/#${path.startsWith('/') ? '' : '/'}$path').toString();
 
   Future<void> _copyLink(BuildContext context) async {
+    final locale = context.locale;
     final rawLink = _link ?? window.location.href;
     final link = Uri.parse(rawLink).hasAuthority ? rawLink : _sameOriginLink(rawLink);
 
@@ -55,7 +55,7 @@ class CopyLinkButton extends StatelessWidget {
     // ignore: use_build_context_synchronously
     showSnackBar(
       context,
-      title: Text('Copied to clipboard: $link'),
+      title: Text(locale.copyLinkButtonConfirmation(link)),
       backgroundColor: Colors.lightGreen,
     );
   }

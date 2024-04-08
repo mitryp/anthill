@@ -3,7 +3,6 @@
   "confirmationDialogDefaultCancel": "Cancel",
 
   "pageTitleDashboard": "Dashboard",
-
   "dashboardGreeting": "Welcome, {userName}",
   "@dashboardGreeting": {
     "placeholders": {
@@ -15,5 +14,15 @@
   },
   "dashboardShortcutsTitle": "Your shortcuts",
 
-  "logoutButtonLabel": "Log out"
+  "logoutButtonLabel": "Log out",
+
+  "copyLinkButtonTooltip": "Copy to clipboard",
+  "copyLinkButtonConfirmation": "Copied to clipboard: {link}",
+  "@copyLinkButtonConfirmation": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  }
 }
