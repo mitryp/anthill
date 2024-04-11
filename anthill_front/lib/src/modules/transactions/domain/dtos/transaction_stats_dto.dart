@@ -30,3 +30,7 @@ Map<DateTime, double> _balancesFromJson(Map<String, dynamic> json) {
     return MapEntry(dateKey, value as double);
   });
 }
+
+extension PeriodBalance on TransactionStatsDto {
+  double get balance => incomesSum + expensesSum;
+}

@@ -33,6 +33,8 @@ class GeneralStatsDiagram extends StatelessWidget {
       ),
     ];
 
+    final balance = _statsDto.balance;
+
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,20 +63,33 @@ class GeneralStatsDiagram extends StatelessWidget {
                     ),
                   ),
                   _StatsLabel(
-                    name: 'Largest',
+                    name: '    Largest',
                     value: '${_statsDto.largestIncome.roundWithPrecision()}',
                   ),
                   _StatsLabel(
-                    name: 'Average',
+                    name: '    Average',
                     value: '${_statsDto.averageIncome.roundWithPrecision()}',
                   ),
                   const SizedBox(),
-                  const SizedBox(),
                   DefaultTextStyle(
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    style: const TextStyle(fontSize: 16),
                     child: _StatsLabel(
                       name: 'Expenses',
                       value: '${_statsDto.expensesSum.roundWithPrecision()}',
+                    ),
+                  ),
+                  const SizedBox(),
+                  const SizedBox(),
+                  const SizedBox(),
+                  DefaultTextStyle(
+                    style: const TextStyle(fontSize: 17, color: Colors.black),
+                    child: _StatsLabel(
+                      name: 'Period balance',
+                      value: '${balance > 0 ? '+' : ''}${_statsDto.balance.roundWithPrecision()}',
+                      valueStyle: TextStyle(
+                        color: _statsDto.balance.isNegative ? Colors.red : Colors.green,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ].divide(const SizedBox(height: 4)),

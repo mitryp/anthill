@@ -25,6 +25,14 @@ class AuthService {
       .then(_decodeLoginResponse)
       .onError(_printErrorAndReturn(false));
 
+  /// Asks the server to invalidate current session.
+  ///
+  /// If was successfully invalidated, returns true.
+  Future<bool> logoff() => client
+      .post('$_apiPrefix/logoff')
+      .then(_decodeLogoffResponse)
+      .onError(_printErrorAndReturn(false));
+
   /// Tries to restore the present session.
   ///
   /// As there is no way to know if the access token is present, it's necessary to
@@ -35,6 +43,8 @@ class AuthService {
       .onError(_printErrorAndReturn(null));
 
   bool _decodeLoginResponse(Response res) => res.statusCode == HttpStatus.created;
+
+  bool _decodeLogoffResponse(Response res) => res.statusCode == HttpStatus.ok;
 
   UserReadDto? _decodeRestoreResponse(Response<JsonMap> res) {
     final data = res.data;
