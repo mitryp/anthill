@@ -59,5 +59,80 @@
 
   "loginButtonLabel": "Log in",
 
-  "errorLoginDetailsNotAccepted": "Login details were not accepted"
+  "errorLoginDetailsNotAccepted": "Login details were not accepted",
+  "errorMissingLinkForResource": "Missing resource link: {resourceAffected}",
+  "@errorMissingLinkForResource": {
+    "placeholders": {
+      "resourceAffected": {
+        "type": "String"
+      }
+    }
+  },
+
+  "supportReportEncouragement": "Please, report this to the support",
+
+  "logEntryDeleteAction": "{resourceName} {descriptiveProperty} deleted",
+  "@logEntryDeleteAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+  "logEntryCreateAction": "{resourceName} {descriptiveProperty} created",
+  "@logEntryCreateAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+  "logEntryUpdateAction": "{resourceName} {descriptiveProperty} updated",
+  "@logEntryUpdateAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+  "logEntryRestoreAction": "{resourceName} {descriptiveProperty} restored",
+  "@logEntryRestoreAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+
+  "logEntryActionPerformedBy": "{action} by ",
+  "@logEntryActionPerformedBy": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+
+  "logEntryCreatedAt": "At ",
+  "logEntryOriginModule": "Module: ",
+
+  "resourceNameUser": "user",
+  "resourceNameTransaction": "transaction",
+  "resourceNameUnknown": "unknown resource",
+
+  "moduleNameUsers": "users",
+  "moduleNameTransactions": "transactions",
+  "moduleNameUnknown": "unknown module"
 }

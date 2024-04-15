@@ -16,20 +16,22 @@ class LogsPage extends StatelessWidget {
 
   const LogsPage({QueryParams params = const {}, super.key}) : _queryParams = params;
 
-  static Widget pageBuilder(BuildContext _, GoRouterState state) {
+  static Widget pageBuilder(BuildContext context, GoRouterState state) {
     final params = state.uri.queryParametersAll.normalize();
 
     return PageTitle(
-      title: 'Logs',
+      title: context.locale.pageTitleLogs,
       child: LogsPage(params: params),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Logs'),
+        title: Text(locale.pageTitleLogs),
         actions: [CopyLinkButton.fromProvider()],
       ),
       body: PageBody(
