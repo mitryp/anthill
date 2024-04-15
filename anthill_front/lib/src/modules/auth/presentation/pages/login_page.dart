@@ -34,15 +34,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     // ignore: use_build_context_synchronously
     showSnackBar(
       context,
-      title: const Text('Login details were not accepted'),
+      // ignore: use_build_context_synchronously
+      title: Text(context.locale.errorLoginDetailsNotAccepted),
       backgroundColor: Colors.red.shade200,
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
+
     return PageTitle(
-      title: 'Login',
+      title: locale.pageTitleLogin,
       child: Scaffold(
         body: PageBody(
           child: SingleChildScrollView(
@@ -57,19 +60,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       validator: isRequired(context),
                       initialValue: _loginDto.email,
                       onChanged: _onEmailChanged,
-                      decoration: const InputDecoration(labelText: 'Email'),
+                      decoration: InputDecoration(labelText: locale.userFieldEmail),
                     ),
                     TextFormField(
                       obscureText: true,
                       validator: isRequired(context),
                       initialValue: _loginDto.password,
                       onChanged: _onPasswordChanged,
-                      decoration: const InputDecoration(labelText: 'Password'),
+                      decoration: InputDecoration(labelText: locale.userFieldPassword),
                     ),
                     const SizedBox(height: 32),
                     ElevatedButton(
                       onPressed: _login,
-                      child: const Text('Log in'),
+                      child: Text(locale.loginButtonLabel),
                     ),
                   ],
                 ),

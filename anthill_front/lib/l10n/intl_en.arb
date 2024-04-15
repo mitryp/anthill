@@ -8,6 +8,7 @@
   "pageTitleTransactions": "Transactions",
   "pageTitleUsers": "Users",
   "pageTitleLogs": "Logs",
+  "pageTitleLogin": "Log in",
 
   "dashboardGreeting": "Welcome, {userName}",
   "@dashboardGreeting": {
@@ -51,5 +52,12 @@
   "sortBySourceOrPurposeLabel": "Source or purpose",
   "sortByNameLabel": "Name",
 
-  "loadingPageTitle": "Loading"
+  "loadingPageTitle": "Loading",
+
+  "userFieldEmail": "Email",
+  "userFieldPassword": "Password",
+
+  "loginButtonLabel": "Log in",
+
+  "errorLoginDetailsNotAccepted": "Login details were not accepted"
 }
