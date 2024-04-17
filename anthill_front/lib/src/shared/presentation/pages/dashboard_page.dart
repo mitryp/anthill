@@ -87,6 +87,7 @@ class DashboardPage extends StatelessWidget {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         style: ButtonStyle(
+                          foregroundColor: const MaterialStatePropertyAll(Colors.white),
                           backgroundColor: MaterialStatePropertyAll(_colors[i % _colors.length]),
                         ),
                       );
