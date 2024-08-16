@@ -14,7 +14,8 @@ Widget? switchSingleModelValue(
   WidgetBuilder? loadingBuilder,
 }) {
   if (kDebugMode && value is AsyncError) {
-    log('${(value.error as TypeError).stackTrace}');
+    final error = value.error;
+    log('${error is Error ? error.stackTrace : error}');
   }
 
   return switch (value) {
