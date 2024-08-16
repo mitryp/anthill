@@ -35,19 +35,22 @@ class LogsPage extends StatelessWidget {
         actions: [CopyLinkButton.fromProvider()],
       ),
       body: PageBody(
-        child: PaginatedCollectionView<LogEntryReadDto>(
-          queryParams: _queryParams,
-          httpServiceProvider: loggingServiceProvider,
-          collectionProvider: logsProvider,
-          collectionName: logsResourceName,
-          showSearch: false,
-          viewBuilder: (context, logs) {
-            return ListView.builder(
-              shrinkWrap: false,
-              itemCount: logs.data.length,
-              itemBuilder: (context, index) => LogEntryTile(logEntry: logs.data[index]),
-            );
-          },
+        child: Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: PaginatedCollectionView<LogEntryReadDto>(
+            queryParams: _queryParams,
+            httpServiceProvider: loggingServiceProvider,
+            collectionProvider: logsProvider,
+            collectionName: logsResourceName,
+            showSearch: false,
+            viewBuilder: (context, logs) {
+              return ListView.builder(
+                shrinkWrap: false,
+                itemCount: logs.data.length,
+                itemBuilder: (context, index) => LogEntryTile(logEntry: logs.data[index]),
+              );
+            },
+          ),
         ),
       ),
     );
