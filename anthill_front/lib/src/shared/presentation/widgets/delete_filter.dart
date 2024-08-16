@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
+import '../../widgets.dart';
+
 class DeleteFilter extends StatelessWidget {
   final PaginationController _controller;
   final String _filterKey;
@@ -31,13 +33,15 @@ class DeleteFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.locale;
+
     return ListenableBuilder(
       listenable: _controller,
       builder: (context, _) {
         final includeDeleted = _controller.filters[_filterKey]?.single == _includeDeletedFilter;
 
         return FilterChip(
-          label: const Text('Show deleted'),
+          label: Text(locale.paginationShowDeletedSwitchLabel),
           onSelected: _onSelected,
           selected: includeDeleted,
         );

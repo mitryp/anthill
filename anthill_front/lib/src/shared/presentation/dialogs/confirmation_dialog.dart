@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../utils/context_locale.dart';
+
 class ConfirmationDialog extends StatelessWidget {
   final Widget title;
   final Widget? content;
@@ -21,9 +23,12 @@ class ConfirmationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // todo localize
-    final confirmButtonLabel = this.confirmButtonLabel ?? const Text('OK');
-    final cancelButtonLabel = this.cancelButtonLabel ?? const Text('Cancel');
+    final locale = context.locale;
+
+    final confirmButtonLabel =
+        this.confirmButtonLabel ?? Text(locale.confirmationDialogDefaultAccept);
+    final cancelButtonLabel =
+        this.cancelButtonLabel ?? Text(locale.confirmationDialogDefaultCancel);
 
     return AlertDialog(
       title: title,

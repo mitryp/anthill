@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
-import '../../utils/date_format.dart';
-import '../../utils/date_transfer_format.dart';
-import '../utils/extract_date_range_from_controller.dart';
+import '../../pagination.dart';
+import '../../widgets.dart';
 
 typedef DateFormatter = String Function(DateTime);
 
 class DateRangeFilter extends StatelessWidget {
   final PaginationController _controller;
   final String filterKey;
-  final String placeholder;
+  final String? placeholder;
   final DateFormatter formatter;
 
   const DateRangeFilter({
     required PaginationController controller,
     this.filterKey = 'createDate',
-    this.placeholder = 'Select dates',
+    this.placeholder,
     this.formatter = serializeDateQueryParam,
     super.key,
   }) : _controller = controller;
@@ -50,6 +49,8 @@ class DateRangeFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final placeholder = context.locale.paginationDateRangeFilterPlaceholder;
+
     return ListenableBuilder(
       listenable: _controller,
       builder: (context, _) {

@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../http.dart';
-import '../../utils/date_format.dart';
+import '../../widgets.dart';
 
 /// A widget providing a base for representing a single resource.
 ///
 /// When [leading] is not given, there will be a deleted marker, when the model is deleted.
 /// When [trailing] is not given, there will be a creation date representation.
 class ResourceCard extends StatelessWidget {
-  static const _deletedMarker = Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [Text('Deleted', style: TextStyle(fontWeight: FontWeight.bold))],
-  );
-
   final Widget title;
   final Widget? subtitle;
   final IdentifiableModel model;
@@ -45,22 +40,53 @@ class ResourceCard extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        if (model.isDeleted) const _DeletedResourceMarker(),
       ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final leading = this.leading ?? (model.isDeleted ? _deletedMarker : null);
+    final elevation =
+        model.isDeleted ? _Constants.deletedElevation : _Constants.elevation;
+    final tintColor = model.isDeleted ? _Constants.deletedTintColor : null;
 
     return Card(
+      elevation: elevation,
+      surfaceTintColor: tintColor,
       child: ListTile(
         title: title,
         subtitle: subtitle,
         leading: leading,
         trailing: trailing ?? _buildCreatedDateRepr(context),
         onTap: onTap,
+        contentPadding: _Constants.contentPadding,
       ),
     );
   }
+}
+
+class _DeletedResourceMarker extends StatelessWidget {
+  const _DeletedResourceMarker();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          context.locale.deletedResourceMarker,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+}
+
+abstract final class _Constants {
+  static const elevation = 3.0;
+  static const deletedElevation = elevation / 2;
+  static final deletedTintColor = Colors.red[600];
+  static const contentPadding =
+      EdgeInsets.symmetric(vertical: 8, horizontal: 16);
 }

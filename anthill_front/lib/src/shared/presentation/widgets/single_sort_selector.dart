@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
-import '../../utils/controller_flip_sort.dart';
+import '../../pagination.dart';
+import '../../widgets.dart';
 
 typedef FieldLocalizer = String? Function(BuildContext context, String colName);
 
@@ -9,7 +10,33 @@ typedef FieldLocalizer = String? Function(BuildContext context, String colName);
 String Function(String) _definedLocalizerDecorator(String? Function(String) localizer) =>
     (colName) => localizer(colName) ?? colName;
 
-String? _debugLocalizer(BuildContext _, String __) => null;
+String _localizer(BuildContext context, String colName) {
+  final locale = context.locale;
+
+  return switch (colName) {
+    'createDate' => locale.sortByCreateDateLabel,
+    'amount' => locale.sortByAmountLabel,
+    'sourceOrPurpose' => locale.sortBySourceOrPurposeLabel,
+    'name' => locale.sortByNameLabel,
+    _ => _camelCaseToTextTransformer(colName),
+  };
+}
+
+/// Matches an uppercase letter preceded by a lowercase letter.
+final _regex = RegExp(r'(?<=[a-z])[A-Z]');
+
+String _camelCaseToTextTransformer(String camelCaseString) {
+  if (camelCaseString.isEmpty) {
+    return camelCaseString;
+  }
+
+  final transformed = camelCaseString.replaceAllMapped(
+    _regex,
+    (match) => ' ${match.group(0)}'.toLowerCase(),
+  );
+
+  return '${transformed[0].toUpperCase()}${transformed.length > 1 ? transformed.substring(1) : ''}';
+}
 
 class SingleSortSelector extends StatelessWidget {
   final PaginationController controller;
@@ -18,7 +45,7 @@ class SingleSortSelector extends StatelessWidget {
 
   const SingleSortSelector({
     required this.controller,
-    this.localizer = _debugLocalizer,
+    this.localizer = _localizer,
     this.isLocked = false,
     super.key,
   });
@@ -79,7 +106,7 @@ class SingleSortSelector extends StatelessWidget {
                 isExpanded: true,
                 icon: const SizedBox(),
                 decoration: InputDecoration(
-                  labelText: 'Sort',
+                  labelText: context.locale.paginationSingleSortSelectorLabel,
                   suffixIcon: IconButton(
                     onPressed: !isLocked ? _flipSortOrder : null,
                     splashRadius: iconSize,
