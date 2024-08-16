@@ -32,7 +32,7 @@ class SingleModelControls extends StatelessWidget {
     return Wrap(
       alignment: WrapAlignment.spaceEvenly,
       spacing: overflowSpacing,
-      runSpacing: MediaQuery.of(context).textScaleFactor * overflowSpacing,
+      runSpacing: overflowSpacing,
       children: [
         if (showDeleteButton)
           ProgressIndicatorButton.icon(

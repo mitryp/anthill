@@ -52,7 +52,10 @@ class CopyLinkButton extends StatelessWidget {
 
     await Clipboard.setData(ClipboardData(text: link));
 
-    // ignore: use_build_context_synchronously
+    if (!context.mounted) {
+      return;
+    }
+
     showSnackBar(
       context,
       title: Text(locale.copyLinkButtonConfirmation(link)),

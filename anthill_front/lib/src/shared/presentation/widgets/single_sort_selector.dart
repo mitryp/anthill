@@ -10,8 +10,6 @@ typedef FieldLocalizer = String? Function(BuildContext context, String colName);
 String Function(String) _definedLocalizerDecorator(String? Function(String) localizer) =>
     (colName) => localizer(colName) ?? colName;
 
-String? _debugLocalizer(BuildContext _, String __) => null;
-
 String _localizer(BuildContext context, String colName) {
   final locale = context.locale;
 
