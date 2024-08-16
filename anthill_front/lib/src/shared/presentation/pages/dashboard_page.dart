@@ -42,32 +42,30 @@ class DashboardPage extends StatelessWidget {
           return const SizedBox();
         }
 
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Text(
-            locale.dashboardGreeting(user.name),
-            style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-          ),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Text(
+                locale.dashboardGreeting(user.name),
+                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
         );
       },
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(locale.pageTitleDashboard)),
+      appBar: AppBar(title: greeting),
       body: Padding(
         padding: const EdgeInsets.all(padding),
         child: PageBody(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              greeting,
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Text(
-                  '${locale.dashboardShortcutsTitle}:',
-                  style: theme.textTheme.titleMedium,
-                ),
-              ),
+              const SizedBox(height: 32),
               GridView.extent(
                 shrinkWrap: true,
                 mainAxisSpacing: padding,
@@ -76,22 +74,10 @@ class DashboardPage extends StatelessWidget {
                 maxCrossAxisExtent: maxExtent,
                 children: [
                   for (var i = 0; i < tileDestinations.length; i++)
-                    (() {
-                      final dest = tileDestinations[i];
-
-                      return ElevatedButton.icon(
-                        onPressed: () => context.goPage(dest.page),
-                        icon: Icon(dest.icon),
-                        label: Text(
-                          dest.localize(context),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        style: ButtonStyle(
-                          foregroundColor: const MaterialStatePropertyAll(Colors.white),
-                          backgroundColor: MaterialStatePropertyAll(_colors[i % _colors.length]),
-                        ),
-                      );
-                    })(),
+                    _DestinationButton(
+                      destination: tileDestinations[i],
+                      index: i,
+                    ),
                   Consumer(
                     builder: (context, ref, _) => ProgressIndicatorButton.icon(
                       iconButtonBuilder: OutlinedButton.icon,
@@ -102,8 +88,37 @@ class DashboardPage extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 144),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _DestinationButton extends StatelessWidget {
+  final Destination destination;
+  final int index;
+
+  const _DestinationButton({
+    required this.destination,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () => context.goPage(destination.page),
+      icon: Icon(destination.icon),
+      label: Text(
+        destination.localize(context),
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+      style: ButtonStyle(
+        foregroundColor: const MaterialStatePropertyAll(Colors.white),
+        backgroundColor: MaterialStatePropertyAll(
+          _colors[index % _colors.length],
         ),
       ),
     );
