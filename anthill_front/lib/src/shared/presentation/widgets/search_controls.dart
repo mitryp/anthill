@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
+import '../../widgets.dart';
+
 class SearchControls extends StatefulWidget {
   final PaginationController paginationController;
   final bool isLocked;
@@ -50,8 +52,7 @@ class _SearchControlsState extends State<SearchControls> {
       builder: (context, _) => TextFormField(
         controller: _controller,
         decoration: InputDecoration(
-          // todo localize
-          labelText: 'Search',
+          labelText: context.locale.paginationSearchLabel,
           suffixIcon: _controller.text.isNotEmpty
               ? Row(
                   mainAxisSize: MainAxisSize.min,

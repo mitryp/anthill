@@ -31,4 +31,4 @@ doc/api/
 # Generated code
 **/*.g.dart
 **/*.freezed.dart
->>>>>>> anthill_front/merge-to-mono
+lib/generated

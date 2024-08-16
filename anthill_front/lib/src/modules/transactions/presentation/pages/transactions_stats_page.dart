@@ -3,14 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../../../../shared/presentation/widgets/copy_link_button.dart';
-import '../../../../shared/presentation/widgets/page_body.dart';
 import '../../../../shared/presentation/widgets/page_title.dart';
-import '../../../../shared/presentation/widgets/switch_single_model_value.dart';
-import '../../../../shared/utils/date_format.dart';
 import '../../../../shared/utils/date_transfer_format.dart';
 import '../../../../shared/utils/download_bytes_image.dart';
 import '../../../../shared/utils/widget_list_divide.dart';
+import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_stats_provider.dart';
 import '../../domain/dtos/transaction_stats_dto.dart';
 import '../general_stats_diagram.dart';
@@ -41,14 +38,16 @@ class TransactionsStatsPage extends ConsumerWidget {
     );
 
     return PageTitle(
-      title: 'Transactions stats',
+      title: context.locale.pageTitleStats,
       child: TransactionsStatsPage(from: from, to: to),
     );
   }
 
-  Future<void> _downloadStats(Widget statsWidget) async {
+  Future<void> _downloadStats(Widget statsWidget, BuildContext context) async {
     final fromStr = serializeDateQueryParam(from);
     final toStr = serializeDateQueryParam(to);
+
+    final locale = context.locale;
 
     final bytes = await ScreenshotController().captureFromWidget(
       Material(
@@ -61,7 +60,7 @@ class TransactionsStatsPage extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Stats for the period from $fromStr to $toStr',
+                  locale.transactionStatsImageTitle(fromStr, toStr),
                   style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -88,36 +87,42 @@ class TransactionsStatsPage extends ConsumerWidget {
       return stateRepr;
     }
 
+    final locale = context.locale;
     final stats = value.requireValue;
+    final statsAvailable = stats.balances.isNotEmpty;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Stats for '
-          '${formatDate(stats.fromDate).date} - ${formatDate(stats.toDate).date}',
+          locale.transactionStatsTitle(
+            formatDate(stats.fromDate).date,
+            formatDate(stats.toDate).date,
+          ),
         ),
         actions: [
-          IconButton(
-            onPressed: () => _downloadStats(
-              _StatsDiagrams(statsDto: stats, animate: false),
+          if (statsAvailable)
+            IconButton(
+              onPressed: () => _downloadStats(
+                _StatsDiagrams(statsDto: stats, animate: false),
+                context,
+              ),
+              icon: const Icon(Icons.save_alt),
+              tooltip: locale.saveStatsButtonTooltip,
             ),
-            icon: const Icon(Icons.save_alt),
-            tooltip: 'Save report image',
-          ),
           CopyLinkButton.fromProvider(),
         ],
       ),
       body: PageBody(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: stats.balances.isNotEmpty
+          child: statsAvailable
               ? SingleChildScrollView(
                   child: _StatsDiagrams(statsDto: stats),
                 )
-              : const Center(
+              : Center(
                   child: Text(
-                    'No stats for the selected period :(',
-                    style: TextStyle(fontSize: 18),
+                    locale.noStatsLabel,
+                    style: const TextStyle(fontSize: 18),
                   ),
                 ),
         ),

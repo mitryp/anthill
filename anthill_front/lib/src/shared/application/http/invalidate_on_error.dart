@@ -25,6 +25,7 @@ extension InvalidateOnError<T> on Future<T> {
       test: (error) =>
           error is DioException &&
           !error.isForbiddenError &&
+          !error.isUnauthorizedError &&
           (_invalidateCounts[ref] ?? 0) < maxRetries,
     );
   }
@@ -32,4 +33,6 @@ extension InvalidateOnError<T> on Future<T> {
 
 extension _IsForbidden on DioException {
   bool get isForbiddenError => response?.statusCode == HttpStatus.forbidden;
+
+  bool get isUnauthorizedError => response?.statusCode == HttpStatus.unauthorized;
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
-import '../../utils/date_transfer_format.dart';
+import '../../pagination.dart';
 
 extension ExtractDateRange on PaginationController {
   DateTimeRange? extractDateRange({required String byKey}) {

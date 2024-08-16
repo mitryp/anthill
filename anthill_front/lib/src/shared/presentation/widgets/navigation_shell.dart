@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../constraints/app_page.dart';
-import '../utils/context_app_pages.dart';
+import '../../navigation.dart';
+import '../../widgets.dart';
 
 enum Destination {
   dashboard(
@@ -37,12 +37,13 @@ enum Destination {
   });
 
   String localize(BuildContext context) {
-    // todo localize
+    final locale = context.locale;
+
     return switch (this) {
-      Destination.transactions => 'Transactions',
-      Destination.users => 'Users',
-      Destination.logs => 'Logs',
-      Destination.dashboard => 'Dashboard',
+      Destination.transactions => locale.pageTitleTransactions,
+      Destination.users => locale.pageTitleUsers,
+      Destination.logs => locale.pageTitleUsers,
+      Destination.dashboard => locale.pageTitleDashboard,
     };
   }
 }

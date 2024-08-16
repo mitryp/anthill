@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 import '../../../shared/navigation.dart';
-import '../../../shared/presentation/widgets/snack_bar_content.dart';
-import '../../../shared/utils/date_format.dart';
+import '../../../shared/widgets.dart';
 import '../domain/dtos/log_entry_read_dto.dart';
 
 class LogEntryTile extends StatelessWidget {
@@ -20,10 +21,14 @@ class LogEntryTile extends StatelessWidget {
     return (context) {
       if (targetPage == null) {
         if (logEntry.resourceAffected != null) {
+          final locale = context.locale;
+
           showSnackBar(
             context,
-            title: Text('Missing resource link: ${logEntry.resourceAffected}'),
-            subtitle: const Text('Please, report this to the support'),
+            title: Text(
+              locale.errorMissingLinkForResource(logEntry.resourceAffected ?? 'unknown'),
+            ),
+            subtitle: Text(locale.supportReportEncouragement),
             backgroundColor: Colors.red.shade200,
           );
         }
@@ -36,10 +41,11 @@ class LogEntryTile extends StatelessWidget {
   }
 
   TextSpan _localizeEntryTitle(BuildContext context) {
-    // todo localization
+    final locale = context.locale;
+
     return TextSpan(
       children: [
-        TextSpan(text: '${_localizeAction(context)} by '),
+        TextSpan(text: locale.logEntryActionPerformedBy(_localizeAction(locale))),
         WidgetSpan(
           alignment: PlaceholderAlignment.middle,
           child: TextButton(
@@ -57,22 +63,12 @@ class LogEntryTile extends StatelessWidget {
     );
   }
 
-  String _localizeAction(BuildContext context) {
-    const actionToRepr = {
-      'deleteUser': 'User {} deleted',
-      'createUser': 'User {} created',
-      'updateUser': 'User {} updated',
-      'restoreUser': 'User {} restored',
-      'deleteTransaction': 'Transaction {} deleted',
-      'createTransaction': 'Transaction {} created',
-      'updateTransaction': 'Transaction {} updated',
-      'restoreTransaction': 'Transaction {} restored',
-    };
+  String _localizeAction(AppLocalizations locale) {
+    final resourceName = logEntry.module.localizedResourceName(locale);
+    final localizedAction = logEntry.action.localized(locale).call(logEntry.id, resourceName);
 
-    final repr = actionToRepr[logEntry.action];
-
-    return repr?.replaceFirst('{}', '${logEntry.targetEntityId}') ??
-        '${logEntry.action} ${logEntry.targetEntityId}';
+    // todo add meaningful descriptive property
+    return toBeginningOfSentenceCase(localizedAction)!;
   }
 
   @override
@@ -80,6 +76,8 @@ class LogEntryTile extends StatelessWidget {
     const expandedTextStyle = TextStyle(fontSize: 16);
     const splashRadius = 16.0;
     const childrenPadding = EdgeInsets.only(left: 16, right: 16, bottom: 8);
+
+    final locale = context.locale;
 
     final redirectCallback = _buildRedirectToAffectedResource();
     final (:date, :time) = formatDate(logEntry.createDate);
@@ -101,7 +99,7 @@ class LogEntryTile extends StatelessWidget {
           TextSpan(
             style: expandedTextStyle,
             children: [
-              const TextSpan(text: 'At '),
+              TextSpan(text: locale.logEntryCreatedAt),
               TextSpan(text: '$time $date', style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
@@ -110,9 +108,9 @@ class LogEntryTile extends StatelessWidget {
           TextSpan(
             style: expandedTextStyle,
             children: [
-              const TextSpan(text: 'Module: '),
+              TextSpan(text: locale.logEntryOriginModule),
               TextSpan(
-                text: logEntry.moduleName,
+                text: logEntry.module.localizedName(locale),
                 style: const TextStyle(fontStyle: FontStyle.italic),
               ),
             ],

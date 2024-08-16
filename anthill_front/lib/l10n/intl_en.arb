@@ -1,0 +1,203 @@
+{
+  "appName": "Anthill",
+
+  "confirmationDialogDefaultAccept": "OK",
+  "confirmationDialogDefaultCancel": "Cancel",
+
+  "pageTitleDashboard": "Dashboard",
+  "pageTitleTransactions": "Transactions",
+  "pageTitleUsers": "Users",
+  "pageTitleLogs": "Logs",
+  "pageTitleLogin": "Log in",
+  "pageTitleStats": "Transactions stats",
+
+  "dashboardGreeting": "Welcome, {userName}",
+  "@dashboardGreeting": {
+    "placeholders": {
+      "userName": {
+        "type": "String",
+        "example": "Olena"
+      }
+    }
+  },
+  "dashboardShortcutsTitle": "Your shortcuts",
+
+  "logoutButtonLabel": "Log out",
+
+  "copyLinkButtonTooltip": "Copy to clipboard",
+  "copyLinkButtonConfirmation": "Copied to clipboard: {link}",
+  "@copyLinkButtonConfirmation": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+
+  "errorNoticeTitle": "An error occurred",
+  "errorNoticeErrorMessage": "Oops! An error occurred. Please report this to the support",
+
+  "deletedResourceMarker": "Deleted",
+
+  "paginationSearchLabel": "Search",
+  "paginationDateRangeFilterPlaceholder": "Select dates",
+  "paginationShowDeletedSwitchLabel": "Show deleted",
+  "paginationSingleSortSelectorLabel": "Sort",
+
+  "modelControlsDeleteButtonLabel": "Delete",
+  "modelControlsEditButtonLabel": "Edit",
+  "modelControlsRestoreButtonLabel": "Restore",
+
+  "sortByCreateDateLabel": "Create date",
+  "sortByAmountLabel": "Amount",
+  "sortBySourceOrPurposeLabel": "Source or purpose",
+  "sortByNameLabel": "Name",
+
+  "loadingPageTitle": "Loading",
+
+  "userFieldEmail": "Email",
+  "userFieldPassword": "Password",
+
+  "loginButtonLabel": "Log in",
+
+  "errorLoginDetailsNotAccepted": "Login details were not accepted",
+  "errorMissingLinkForResource": "Missing resource link: {resourceAffected}",
+  "@errorMissingLinkForResource": {
+    "placeholders": {
+      "resourceAffected": {
+        "type": "String"
+      }
+    }
+  },
+
+  "supportReportEncouragement": "Please, report this to the support",
+
+  "logEntryDeleteAction": "{resourceName} {descriptiveProperty} deleted",
+  "@logEntryDeleteAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+  "logEntryCreateAction": "{resourceName} {descriptiveProperty} created",
+  "@logEntryCreateAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+  "logEntryUpdateAction": "{resourceName} {descriptiveProperty} updated",
+  "@logEntryUpdateAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+  "logEntryRestoreAction": "{resourceName} {descriptiveProperty} restored",
+  "@logEntryRestoreAction": {
+    "placeholders": {
+      "resourceName": {
+        "type": "String"
+      },
+      "descriptiveProperty": {
+        "type": "Object"
+      }
+    }
+  },
+
+  "logEntryActionPerformedBy": "{action} by",
+  "@logEntryActionPerformedBy": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+
+  "logEntryCreatedAt": "At ",
+  "logEntryOriginModule": "Module: ",
+
+  "resourceNameUser": "user",
+  "resourceNameTransaction": "transaction",
+  "resourceNameUnknown": "unknown resource",
+
+  "moduleNameUsers": "users",
+  "moduleNameTransactions": "transactions",
+  "moduleNameUnknown": "unknown module",
+
+  "transactionStatsImageTitle": "Stats for the period from {from} to {to}",
+  "@transactionStatsImageTitle": {
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "13.08.2024"
+      },
+      "to": {
+        "type": "String",
+        "example": "14.08.2024"
+      }
+    }
+  },
+  "transactionStatsTitle": "Stats from {from} to {to}",
+  "@transactionStatsTitle": {
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "13.08.2024"
+      },
+      "to": {
+        "type": "String",
+        "example": "14.08.2024"
+      }
+    }
+  },
+  "noStatsLabel": "No stats available for the selected period",
+  "saveStatsButtonTooltip": "Save report image",
+
+  "formValidationMessageRequired": "Field is required",
+  "formValidationMessageInvalidAmount": "Should be a valid amount",
+  "formValidationMessageZeroAmount": "Cannot be zero",
+  "formValidationMessageOutOfBounds": "Should be between -10^8 and 10^8",
+  "formValidationMessageEmpty": "Cannot be empty",
+  "formValidationMessagePasswordNotProvided": "Password must be provided",
+  "formValidationMessagePasswordTooShort": "The length must be not less than {minLength}",
+  "@formValidationMessagePasswordTooShort": {
+    "placeholders": {
+      "minLength": {
+        "type": "int"
+      }
+    }
+  },
+  "formValidationMessagePasswordFew": "Should contain at least {minAmount} {characterName}",
+  "@formValidationMessagePasswordFew": {
+    "placeholders": {
+      "minAmount": {
+        "type": "int",
+        "example": "8"
+      },
+      "characterName": {
+        "type": "String",
+        "example": "digits"
+      }
+    }
+  },
+
+  "digitsCharName": "digits",
+  "lowercaseCharName": "lowercase characters",
+  "uppercaseCharName": "uppercase characters",
+  "specialCharName": "special characters"
+
+
+}
