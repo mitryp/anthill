@@ -28,11 +28,12 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
 
   @protected
   Future<void> deleteModel(BuildContext context, WidgetRef ref, TModel model) async {
-    if (!await askUserConfirmation(
-          context,
-          Text(localizeDeletionMessage(context)),
-        ) ||
-        !context.mounted) {
+    final userConfirmed = await askUserConfirmation(
+      context,
+      Text(localizeDeletionMessage(context)),
+    );
+
+    if (!userConfirmed) {
       return;
     }
 
@@ -41,11 +42,12 @@ mixin CanControlCollection<TModel extends IdentifiableModel> on ConsumerWidget {
   }
 
   Future<void> restoreModel(BuildContext context, WidgetRef ref, TModel model) async {
-    if (!await askUserConfirmation(
-          context,
-          Text(localizeRestorationMessage(context)),
-        ) ||
-        !context.mounted) {
+    final userConfirmed = await askUserConfirmation(
+      context,
+      Text(localizeRestorationMessage(context)),
+    );
+
+    if (!userConfirmed) {
       return;
     }
 

@@ -31,10 +31,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     if (res || !mounted) return;
 
-    // ignore: use_build_context_synchronously
     showSnackBar(
       context,
-      // ignore: use_build_context_synchronously
       title: Text(context.locale.errorLoginDetailsNotAccepted),
       backgroundColor: Colors.red.shade200,
     );
