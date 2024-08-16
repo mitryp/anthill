@@ -116,7 +116,7 @@
     }
   },
 
-  "logEntryActionPerformedBy": "{action} by ",
+  "logEntryActionPerformedBy": "{action} by",
   "@logEntryActionPerformedBy": {
     "placeholders": {
       "action": {
