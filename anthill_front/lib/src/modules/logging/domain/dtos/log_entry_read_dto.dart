@@ -16,7 +16,7 @@ class LogEntryReadDto with _$LogEntryReadDto implements IdentifiableModel {
     required DateTime createDate,
     required UserReadDto user,
     @JsonKey(name: 'action') required String actionName,
-    required String moduleName,
+    @JsonKey(name: 'moduleName') required Module module,
     String? resourceAffected,
     int? targetEntityId,
     Map<String, dynamic>? jsonPayload,
@@ -29,8 +29,6 @@ class LogEntryReadDto with _$LogEntryReadDto implements IdentifiableModel {
   // logs are never deleted
   @override
   DateTime? get deleteDate => null;
-
-  Module get module => Module.values.firstWhere((m) => m.name == moduleName);
 
   Action get action => Action.values.firstWhere((a) => actionName.startsWith(a.name));
 }

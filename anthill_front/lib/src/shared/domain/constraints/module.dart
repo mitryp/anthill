@@ -1,5 +1,7 @@
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+@JsonEnum()
 enum Module {
   transactions,
   users;
