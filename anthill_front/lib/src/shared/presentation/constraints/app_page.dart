@@ -6,7 +6,7 @@ import '../../typedefs.dart';
 import '../pages/dashboard_page.dart';
 
 const idParamPlaceholder = ':id';
-const defaultPage = AppPage.transactionsSourceSelector;
+const defaultPage = AppPage.dashboard;
 
 enum AppPage {
   dashboard('/dashboard', DashboardPage.pageBuilder),
