@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_nestjs_paginate/flutter_nestjs_paginate.dart';
 
+import '../../domain/dtos/suggestions_dto.dart';
 import '../../domain/exceptions/no_resource_error.dart';
 import '../../domain/interfaces/model.dart';
 import '../../typedefs.dart';
@@ -63,4 +65,23 @@ mixin HttpWriteMixin<TRead, TCreate extends Model, TUpdate extends Model> on Htt
 
   Future<bool> restore(int id) =>
       client.post<String>('$apiPrefix/$id').then((value) => value.data == 'true');
+}
+
+mixin SuggestionsFetchMixin<TRead> on HttpService<TRead> {
+  static const String endpointName = 'suggestions';
+
+  Future<ISet<String>> getSuggestions() => client
+      .get<JsonMap>('$apiPrefix/$endpointName')
+      .then(_decodeSuggestionsResponse)
+      .then((value) => value.suggestions);
+
+  SuggestionsDto _decodeSuggestionsResponse(Response<JsonMap> res) {
+    final data = res.data;
+
+    if (data == null) {
+      throw NoResourceError('Suggestions[$TRead]');
+    }
+
+    return SuggestionsDto.fromJson(data);
+  }
 }

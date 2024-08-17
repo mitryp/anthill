@@ -1,3 +1,4 @@
+import '../../../../shared/application/http/http_service.dart';
 import '../../../../shared/http.dart';
 import '../../../../shared/typedefs.dart';
 import '../../../../shared/utils/date_transfer_format.dart';
@@ -8,7 +9,9 @@ import '../../domain/dtos/transaction_stats_dto.dart';
 const transactionsResourceName = 'transactions';
 
 class TransactionService extends HttpService<TransactionReadDto>
-    with HttpWriteMixin<TransactionReadDto, TransactionCreateDto, TransactionCreateDto> {
+    with
+        HttpWriteMixin<TransactionReadDto, TransactionCreateDto, TransactionCreateDto>,
+        SuggestionsFetchMixin {
   const TransactionService({required super.client})
       : super(decoder: TransactionReadDto.fromJson, apiPrefix: transactionsResourceName);
 
