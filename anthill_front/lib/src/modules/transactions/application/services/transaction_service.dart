@@ -1,4 +1,3 @@
-import '../../../../shared/application/http/http_service.dart';
 import '../../../../shared/http.dart';
 import '../../../../shared/typedefs.dart';
 import '../../../../shared/utils/date_transfer_format.dart';

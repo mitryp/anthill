@@ -8,6 +8,7 @@ import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_controller_provider.dart';
 import '../../domain/dtos/transaction_create_dto.dart';
 import '../../domain/dtos/transaction_read_dto.dart';
+import 'transaction_source_selector_page.dart';
 
 class TransactionEditor extends ConsumerStatefulWidget {
   final TransactionReadDto? _readDto;
@@ -32,6 +33,15 @@ class TransactionEditor extends ConsumerStatefulWidget {
 class _TransactionEditorState extends ConsumerState<TransactionEditor> {
   late TransactionCreateDto _dto = widget._readDto?.toCreateDto() ??
       const TransactionCreateDto(amount: 0, isIncome: true, sourceOrPurpose: '');
+  late final TextEditingController _sourceController =
+      TextEditingController(text: _dto.sourceOrPurpose);
+
+
+  @override
+  void dispose() {
+    _sourceController.dispose();
+    super.dispose();
+  }
 
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -53,12 +63,19 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
     });
   }
 
-  void _onSourceOrPurposeChanged(String value) {
-    if (value.isEmpty) {
+  Future<void> _onSelectSource(String? current) async {
+    final value = await showTransactionSourceSuggestions(context, current) //
+        .then((value) => value?.trim());
+
+    if (value == null) {
       return;
     }
 
-    setState(() => _dto = _dto.copyWith(sourceOrPurpose: value));
+    _sourceController.text = value;
+
+    setState(() {
+      _dto = _dto.copyWith(sourceOrPurpose: value);
+    });
   }
 
   void _onNoteChanged(String value) => setState(() => _dto = _dto.copyWith(note: value));
@@ -128,12 +145,16 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                         signed: true,
                       ),
                     ),
-                    TextFormField(
-                      initialValue: sourceOrPurpose,
-                      validator: isRequired(context, minLength: 4),
-                      onChanged: _onSourceOrPurposeChanged,
-                      decoration: InputDecoration(
-                        labelText: isIncome ? 'Source' : 'Purpose',
+                    InkWell(
+                      onTap: () => _onSelectSource(sourceOrPurpose),
+                      child: AbsorbPointer(
+                        child: TextFormField(
+                          controller: _sourceController,
+                          validator: isRequired(context),
+                          decoration: InputDecoration(
+                            labelText: isIncome ? 'Source' : 'Purpose',
+                          ),
+                        ),
                       ),
                     ),
                     TextFormField(
