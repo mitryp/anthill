@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import { AutoMap } from 'automapper-classes';
 import { NumericToNumber } from '../../../../common/utils/type_transformers/numericToNumber';
 import { EntityBase } from '../../../../common/domain/entity.base';
@@ -16,6 +16,7 @@ export class Transaction extends EntityBase {
 
   @AutoMap()
   @Column()
+  @Index()
   sourceOrPurpose: string;
 
   @AutoMap()

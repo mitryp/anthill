@@ -8,7 +8,9 @@ import '../../domain/dtos/transaction_stats_dto.dart';
 const transactionsResourceName = 'transactions';
 
 class TransactionService extends HttpService<TransactionReadDto>
-    with HttpWriteMixin<TransactionReadDto, TransactionCreateDto, TransactionCreateDto> {
+    with
+        HttpWriteMixin<TransactionReadDto, TransactionCreateDto, TransactionCreateDto>,
+        SuggestionsFetchMixin {
   const TransactionService({required super.client})
       : super(decoder: TransactionReadDto.fromJson, apiPrefix: transactionsResourceName);
 

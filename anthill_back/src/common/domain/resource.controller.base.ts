@@ -2,6 +2,7 @@ import { Get } from '@nestjs/common';
 import { PaginateConfig, PaginateQuery } from 'nestjs-paginate';
 import { ReadManyDto } from './read-many.dto';
 import { Request } from 'express';
+import { SuggestionsDto } from './suggestions.dto';
 
 export const PaginateConfigEndpoint = () => Get('paginate_config');
 
@@ -23,3 +24,9 @@ export interface ModifiableResourceControllerBase<TEntity, TRead, TCreate, TUpda
 
   restore(id: number, req: Request): Promise<boolean>;
 }
+
+export interface SuggestionEnabledControllerBase {
+  readSuggestions(): Promise<SuggestionsDto>;
+}
+
+export const SUGGESTIONS_ENDPOINT_NAME = 'suggestions';
