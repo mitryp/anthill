@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../shared/navigation.dart';
-import '../../../../shared/presentation/widgets/error_notice.dart';
-import '../../../../shared/presentation/widgets/page_body.dart';
+import '../../../../shared/widgets.dart';
 import '../../application/providers/transaction_source_suggestions_provider.dart';
 
 class TransactionSourceSelectorPage extends ConsumerStatefulWidget {
@@ -54,9 +53,11 @@ class _TransactionSourceSelectorPageState extends ConsumerState<TransactionSourc
 
     late final rawSuggestions = buildSuggestions();
 
+    final locale = context.locale;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transaction source/purpose'),
+        title: Text(locale.sourceSelectorTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -72,7 +73,7 @@ class _TransactionSourceSelectorPageState extends ConsumerState<TransactionSourc
                 children: [
                   SearchBar(
                     controller: _searchController,
-                    hintText: 'Search suggestions...',
+                    hintText: locale.sourceSelectorSearchHint,
                   ),
                   const SizedBox(height: 8),
                   Expanded(
@@ -141,7 +142,7 @@ class _SuggestionTile extends StatelessWidget {
           ),
           icon: const Icon(Icons.add),
           onPressed: () => _onTap(context),
-          label: Text('Create value "$value"'),
+          label: Text(context.locale.sourceSelectorCreateValueLabel(value)),
         ),
       );
     }

@@ -20,8 +20,12 @@ class TransactionEditor extends ConsumerStatefulWidget {
     final extra = state.extra;
     final toEdit = extra is TransactionReadDto ? extra : null;
 
+    final locale = context.locale;
+
     return PageTitle(
-      title: toEdit != null ? 'Edit transaction' : 'Create transaction',
+      title: toEdit != null
+          ? locale.pageTitleTransactionEditorEdit
+          : locale.pageTitleTransactionEditorCreate,
       child: TransactionEditor(transactionToEdit: toEdit),
     );
   }
@@ -35,7 +39,6 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
       const TransactionCreateDto(amount: 0, isIncome: true, sourceOrPurpose: '');
   late final TextEditingController _sourceController =
       TextEditingController(text: _dto.sourceOrPurpose);
-
 
   @override
   void dispose() {
@@ -105,15 +108,23 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
     final TransactionCreateDto(:amount, :sourceOrPurpose, :isIncome, :note) = _dto;
     final size = MediaQuery.of(context).size;
 
+    final locale = context.locale;
+
+    final amountLabel = switch (amount) {
+      > 0.0 when isIncome => locale.transactionEditorIncomeLabel,
+      < 0.0 when !isIncome => locale.transactionEditorExpenseLabel,
+      _ => locale.transactionEditorAmountLabel,
+    };
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editing transaction'),
+        title: Text(locale.transactionEditorTitle),
       ),
       floatingActionButton: ProgressIndicatorButton.icon(
         iconButtonBuilder: ElevatedButton.icon,
         onPressed: _saveTransaction,
         icon: const Icon(Icons.save),
-        label: const Text('Save'),
+        label: Text(locale.saveButtonLabel),
       ),
       body: PageBody(
         child: Form(
@@ -135,9 +146,8 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                         FilteringTextInputFormatter.allow(RegExp(r'[-\d.]')),
                       ],
                       decoration: InputDecoration(
-                        labelText:
-                            amount == 0 ? 'Amount' : 'Amount (${isIncome ? 'income' : 'expense'})',
-                        suffixText: 'GBP',
+                        labelText: amountLabel,
+                        suffixText: locale.transactionEditorCurrencyName,
                         hintText: '${_dto.amount}',
                       ),
                       keyboardType: const TextInputType.numberWithOptions(
@@ -152,7 +162,9 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                           controller: _sourceController,
                           validator: isRequired(context),
                           decoration: InputDecoration(
-                            labelText: isIncome ? 'Source' : 'Purpose',
+                            labelText: isIncome
+                                ? locale.transactionEditorSourceLabel
+                                : locale.transactionEditorPurposeLabel,
                           ),
                         ),
                       ),
@@ -160,8 +172,8 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                     TextFormField(
                       initialValue: note,
                       onChanged: _onNoteChanged,
-                      decoration: const InputDecoration(
-                        labelText: 'Note',
+                      decoration: InputDecoration(
+                        labelText: locale.transactionEditorNoteLabel,
                       ),
                     ),
                   ],
@@ -175,7 +187,7 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
   }
 }
 
-extension _ToCreateDto on TransactionReadDto {
+extension on TransactionReadDto {
   TransactionCreateDto toCreateDto() => TransactionCreateDto(
         amount: amount,
         isIncome: isIncome,
