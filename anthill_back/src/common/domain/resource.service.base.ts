@@ -4,6 +4,7 @@ import { NotFoundException, Type } from '@nestjs/common';
 import { EntityBase } from './entity.base';
 import { paginate, Paginate, PaginateConfig, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { ReadManyDto } from './read-many.dto';
+import { SuggestionsDto } from './suggestions.dto';
 
 export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> {
   protected constructor(
@@ -114,4 +115,8 @@ export abstract class ModifiableResourceServiceBase<
 
     return true;
   }
+}
+
+export abstract class SuggestionsEnabledResourceServiceBase {
+  abstract getSuggestions(): Promise<SuggestionsDto>;
 }
