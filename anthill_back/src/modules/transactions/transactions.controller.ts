@@ -30,7 +30,10 @@ import { RolesGuard } from '../auth/roles.guard';
 import {
   ModifiableResourceControllerBase,
   PaginateConfigEndpoint,
+  SuggestionEnabledControllerBase,
+  SUGGESTIONS_ENDPOINT_NAME,
 } from '../../common/domain/resource.controller.base';
+import { SuggestionsDto } from '../../common/domain/suggestions.dto';
 
 @ApiTags('Transactions')
 @Controller('transactions')
@@ -41,7 +44,8 @@ export class TransactionsController
       TransactionReadDto,
       TransactionCreateDto,
       TransactionUpdateDto
-    >
+    >,
+    SuggestionEnabledControllerBase
 {
   constructor(
     private readonly transactionService: TransactionsService,
@@ -57,6 +61,11 @@ export class TransactionsController
   @PaginatedSwaggerDocs(TransactionReadDto, transactionsPaginateConfig)
   async readAll(@Paginate() query: PaginateQuery): Promise<ReadManyDto<TransactionReadDto>> {
     return this.transactionService.readAll(query);
+  }
+
+  @Get(SUGGESTIONS_ENDPOINT_NAME)
+  async readSuggestions(): Promise<SuggestionsDto> {
+    return this.transactionService.getSuggestions();
   }
 
   @Get(':id')

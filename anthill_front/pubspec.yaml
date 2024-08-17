@@ -51,6 +51,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: any
+  fast_immutable_collections: ^10.2.4
 
 dev_dependencies:
   flutter_test:

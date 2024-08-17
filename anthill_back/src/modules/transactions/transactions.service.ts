@@ -7,7 +7,10 @@ import { Repository } from 'typeorm';
 import { Mapper } from 'automapper-core';
 import { TransactionCreateDtoWithUser } from './data/dtos/transaction.create.dto';
 import { TransactionUpdateDto } from './data/dtos/transaction.update.dto';
-import { ModifiableResourceServiceBase } from '../../common/domain/resource.service.base';
+import {
+  ModifiableResourceServiceBase,
+  SuggestionsEnabledResourceServiceBase,
+} from '../../common/domain/resource.service.base';
 import {
   FilterOperator,
   FilterSuffix,
@@ -18,14 +21,18 @@ import {
 import { ReadManyDto } from '../../common/domain/read-many.dto';
 import { SessionPayloadDto } from '../auth/data/dtos/session.payload.dto';
 import { UserRole } from '../users/data/entities/user.entity';
+import { SuggestionsDto } from '../../common/domain/suggestions.dto';
 
 @Injectable()
-export class TransactionsService extends ModifiableResourceServiceBase<
-  Transaction,
-  TransactionReadDto,
-  TransactionCreateDtoWithUser,
-  TransactionUpdateDto
-> {
+export class TransactionsService
+  extends ModifiableResourceServiceBase<
+    Transaction,
+    TransactionReadDto,
+    TransactionCreateDtoWithUser,
+    TransactionUpdateDto
+  >
+  implements SuggestionsEnabledResourceServiceBase
+{
   constructor(
     @InjectRepository(Transaction) protected readonly repository: Repository<Transaction>,
     @InjectMapper() protected readonly mapper: Mapper,
@@ -99,6 +106,18 @@ export class TransactionsService extends ModifiableResourceServiceBase<
     await this.repository.softDelete({ id });
 
     return true;
+  }
+
+  async getSuggestions(): Promise<SuggestionsDto> {
+    const suggestions = await this.repository
+      .createQueryBuilder('transactions')
+      .select('transactions."sourceOrPurpose"')
+      .distinct(true)
+      .getRawMany<{sourceOrPurpose: string}>();
+
+    return {
+      suggestions: suggestions.map(e => e.sourceOrPurpose),
+    };
   }
 }
 

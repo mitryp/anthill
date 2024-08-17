@@ -20,14 +20,16 @@ class UserEditor extends ConsumerStatefulWidget {
     final extra = state.extra;
     final toEdit = extra is UserReadDto ? extra : null;
 
+    final locale = context.locale;
+
     return PageTitle(
-      title: toEdit != null ? 'Edit user' : 'Create user',
+      title: toEdit != null ? locale.pageTitleUserEditorEdit : locale.pageTitleUserEditorCreate,
       child: VisibleFor(
         roles: const {UserRole.admin},
         unauthorizedPlaceholder: Scaffold(
           appBar: AppBar(),
-          body: const Center(
-            child: Text('You are not authorized to see this page'),
+          body: Center(
+            child: Text(locale.notAuthorizedMessage),
           ),
         ),
         child: UserEditor(userToEdit: toEdit),
@@ -90,6 +92,7 @@ class _UserEditorState extends ConsumerState<UserEditor> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final UserCreateDto(:name, :email, :role, :password) = _dto;
+    final locale = context.locale;
 
     final roleItems = UserRole.values
         .map(
@@ -115,7 +118,7 @@ class _UserEditorState extends ConsumerState<UserEditor> {
       enabled: _isEditingPassword || !_isEditing,
       onChanged: _onPasswordChanged,
       decoration: InputDecoration(
-        labelText: 'Password',
+        labelText: locale.userEditorPasswordLabel,
         border: _isEditing && _isEditingPassword ? const OutlineInputBorder() : null,
       ),
     );
@@ -126,19 +129,21 @@ class _UserEditorState extends ConsumerState<UserEditor> {
         validator: isRequired(context),
         initialValue: name,
         onChanged: _onNameChanged,
-        decoration: const InputDecoration(labelText: 'Name'),
+        decoration: InputDecoration(labelText: locale.userEditorNameLabel),
       ),
       TextFormField(
-        validator: ValidationBuilder(localeName: 'en').email().build(),
+        validator: ValidationBuilder(localeName: 'en')
+            .email(locale.formValidationMessageNotAnEmail)
+            .build(),
         initialValue: email,
         onChanged: _onEmailChanged,
-        decoration: const InputDecoration(labelText: 'Email'),
+        decoration: InputDecoration(labelText: locale.userEditorEmailLabel),
       ),
       DropdownButtonFormField(
         value: role,
         items: roleItems,
         onChanged: _onRoleChanged,
-        decoration: const InputDecoration(labelText: 'Role'),
+        decoration: InputDecoration(labelText: locale.userEditorRoleLabel),
       ),
       if (!_isEditing)
         passwordField
@@ -147,7 +152,7 @@ class _UserEditorState extends ConsumerState<UserEditor> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text('Change password'),
+            Text(locale.userEditorChangePasswordCheckboxLabel),
             Checkbox(
               value: _isEditingPassword,
               onChanged: (value) =>
@@ -161,13 +166,13 @@ class _UserEditorState extends ConsumerState<UserEditor> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editing user'),
+        title: Text(locale.userEditorTitle),
       ),
       floatingActionButton: ProgressIndicatorButton.icon(
         iconButtonBuilder: ElevatedButton.icon,
         onPressed: _saveUser,
         icon: const Icon(Icons.save),
-        label: const Text('Save'),
+        label: Text(locale.saveButtonLabel),
       ),
       body: PageBody(
         child: Form(

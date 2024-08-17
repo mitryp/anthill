@@ -20,7 +20,7 @@ mixin CollectionControllerMixin<TRead extends IdentifiableModel, TCreate extends
   @visibleForOverriding
   ProviderOrFamily Function(int id) get resourceByIdProvider;
 
-  @visibleForOverriding
+  @protected
   AutoDisposeAsyncNotifierProviderRef get ref;
 
   TService _readService() => ref.read(serviceProvider);

@@ -10,6 +10,12 @@
   "pageTitleLogs": "Logs",
   "pageTitleLogin": "Log in",
   "pageTitleStats": "Transactions stats",
+  "pageTitleTransactionEditorEdit": "Edit transaction",
+  "pageTitleTransactionEditorCreate": "Create transaction",
+  "pageTitleUserEditorEdit": "Edit user",
+  "pageTitleUserEditorCreate": "Create user",
+
+  "notAuthorizedMessage": "You are not authorized to see this page",
 
   "dashboardGreeting": "Welcome, {userName}",
   "@dashboardGreeting": {
@@ -20,7 +26,6 @@
       }
     }
   },
-  "dashboardShortcutsTitle": "Your shortcuts",
 
   "logoutButtonLabel": "Log out",
 
@@ -47,6 +52,7 @@
   "modelControlsDeleteButtonLabel": "Delete",
   "modelControlsEditButtonLabel": "Edit",
   "modelControlsRestoreButtonLabel": "Restore",
+  "saveButtonLabel": "Save",
 
   "sortByCreateDateLabel": "Create date",
   "sortByAmountLabel": "Amount",
@@ -166,6 +172,7 @@
   "noStatsLabel": "No stats available for the selected period",
   "saveStatsButtonTooltip": "Save report image",
 
+  "formValidationMessageNotAnEmail": "Should be a valid email address",
   "formValidationMessageRequired": "Field is required",
   "formValidationMessageInvalidAmount": "Should be a valid amount",
   "formValidationMessageZeroAmount": "Cannot be zero",
@@ -197,7 +204,33 @@
   "digitsCharName": "digits",
   "lowercaseCharName": "lowercase characters",
   "uppercaseCharName": "uppercase characters",
-  "specialCharName": "special characters"
+  "specialCharName": "special characters",
 
+  "transactionEditorTitle": "Transaction",
+  "transactionEditorAmountLabel": "Amount",
+  "transactionEditorIncomeLabel": "Amount (income)",
+  "transactionEditorExpenseLabel": "Amount (expense)",
+  "transactionEditorCurrencyName": "GBP",
+  "transactionEditorSourceLabel": "Source",
+  "transactionEditorPurposeLabel": "Purpose",
+  "transactionEditorNoteLabel": "Note",
+
+  "sourceSelectorTitle": "Transaction source/purpose",
+  "sourceSelectorSearchHint": "Search suggestions...",
+  "sourceSelectorCreateValueLabel": "Create value \"{value}\"",
+  "@sourceSelectorCreateValueLabel": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+
+  "userEditorTitle": "User",
+  "userEditorPasswordLabel": "Password",
+  "userEditorNameLabel": "Name",
+  "userEditorEmailLabel": "Email",
+  "userEditorRoleLabel": "Role",
+  "userEditorChangePasswordCheckboxLabel": "Change password"
 
 }
