@@ -158,13 +158,15 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                     InkWell(
                       onTap: () => _onSelectSource(sourceOrPurpose),
                       child: AbsorbPointer(
-                        child: TextFormField(
-                          controller: _sourceController,
-                          validator: isRequired(context),
-                          decoration: InputDecoration(
-                            labelText: isIncome
-                                ? locale.transactionEditorSourceLabel
-                                : locale.transactionEditorPurposeLabel,
+                        child: ExcludeFocus(
+                          child: TextFormField(
+                            controller: _sourceController,
+                            validator: isRequired(context),
+                            decoration: InputDecoration(
+                              labelText: isIncome
+                                  ? locale.transactionEditorSourceLabel
+                                  : locale.transactionEditorPurposeLabel,
+                            ),
                           ),
                         ),
                       ),
