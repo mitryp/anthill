@@ -15,6 +15,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { QueryFailFilter } from './common/filters/query-fail.filter';
 import { SessionAuthGuard } from './modules/auth/session-auth.guard';
+import { HumanitarianModule } from './modules/humanitarian/humanitarian.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SessionAuthGuard } from './modules/auth/session-auth.guard';
     TransactionsModule,
     UsersModule,
     AuthModule,
+    HumanitarianModule,
     ServeStaticModule.forRootAsync({
       imports: [
         ConfigurationModule,

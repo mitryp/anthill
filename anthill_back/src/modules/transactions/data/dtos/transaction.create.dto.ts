@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator';
 import { AutoMap } from 'automapper-classes';
 
 export class TransactionCreateDto {
@@ -13,6 +13,7 @@ export class TransactionCreateDto {
   isIncome: boolean;
 
   @AutoMap()
+  @IsString()
   @IsNotEmpty()
   sourceOrPurpose: string;
 

@@ -1,10 +1,11 @@
-import { DeepPartial, FindOptionsWhere, IsNull, Not, Repository } from 'typeorm';
+import { DeepPartial, FindOneOptions, FindOptionsWhere, IsNull, Not, Repository } from 'typeorm';
 import { Mapper } from 'automapper-core';
-import { NotFoundException, Type } from '@nestjs/common';
+import { ForbiddenException, NotFoundException, Type } from '@nestjs/common';
 import { EntityBase } from './entity.base';
 import { paginate, Paginate, PaginateConfig, Paginated, PaginateQuery } from 'nestjs-paginate';
 import { ReadManyDto } from './read-many.dto';
 import { SuggestionsDto } from './suggestions.dto';
+import { UserRole } from '../../modules/users/data/entities/user.entity';
 
 export abstract class ResourceServiceBase<TEntity extends EntityBase, TReadDto> {
   protected constructor(
@@ -95,7 +96,7 @@ export abstract class ModifiableResourceServiceBase<
     const entity = this.mapper.map(dto, this.updateDtoType, this.entityType);
     const updated = await this.repository.save({ id, ...entity } as DeepPartial<TEntity>);
 
-    return this.mapOne(Object.assign(updated, existing));
+    return this.mapOne(Object.assign(existing, updated));
   }
 
   async restore(id: number): Promise<boolean> {
@@ -114,6 +115,24 @@ export abstract class ModifiableResourceServiceBase<
     await this.repository.restore({ id } as FindOptionsWhere<TEntity>);
 
     return true;
+  }
+
+  async getOwnedOrFail<T extends TEntity & { user: { id: number } }>(
+    userId: number,
+    userRole: UserRole,
+    findOptions: FindOneOptions<TEntity>,
+  ): Promise<TEntity> {
+    const entity = (await this.repository.findOne(findOptions)) as unknown as T;
+
+    if (!entity || entity.deleteDate !== null) {
+      throw new NotFoundException();
+    }
+
+    if (userId !== entity.user.id && userRole === UserRole.volunteer) {
+      throw new ForbiddenException(null, 'Current user does not own the accessed resource');
+    }
+
+    return entity;
   }
 }
 
