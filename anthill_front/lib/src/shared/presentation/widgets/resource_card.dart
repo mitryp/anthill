@@ -26,7 +26,7 @@ class ResourceCard extends StatelessWidget {
   });
 
   Widget _buildCreatedDateRepr(BuildContext context) {
-    final (:date, :time) = formatDate(model.createDate);
+    final (:date, :time) = formatDate(model.createDate.toLocal());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
