@@ -37,11 +37,14 @@ class TransactionEditor extends ConsumerStatefulWidget {
 class _TransactionEditorState extends ConsumerState<TransactionEditor> {
   late TransactionCreateDto _dto = widget._readDto?.toCreateDto() ??
       const TransactionCreateDto(amount: 0, isIncome: true, sourceOrPurpose: '');
+  late final TextEditingController _amountController =
+      TextEditingController(text: widget._readDto?.amount.toString());
   late final TextEditingController _sourceController =
       TextEditingController(text: _dto.sourceOrPurpose);
 
   @override
   void dispose() {
+    _amountController.dispose();
     _sourceController.dispose();
     super.dispose();
   }
@@ -64,6 +67,13 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
         isIncome: isIncome,
       );
     });
+  }
+
+  void _changeSign() {
+    final newAmount = _dto.amount * -1;
+
+    setState(() => _dto = _dto.copyWith(amount: newAmount, isIncome: newAmount > 0));
+    _amountController.text = '${_dto.amount}';
   }
 
   Future<void> _onSelectSource(String? current) async {
@@ -116,6 +126,8 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
       _ => locale.transactionEditorAmountLabel,
     };
 
+    final isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(locale.transactionEditorTitle),
@@ -137,23 +149,35 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                 height: size.height * formHeightFraction,
                 child: Column(
                   children: [
-                    TextFormField(
-                      autofocus: amount == 0,
-                      validator: isAmount(context),
-                      initialValue: amount != 0 ? '$amount' : null,
-                      onChanged: _onAmountChanged,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'[-\d.]')),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _amountController,
+                            autofocus: amount == 0,
+                            validator: isAmount(context),
+                            onChanged: _onAmountChanged,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(RegExp(r'[-\d.]')),
+                            ],
+                            decoration: InputDecoration(
+                              labelText: amountLabel,
+                              suffixText: locale.transactionEditorCurrencyName,
+                              hintText: '${_dto.amount}',
+                            ),
+                            keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true,
+                              signed: true,
+                            ),
+                          ),
+                        ),
+                        if (isIOS)
+                          IconButton(
+                            tooltip: locale.transactionEditorIOSSignButtonTooltip,
+                            onPressed: _changeSign,
+                            icon: const Icon(Icons.remove),
+                          ),
                       ],
-                      decoration: InputDecoration(
-                        labelText: amountLabel,
-                        suffixText: locale.transactionEditorCurrencyName,
-                        hintText: '${_dto.amount}',
-                      ),
-                      keyboardType: const TextInputType.numberWithOptions(
-                        decimal: true,
-                        signed: true,
-                      ),
                     ),
                     InkWell(
                       onTap: () => _onSelectSource(sourceOrPurpose),
