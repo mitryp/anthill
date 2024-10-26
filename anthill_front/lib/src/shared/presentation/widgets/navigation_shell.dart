@@ -42,7 +42,7 @@ enum Destination {
     return switch (this) {
       Destination.transactions => locale.pageTitleTransactions,
       Destination.users => locale.pageTitleUsers,
-      Destination.logs => locale.pageTitleUsers,
+      Destination.logs => locale.pageTitleLogs,
       Destination.dashboard => locale.pageTitleDashboard,
     };
   }
