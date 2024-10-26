@@ -1,11 +1,11 @@
 {
-    "name": "anthill_front",
-    "short_name": "anthill_front",
+    "name": "Anthill",
+    "short_name": "AH",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A Flutter frontend for Anthill charity management system.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
