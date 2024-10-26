@@ -65,7 +65,10 @@ class LogEntryTile extends StatelessWidget {
 
   String _localizeAction(AppLocalizations locale) {
     final resourceName = logEntry.module.localizedResourceName(locale);
-    final localizedAction = logEntry.action.localized(locale).call(logEntry.id, resourceName);
+    final localizedAction = logEntry.action.localized(locale).call(
+          logEntry.targetEntityId ?? '?',
+          resourceName,
+        );
 
     // todo add meaningful descriptive property
     return toBeginningOfSentenceCase(localizedAction)!;
