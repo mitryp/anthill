@@ -47,11 +47,11 @@ class ResourceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final elevation =
-        model.isDeleted ? _Constants.deletedElevation : _Constants.elevation;
+    final elevation = model.isDeleted ? _Constants.deletedElevation : _Constants.elevation;
     final tintColor = model.isDeleted ? _Constants.deletedTintColor : null;
 
     return Card(
+      shape: _Constants.cardShape,
       elevation: elevation,
       surfaceTintColor: tintColor,
       child: ListTile(
@@ -61,6 +61,7 @@ class ResourceCard extends StatelessWidget {
         trailing: trailing ?? _buildCreatedDateRepr(context),
         onTap: onTap,
         contentPadding: _Constants.contentPadding,
+        shape: _Constants.cardShape,
       ),
     );
   }
@@ -87,6 +88,8 @@ abstract final class _Constants {
   static const elevation = 3.0;
   static const deletedElevation = elevation / 2;
   static final deletedTintColor = Colors.red[600];
-  static const contentPadding =
-      EdgeInsets.symmetric(vertical: 8, horizontal: 16);
+  static const contentPadding = EdgeInsets.symmetric(vertical: 8, horizontal: 16);
+  static const cardShape = RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(12)),
+  );
 }
