@@ -214,6 +214,7 @@
   "transactionEditorSourceLabel": "Source",
   "transactionEditorPurposeLabel": "Purpose",
   "transactionEditorNoteLabel": "Note",
+  "transactionEditorIOSSignButtonTooltip": "Change the sign",
 
   "sourceSelectorTitle": "Transaction source/purpose",
   "sourceSelectorSearchHint": "Search suggestions...",
