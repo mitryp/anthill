@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart' show CupertinoIcons;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -175,7 +176,7 @@ class _TransactionEditorState extends ConsumerState<TransactionEditor> {
                           IconButton(
                             tooltip: locale.transactionEditorIOSSignButtonTooltip,
                             onPressed: _changeSign,
-                            icon: const Icon(Icons.remove),
+                            icon: const Icon(CupertinoIcons.plusminus),
                           ),
                       ],
                     ),
